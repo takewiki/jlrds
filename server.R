@@ -187,7 +187,24 @@
     })
    
    
-   
+   #JALA日报-------
+    var_daily_dates <- var_dateRange('daily_dates')
+    var_level <- var_ListChoose1('daily_dataRange')
+    
+    data_daily <- eventReactive(input$daily_preview,{
+      dates <-var_daily_dates()
+      startDate <- as.character(dates[1])
+      endDate <- as.character(dates[2])
+      level <- var_level()
+      data <- jlrdspkg::rpt_daily_selectDb(conn=conn,FStartDate =startDate ,FEndDate =endDate ,FLevel =level )
+      return(data)
+    })
+    
+    observeEvent(input$daily_preview,{
+      data <- data_daily()
+      run_dataTable2('daily_dataShow',data = data)
+      run_download_xlsx('daily_dl',data = data,filename = 'JALA日报.xlsx')
+    })
    
   
 })

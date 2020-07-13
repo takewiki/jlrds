@@ -1,9 +1,14 @@
 # 设置app标题-----
 
-app_title <-'App Template';
+app_title <-'JALA财务分析平台V1.0';
+
+#change log
+#1.0
+#add the jala daily query
+
 
 # store data into rdbe in the rds database
-app_id <- 'appTpl'
+app_id <- 'jlrds'
 
 #设置数据库链接---
 
@@ -12,7 +17,7 @@ conn_be <- conn_rds('rdbe')
 
 
 #设置链接---
-conn <- conn_rds('nsic')
+conn <- conn_rds('jlrds')
 
 
 
