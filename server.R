@@ -206,5 +206,146 @@
       run_download_xlsx('daily_dl',data = data,filename = 'JALA日报.xlsx')
     })
    
+    #上传周报数据-----
+    
+    var_daily_rpt_upload_file <- var_file('daily_rpt_upload_file')
+    observeEvent(input$daily_upload_btn,{
+      shinyjs::disable('daily_upload_btn')
+      file <-var_daily_rpt_upload_file()
+      jlrdspkg::rpt_daily_writeDb(file=file,sheet = input$daily_rpt_sheetName,conn = conn)
+      pop_notice('资金日报数据已上传')
+      
+    })
+    
+    #再次激活
+    observeEvent(input$daily_upload_btn_reset,{
+      shinyjs::enable('daily_upload_btn')
+    })
+    
+    #处理周报数据
+    #年
+    var_week_year <- var_numeric('week_year')
+    #处理开始周与结束周
+    #var_startWeekNo <-
+    #var_endWeekNo <-
+    #周类型
+    var_week_Ftype <- var_ListChoose1('week_Ftype')
+    #数据范围
+    var_week_dataRange <- var_ListChoose1('week_dataRange')
+    #字段类型
+    var_week_amtType <- var_ListChooseN('week_amtType')
+    output$weekSelector_ph <- renderPrint({
+      week_year <- var_week_year()
+      week_Ftype <- var_week_Ftype()
+      week_info <- jlrdspkg::week_getDateList(conn=conn,year = week_year,Ftype = week_Ftype)
+      #print(week_info)
+      #selectInput(inputId = 'weekEndNo',label = '结束周号',choices = week_info)
+      
+      tagList(
+        selectInput(inputId = 'weekStartNo',label = '开始周号',choices = week_info),
+        selectInput(inputId = 'weekEndNo',label = '结束周号',choices = week_info)
+      )
+     })
+    
+    #处理周报数据
+    observeEvent(input$week_preview,{
+      week_year <-var_week_year()
+      print(week_year)
+      week_Ftype <- var_week_Ftype()
+      print(week_Ftype)
+      week_startNo <- as.integer(input$weekStartNo)
+      print(week_startNo)
+      week_endNo <- as.integer(input$weekEndNo)
+      print(week_endNo)
+      week_amtType  <-var_week_amtType()
+      print(week_amtType)
+      week_FLevel <- as.integer(var_week_dataRange())
+      print(week_FLevel)
+      
+      data <- tryCatch(
+        {jlrdspkg::weekRpt_selectDB(conn=conn,year = week_year,startWeekNo = week_startNo,
+                                         endWeekNo = week_endNo,AmtType = week_amtType,FLevel = week_FLevel,
+                                         FType = week_Ftype)},error =function(e){
+                                           res <-data.frame(`错误提示`="请检查一下开始周次与结束周次是否正确")
+                                           return(res)
+                                         })
+      #显示周报
+      run_dataTable2('week_dataShow',data = data)
+      #下载周报
+      run_download_xlsx('week_dl',data = data,filename = '周报数据下载.xlsx')
+      
+      
+      
+      
+    })
+    #处理月报------
+    var_month_year <- var_numeric('month_year')
+  
+    #数据范围
+    var_month_dataRange <- var_ListChoose1('month_dataRange')
+    #字段类型
+    var_month_amtType <- var_ListChooseN('month_amtType')
+    
+    observeEvent(input$month_preview,{
+      month_year <-var_month_year()
+      print(month_year)
+      
+      month_amtType  <-var_month_amtType()
+      print(month_amtType)
+      month_FLevel <- as.integer(var_month_dataRange())
+      print(month_FLevel)
+      
+      data <- tryCatch(
+        {jlrdspkg::monthRpt_selectDB(conn=conn,year = month_year,AmtType = month_amtType,FLevel = month_FLevel)},error =function(e){
+                                      res <-data.frame(`错误提示`="请检查一下参数是否正确")
+                                      return(res)
+                                    })
+      #显示周报
+      run_dataTable2('month_dataShow',data = data)
+      #下载周报
+      run_download_xlsx('month_dl',data = data,filename = '月报数据下载.xlsx')
+      
+      
+      
+      
+    })
+    
+    #处理周报更新-----
+    var_week_year_update <- var_numeric('week_year_update')
+   
+    #周类型
+    var_week_Ftype_update <- var_ListChoose1('week_Ftype_update')
+    
+    output$weekSelector_ph_update <- renderPrint({
+      week_year <- var_week_year_update()
+      week_Ftype <- var_week_Ftype_update()
+      week_info <- jlrdspkg::week_getDateList(conn=conn,year = week_year,Ftype = week_Ftype)
+     
+      
+      tagList(
+        selectInput(inputId = 'weekNo_update',label = '选择需要更新的周号',choices = week_info)
+      )
+    })
+    
+    observeEvent(input$week_update_btn,{
+      shinyjs::disable('week_update_btn')
+      week_year <- var_week_year_update()
+      week_year <- as.integer(week_year)
+      week_Ftype <- var_week_Ftype_update()
+      weekNo <- input$weekNo_update
+      weekNo <- as.integer(weekNo)
+      try({
+        jlrdspkg::week_deal(conn=conn,year=week_year,weekNo = weekNo,type = week_Ftype)
+        jlrdspkg::week_stat(conn=conn,year=week_year,weekNo = weekNo,type = week_Ftype)
+      })
+      pop_notice('周报已更新')
+      
+      
+    })
+    observeEvent(input$week_update_btn_reset,{
+      
+    shinyjs::enable('week_update_btn')
+    })
+    
   
 })
