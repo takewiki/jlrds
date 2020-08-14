@@ -1,8 +1,11 @@
 # 设置app标题-----
 
-app_title <-'JALA财务分析平台V1.1';
+app_title <-'JALA财务分析平台V1.2';
+
 
 #change log
+#1.2
+# add the scroll box 
 #1.0
 #add the jala daily query
 

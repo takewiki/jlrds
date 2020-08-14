@@ -15,7 +15,11 @@ menu_row <- tabItem(tabName = "row",
                                       column(8, box(
                                         title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",
                                         
-                                       mdl_dataTable('daily_dataShow','日报数据预览')
+                                       # mdl_dataTable('daily_dataShow','日报数据预览')
+                                       
+                                       div(style = 'overflow-x: scroll', mdl_dataTable('daily_dataShow','日报数据预览'))
+                                       
+                                       
                                       )
                                       ))
                                       
@@ -38,9 +42,11 @@ menu_row <- tabItem(tabName = "row",
                                       )),
                                       column(8, box(
                                         title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",
-                                        mdl_dataTable('week_dataShow','周报数据预览')
+                                        # mdl_dataTable('week_dataShow','周报数据预览')
+                                        #add the scrollable 
+                                        div(style = 'overflow-x: scroll', mdl_dataTable('week_dataShow','周报数据预览')))
                                       )
-                                      ))
+                                      )
                                       
                                     )),
                                     tabPanel('资金月报查询',tagList(
@@ -57,7 +63,13 @@ menu_row <- tabItem(tabName = "row",
                                       )),
                                       column(8, box(
                                         title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",
-                                        mdl_dataTable('month_dataShow','月报数据预览')
+                                        # mdl_dataTable('month_dataShow','月报数据预览')
+                                        
+                                        #add the scroll bar
+                                        div(style = 'overflow-x: scroll', mdl_dataTable('month_dataShow','月报数据预览'))
+                                        
+                                        
+                                        
                                       )
                                       ))
                                       
