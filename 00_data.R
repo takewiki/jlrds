@@ -1,9 +1,15 @@
 # 设置app标题-----
 
-app_title <-'JALA财务分析平台V1.2';
+app_title <-'JALA财务分析平台V1.4';
+
 
 
 #change log
+
+#1.3
+# 增加万元处理
+# 增加月份排序
+# 增加周报与月报的更新
 #1.2
 # add the scroll box 
 #1.0

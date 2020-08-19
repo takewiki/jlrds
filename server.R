@@ -247,7 +247,8 @@
       )
      })
     
-    #处理周报数据
+    #处理周报数据------
+    var_week_amtUnit <- var_ListChoose1('week_amount_unit')
     observeEvent(input$week_preview,{
       week_year <-var_week_year()
       print(week_year)
@@ -261,11 +262,13 @@
       print(week_amtType)
       week_FLevel <- as.integer(var_week_dataRange())
       print(week_FLevel)
+      #处理金额单位
+      week_amtUnit = var_week_amtUnit()
       
       data <- tryCatch(
         {jlrdspkg::weekRpt_selectDB(conn=conn,year = week_year,startWeekNo = week_startNo,
                                          endWeekNo = week_endNo,AmtType = week_amtType,FLevel = week_FLevel,
-                                         FType = week_Ftype)},error =function(e){
+                                         FType = week_Ftype,Amt_Unit=week_amtUnit)},error =function(e){
                                            res <-data.frame(`错误提示`="请检查一下开始周次与结束周次是否正确")
                                            return(res)
                                          })
@@ -285,6 +288,7 @@
     var_month_dataRange <- var_ListChoose1('month_dataRange')
     #字段类型
     var_month_amtType <- var_ListChooseN('month_amtType')
+    var_month_amtUnit <- var_ListChoose1('month_amount_unit')
     
     observeEvent(input$month_preview,{
       month_year <-var_month_year()
@@ -294,9 +298,11 @@
       print(month_amtType)
       month_FLevel <- as.integer(var_month_dataRange())
       print(month_FLevel)
+      #金额单位
+      month_amtUnit <- var_month_amtUnit()
       
       data <- tryCatch(
-        {jlrdspkg::monthRpt_selectDB(conn=conn,year = month_year,AmtType = month_amtType,FLevel = month_FLevel)},error =function(e){
+        {jlrdspkg::monthRpt_selectDB(conn=conn,year = month_year,AmtType = month_amtType,FLevel = month_FLevel,amtUnit =month_amtUnit )},error =function(e){
                                       res <-data.frame(`错误提示`="请检查一下参数是否正确")
                                       return(res)
                                     })
@@ -334,10 +340,14 @@
       week_Ftype <- var_week_Ftype_update()
       weekNo <- input$weekNo_update
       weekNo <- as.integer(weekNo)
-      try({
-        jlrdspkg::week_deal(conn=conn,year=week_year,weekNo = weekNo,type = week_Ftype)
-        jlrdspkg::week_stat(conn=conn,year=week_year,weekNo = weekNo,type = week_Ftype)
-      })
+      # try({
+      #   jlrdspkg::week_deal(conn=conn,year=week_year,weekNo = weekNo,type = week_Ftype)
+      #   jlrdspkg::week_stat(conn=conn,year=week_year,weekNo = weekNo,type = week_Ftype)
+      # })
+      
+      try(
+        jlrdspkg::week_update(conn=conn,Fyear = week_year,FweekNo = weekNo,Ftype = week_Ftype)
+      )
       pop_notice('周报已更新')
       
       
@@ -346,6 +356,26 @@
       
     shinyjs::enable('week_update_btn')
     })
+    
+    #月报更新----
+    var_month_year_update <- var_numeric('month_year_update')
+    var_month_period_update <- var_numeric('month_period_update')
+    observeEvent(input$month_update_btn,{
+      shinyjs::disable('month_update_btn')
+      month_year <- as.integer(var_month_year_update())
+      month_period <- as.integer(var_month_period_update())
+      try({
+        jlrdspkg::month_update(conn=conn,Fyear = month_year,Fmonth = month_period)
+      })
+      pop_notice('月报更新完成！')
+      
+      
+    })
+    
+    observeEvent(input$month_update_btn_reset,{
+      shinyjs::enable('month_update_btn')
+    })
+
     
   
 })
