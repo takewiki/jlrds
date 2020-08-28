@@ -76,6 +76,32 @@ menu_row <- tabItem(tabName = "row",
                                       ))
                                       
                                     )),
+                                    tabPanel('自有资金月报查询',tagList(
+                                      fluidRow(column(4,box(
+                                        title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
+                                        
+                                        mdl_numeric(id = 'own_year',label = '年份',value = 2020,min = 2020,max = 2049,step = 1),
+                                        mdl_numeric(id='own_month',label = '月份',value=1,min=1,max=12,step=1),
+                                        
+                                        #mdl_ListChoose1(id = 'own_dataRange',label = '数据范围',choiceNames = list('全部','1级','2级'),choiceValues = list(0,1,2),selected =0),
+                                        #mdl_ListChooseN(id='own_amtType',label = '字段类型',choiceNames = jala_month_amtType,choiceValues = jala_month_amtType,selected = jala_month_amtType[1:3]),
+                                        mdl_ListChoose1('own_amount_unit','金额单位:',choiceNames = list('万元','元'),choiceValues = list('wan','yuan'),selected = 'wan'),
+                                        actionButton('own_preview',label = '查询JALA自有资金月报'),
+                                        mdl_download_button('own_dl','下载JALA自有资金月报')
+                                      )),
+                                      column(8, box(
+                                        title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",
+                                        # mdl_dataTable('month_dataShow','自有资金月报数据预览')
+                                        
+                                        #add the scroll bar
+                                        div(style = 'overflow-x: scroll', mdl_dataTable('own_dataShow','自有资金月报数据预览'))
+                                        
+                                        
+                                        
+                                      )
+                                      ))
+                                      
+                                    )),
                                     tabPanel('资金日报上传',tagList(
                                       fluidRow(column(4,box(
                                         title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",

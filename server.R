@@ -375,6 +375,29 @@
     observeEvent(input$month_update_btn_reset,{
       shinyjs::enable('month_update_btn')
     })
+    
+    #处理自有资金日报-----
+    var_own_year <- var_numeric('own_year')
+    var_own_month <-var_numeric('own_month')
+    var_own_unit <-var_ListChoose1('own_amount_unit')
+    data_own <- eventReactive(input$own_preview,{
+      FYear = as.integer(var_own_year())
+      FMonth = as.integer(var_own_month())
+      FUnit = var_own_unit()
+      res <-
+        try(jlrdspkg::own_deal(conn=conn,FYear =FYear,FMonth = FMonth,FUnit = FUnit,digit = 2 ))
+      return(res)
+      
+    })
+    
+    observeEvent(input$own_preview,{
+      print(data_own())
+      run_dataTable2(id = 'own_dataShow',data = data_own())
+      FYear = as.integer(var_own_year())
+      FMonth = as.integer(var_own_month())
+      filename = paste0('自有资金月份下载_',FYear,FMonth,'.xlsx')
+      run_download_xlsx('own_dl',data = data_own(),filename = filename)
+    })
 
     
   

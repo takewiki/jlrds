@@ -1,10 +1,13 @@
 # 设置app标题-----
 
-app_title <-'JALA财务分析平台V1.4';
+app_title <-'JALA财务分析平台V1.5';
 
 
 
 #change log
+#1.5
+# add the own rpt
+
 
 #1.3
 # 增加万元处理
