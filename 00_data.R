@@ -1,10 +1,16 @@
 # 设置app标题-----
 
-app_title <-'JALA财务分析平台V1.5';
+ app_title <-'JALA财务分析平台V2.0';
+#app_title <-'棱星RDS-资金日报数据处理系统V1.0';
+ 
 
 
 
 #change log
+#2.0
+#完善自有资金完成
+#1.6
+#处理周报异常问题
 #1.5
 # add the own rpt
 
@@ -36,6 +42,11 @@ conn <- conn_rds('jlrds')
 jala_week_amtType <- jlrdspkg::week_getRptType(conn = conn)
 
 jala_month_amtType <- jlrdspkg::month_getRptType(conn = conn)
+
+current_year <- function() {
+  return(as.numeric(tsdo::left(as.character(Sys.Date()),4)))
+  
+}
 
 
 

@@ -30,6 +30,11 @@ source('06_tutor_body.R',encoding = 'utf-8');
 source('99_sysSetting_body.R',encoding = 'utf-8');
 source('workAreaSetting.R',encoding = 'utf-8')
 
+# current_year <- function() {
+#   return(as.numeric(tsdo::left(as.character(Sys.Date()),4)))
+#   
+# }
+
 
 
 

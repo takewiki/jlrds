@@ -223,20 +223,27 @@
     })
     
     #处理周报数据
-    #年
+    #V1.6----------
+    #年-------
     var_week_year <- var_numeric('week_year')
     #处理开始周与结束周
     #var_startWeekNo <-
     #var_endWeekNo <-
-    #周类型
+    #周类型-----
     var_week_Ftype <- var_ListChoose1('week_Ftype')
+    #默念是自然周------
     #数据范围
     var_week_dataRange <- var_ListChoose1('week_dataRange')
     #字段类型
     var_week_amtType <- var_ListChooseN('week_amtType')
     output$weekSelector_ph <- renderPrint({
+      
+      #print('test_bug 1.6--------')
       week_year <- var_week_year()
+      #print(week_year)
+    
       week_Ftype <- var_week_Ftype()
+      #print(week_Ftype)
       week_info <- jlrdspkg::week_getDateList(conn=conn,year = week_year,Ftype = week_Ftype)
       #print(week_info)
       #selectInput(inputId = 'weekEndNo',label = '结束周号',choices = week_info)
@@ -264,6 +271,7 @@
       print(week_FLevel)
       #处理金额单位
       week_amtUnit = var_week_amtUnit()
+      print(week_amtUnit)
       
       data <- tryCatch(
         {jlrdspkg::weekRpt_selectDB(conn=conn,year = week_year,startWeekNo = week_startNo,
@@ -334,20 +342,24 @@
     })
     
     observeEvent(input$week_update_btn,{
+      print('bug2')
       shinyjs::disable('week_update_btn')
       week_year <- var_week_year_update()
       week_year <- as.integer(week_year)
+      print(week_year)
       week_Ftype <- var_week_Ftype_update()
+      print(week_Ftype)
       weekNo <- input$weekNo_update
       weekNo <- as.integer(weekNo)
+      print(weekNo)
       # try({
       #   jlrdspkg::week_deal(conn=conn,year=week_year,weekNo = weekNo,type = week_Ftype)
       #   jlrdspkg::week_stat(conn=conn,year=week_year,weekNo = weekNo,type = week_Ftype)
       # })
       
-      try(
+      
         jlrdspkg::week_update(conn=conn,Fyear = week_year,FweekNo = weekNo,Ftype = week_Ftype)
-      )
+      
       pop_notice('周报已更新')
       
       
@@ -377,26 +389,26 @@
     })
     
     #处理自有资金日报-----
-    var_own_year <- var_numeric('own_year')
-    var_own_month <-var_numeric('own_month')
-    var_own_unit <-var_ListChoose1('own_amount_unit')
-    data_own <- eventReactive(input$own_preview,{
+    var_own_year <- var_numeric('bcs_year')
+    var_own_month <-var_numeric('bcs_month')
+    #var_own_unit <-var_ListChoose1('own_amount_unit')
+    data_own <- eventReactive(input$bcs_preview,{
       FYear = as.integer(var_own_year())
       FMonth = as.integer(var_own_month())
-      FUnit = var_own_unit()
+      #FUnit = var_own_unit()
       res <-
-        try(jlrdspkg::own_deal(conn=conn,FYear =FYear,FMonth = FMonth,FUnit = FUnit,digit = 2 ))
+        try(jlrdspkg::own_deal(conn = conn,FYear =FYear,FMonth = FMonth,digit = 2 ))
       return(res)
       
     })
     
-    observeEvent(input$own_preview,{
+    observeEvent(input$bcs_preview,{
       print(data_own())
-      run_dataTable2(id = 'own_dataShow',data = data_own())
+      run_dataTable2(id = 'bcs_dataShow',data = data_own())
       FYear = as.integer(var_own_year())
       FMonth = as.integer(var_own_month())
       filename = paste0('自有资金月份下载_',FYear,FMonth,'.xlsx')
-      run_download_xlsx('own_dl',data = data_own(),filename = filename)
+      run_download_xlsx('bcs_dl',data = data_own(),filename = filename)
     })
 
     
