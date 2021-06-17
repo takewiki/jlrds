@@ -1,12 +1,14 @@
 # 设置app标题-----
 
- app_title <-'JALA财务分析平台V2.0';
+ app_title <-'JALA财务分析平台V3.0';
 #app_title <-'棱星RDS-资金日报数据处理系统V1.0';
  
 
 
 
 #change log
+#3.0
+#增加管报自动化，用于呈现RPA相关内容
 #2.0
 #完善自有资金完成
 #1.6

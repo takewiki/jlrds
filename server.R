@@ -410,6 +410,30 @@
       filename = paste0('自有资金月份下载_',FYear,FMonth,'.xlsx')
       run_download_xlsx('bcs_dl',data = data_own(),filename = filename)
     })
+    
+    
+    
+    # 2.0管报自动化---
+    var_md_costCenter_FYear <- var_text("md_costCenter_FYear")
+    var_md_costCenter_FPeriod <- var_text("md_costCenter_FPeriod")
+    
+    observeEvent(input$md_costCenter_preview,{
+      FYear = as.integer(var_md_costCenter_FYear())
+      FPeriod = as.integer(var_md_costCenter_FPeriod())
+      
+      data <- jlrdspkg::mrpt_md_ui_costCenter(conn = conn,FYear = FYear,FPeriod = FPeriod )
+      ncount <- nrow(data)
+      
+      if (ncount >0){
+        run_dataTable2(id = 'md_costCenter_dataShow',data = data)
+        run_download_xlsx(id = 'md_costCenter_dl',data = data,filename = '成本中心划分及渠道费用分配表.xlsx')
+      }else{
+        pop_notice('没有查到数据，请检查参数！')
+      }
+      
+ 
+      
+    })
 
     
   
