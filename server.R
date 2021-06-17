@@ -541,6 +541,24 @@
       
     })
     
+    #2.5----------
+    
+    observeEvent(input$md_itemRpt_preview,{
+      
+      data <- jlrdspkg::mrpt_md_ui_rptItem(conn = conn)
+      ncount <- nrow(data)
+      print('div')
+      
+      if (ncount >0){
+        run_dataTable2(id = 'md_itemRpt_dataShow',data = data)
+        run_download_xlsx(id = 'md_itemRpt_dl',data = data,filename = '报表项目.xlsx')
+      }else{
+        pop_notice('没有查到数据，请检查参数！')
+      }
+      
+      
+      
+    })
     
     
 

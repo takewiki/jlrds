@@ -65,14 +65,15 @@ menu_column <- tabItem(tabName = "column",
                                          ))
                                          
                                        )),
-                                       tabPanel('sheet3',tagList(
+                                       tabPanel('报表项目',tagList(
                                          fluidRow(column(4,box(
                                            title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
-                                           'sheet3'
+                                           actionButton('md_rptItem_preview',label = '查询报表项目'),
+                                           mdl_download_button('md_rptItem_dl','下载报表项目')
                                          )),
                                          column(8, box(
                                            title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",
-                                           'rpt3'
+                                           div(style = 'overflow-x: scroll', mdl_dataTable('md_rptItem_dataShow','报表项目数据预览'))
                                          )
                                          ))
                                          
