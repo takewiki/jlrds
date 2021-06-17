@@ -414,26 +414,135 @@
     
     
     # 2.0管报自动化---
+    # 2.1---------
     var_md_costCenter_FYear <- var_text("md_costCenter_FYear")
     var_md_costCenter_FPeriod <- var_text("md_costCenter_FPeriod")
     
     observeEvent(input$md_costCenter_preview,{
+      
       FYear = as.integer(var_md_costCenter_FYear())
-      FPeriod = as.integer(var_md_costCenter_FPeriod())
       
-      data <- jlrdspkg::mrpt_md_ui_costCenter(conn = conn,FYear = FYear,FPeriod = FPeriod )
-      ncount <- nrow(data)
-      
-      if (ncount >0){
-        run_dataTable2(id = 'md_costCenter_dataShow',data = data)
-        run_download_xlsx(id = 'md_costCenter_dl',data = data,filename = '成本中心划分及渠道费用分配表.xlsx')
-      }else{
-        pop_notice('没有查到数据，请检查参数！')
+      if(is.na(FYear)){
+        pop_notice('请输入年份')
       }
+      
+      FPeriod = as.integer(var_md_costCenter_FPeriod())
+      if ( is.na(FPeriod)){
+        pop_notice('请输入月份')
+      }
+      
+      if((!is.na(FYear)) & (!is.na(FPeriod))){
+        data <- jlrdspkg::mrpt_md_ui_costCenter(conn = conn,FYear = FYear,FPeriod = FPeriod )
+        ncount <- nrow(data)
+        
+        if (ncount >0){
+          run_dataTable2(id = 'md_costCenter_dataShow',data = data)
+          run_download_xlsx(id = 'md_costCenter_dl',data = data,filename = '成本中心划分及渠道费用分配表.xlsx')
+        }else{
+          pop_notice('没有查到数据，请检查参数！')
+        }
+        
+      }
+      
+
       
  
       
     })
+    
+    #2.2--------
+    observeEvent(input$md_division_preview,{
+    
+      data <- jlrdspkg::mrpt_md_ui_division(conn = conn)
+      ncount <- nrow(data)
+      print('divison')
+      
+      if (ncount >0){
+        run_dataTable2(id = 'md_division_dataShow',data = data)
+        run_download_xlsx(id = 'md_division_dl',data = data,filename = '事业部定义.xlsx')
+      }else{
+        pop_notice('没有查到数据，请检查参数！')
+      }
+      
+      
+      
+    })
+    
+    #2.3-------
+    var_ds_sap_FYear <- var_text("ds_sap_FYear")
+    var_ds_sap_FPeriod <- var_text("ds_sap_FPeriod")
+    
+    observeEvent(input$ds_sap_preview,{
+      
+      FYear = as.integer(var_ds_sap_FYear())
+      
+      if(is.na(FYear)){
+        pop_notice('请输入年份')
+      }
+      
+      FPeriod = as.integer(var_ds_sap_FPeriod())
+      if ( is.na(FPeriod)){
+        pop_notice('请输入月份')
+      }
+      
+      if((!is.na(FYear)) & (!is.na(FPeriod))){
+        data <- jlrdspkg::mrpt_ds_ui_sapData(conn = conn,FYear = FYear,FPeriod = FPeriod )
+        ncount <- nrow(data)
+        
+        if (ncount >0){
+          run_dataTable2(id = 'ds_sap_dataShow',data = data)
+          run_download_xlsx(id = 'ds_sap_dl',data = data,filename = 'SAP数据源.xlsx')
+        }else{
+          pop_notice('没有查到数据，请检查参数！')
+        }
+        
+      }
+      
+      
+      
+      
+      
+    })
+    
+    #2.4------------
+    
+    var_itemMap_FYear <- var_text("itemMap_FYear")
+    var_itemMap_FPeriod <- var_text("itemMap_FPeriod")
+    
+    observeEvent(input$itemMap_preview,{
+      
+      FYear = as.integer(var_itemMap_FYear())
+      
+      if(is.na(FYear)){
+        pop_notice('请输入年份')
+      }
+      
+      FPeriod = as.integer(var_itemMap_FPeriod())
+      if ( is.na(FPeriod)){
+        pop_notice('请输入月份')
+      }
+      
+      if((!is.na(FYear)) & (!is.na(FPeriod))){
+        data <- jlrdspkg::mrpt_ui_itemMapping_costRpt(conn = conn,FYear = FYear,FPeriod = FPeriod )
+        ncount <- nrow(data)
+        
+        if (ncount >0){
+          run_dataTable2(id = 'itemMap_dataShow',data = data)
+          run_download_xlsx(id = 'itemMap_dl',data = data,filename = '成本项目及报表项目对照表.xlsx')
+        }else{
+          pop_notice('没有查到数据，请检查参数！')
+        }
+        
+      }
+      
+      
+      
+      
+      
+    })
+    
+    
+    
 
     
   
