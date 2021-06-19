@@ -3,6 +3,21 @@ menu_column <- tabItem(tabName = "column",
                          column(width = 12,
                                 tabBox(title ="管报工作台",width = 12,
                                        id='tabSet_column',height = '300px',
+                                
+                                 
+                                       tabPanel('事业部定义',tagList(
+                                         fluidRow(column(4,box(
+                                           title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
+                                           actionButton('md_division_preview',label = '查询事业部'),
+                                           mdl_download_button('md_division_dl','下载事业部')
+                                         )),
+                                         column(8, box(
+                                           title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",
+                                           div(style = 'overflow-x: scroll', mdl_dataTable('md_division_dataShow','事业部数据预览'))
+                                         )
+                                         ))
+                                         
+                                       )),
                                        tabPanel('成本中心划分及渠道费用分配表',tagList(
                                          fluidRow(column(4,box(
                                            title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
@@ -17,35 +32,6 @@ menu_column <- tabItem(tabName = "column",
                                            title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",
                                            
                                            div(style = 'overflow-x: scroll', mdl_dataTable('md_costCenter_dataShow','成本中心数据预览'))
-                                         )
-                                         ))
-                                         
-                                       )),
-                                       tabPanel('事业部定义',tagList(
-                                         fluidRow(column(4,box(
-                                           title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
-                                           actionButton('md_division_preview',label = '查询事业部'),
-                                           mdl_download_button('md_division_dl','下载事业部')
-                                         )),
-                                         column(8, box(
-                                           title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",
-                                           div(style = 'overflow-x: scroll', mdl_dataTable('md_division_dataShow','事业部数据预览'))
-                                         )
-                                         ))
-                                         
-                                       )),
-                                       
-                                       tabPanel('数据源-SAP数据查询',tagList(
-                                         fluidRow(column(4,box(
-                                           title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
-                                           mdl_text(id = 'ds_sap_FYear',label = '年份'),
-                                           mdl_text(id='ds_sap_FPeriod',label = '月份'),
-                                           actionButton('ds_sap_preview',label = '查询SAP数据'),
-                                           mdl_download_button('ds_sap_dl','下载SAP数据')
-                                         )),
-                                         column(8, box(
-                                           title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",
-                                           div(style = 'overflow-x: scroll', mdl_dataTable('ds_sap_dataShow','SAP数据预览'))
                                          )
                                          ))
                                          
@@ -117,6 +103,72 @@ menu_column <- tabItem(tabName = "column",
                                          ))
                                          
                                        )),
+                                       tabPanel('规则表-珀芙研供应商折扣清单',tagList(
+                                         fluidRow(column(4,box(
+                                           title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
+                                           'sheet4'
+                                         )),
+                                         column(8, box(
+                                           title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",
+                                           'rpt4'
+                                         )
+                                         ))
+                                         
+                                       )),
+                                       tabPanel('规则表-自然堂电商供应商折扣清单',tagList(
+                                         fluidRow(column(4,box(
+                                           title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
+                                           'sheet4'
+                                         )),
+                                         column(8, box(
+                                           title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",
+                                           'rpt4'
+                                         )
+                                         ))
+                                         
+                                       )),
+                                       tabPanel('规则表-春夏电商供应商折扣清单',tagList(
+                                         fluidRow(column(4,box(
+                                           title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
+                                           'sheet4'
+                                         )),
+                                         column(8, box(
+                                           title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",
+                                           'rpt4'
+                                         )
+                                         ))
+                                         
+                                       )),
+                                       tabPanel('数据源-历史数据',tagList(
+                                         fluidRow(column(4,box(
+                                           title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
+                                           'sheet3'
+                                         )),
+                                         column(8, box(
+                                           title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",
+                                           'rpt3'
+                                         )
+                                         ))
+                                         
+                                       )),
+                                       tabPanel('数据源-SAP数据查询',tagList(
+                                         fluidRow(column(4,box(
+                                           title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
+                                           mdl_text(id = 'ds_sap_FYear',label = '年份'),
+                                           mdl_text(id='ds_sap_FPeriod',label = '月份'),
+                                           actionButton('ds_sap_preview',label = '查询SAP数据'),
+                                           mdl_download_button('ds_sap_dl','下载SAP数据')
+                                         )),
+                                         column(8, box(
+                                           title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",
+                                           div(style = 'overflow-x: scroll', mdl_dataTable('ds_sap_dataShow','SAP数据预览'))
+                                         )
+                                         ))
+                                         
+                                       )),
+                                 
+                                 
+                                      
                                        tabPanel('数据源-BW数据',tagList(
                                          fluidRow(column(4,box(
                                            title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
@@ -152,6 +204,54 @@ menu_column <- tabItem(tabName = "column",
                                          column(8, box(
                                            title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",
                                            'rpt3'
+                                         )
+                                         ))
+                                         
+                                       )),
+                                       tabPanel('数据源-平板数据',tagList(
+                                         fluidRow(column(4,box(
+                                           title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
+                                           'sheet4'
+                                         )),
+                                         column(8, box(
+                                           title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",
+                                           'rpt4'
+                                         )
+                                         ))
+                                         
+                                       )),
+                                       tabPanel('数据源-回款数据',tagList(
+                                         fluidRow(column(4,box(
+                                           title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
+                                           'sheet4'
+                                         )),
+                                         column(8, box(
+                                           title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",
+                                           'rpt4'
+                                         )
+                                         ))
+                                         
+                                       )),
+                                       tabPanel('数据源-零售指标数据',tagList(
+                                         fluidRow(column(4,box(
+                                           title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
+                                           'sheet4'
+                                         )),
+                                         column(8, box(
+                                           title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",
+                                           'rpt4'
+                                         )
+                                         ))
+                                         
+                                       )),
+                                       tabPanel('数据源-NKA数据',tagList(
+                                         fluidRow(column(4,box(
+                                           title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
+                                           'sheet4'
+                                         )),
+                                         column(8, box(
+                                           title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",
+                                           'rpt4'
                                          )
                                          ))
                                          
@@ -192,19 +292,104 @@ menu_column <- tabItem(tabName = "column",
                                          ))
                                          
                                        )),
-                                       tabPanel('sheet3',tagList(
+                               
+                                       tabPanel('处理表-SAP',tagList(
                                          fluidRow(column(4,box(
                                            title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
-                                           'sheet3'
+                                           'sheet4'
                                          )),
                                          column(8, box(
                                            title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",
-                                           'rpt3'
+                                           'rpt4'
                                          )
                                          ))
                                          
                                        )),
-                                       tabPanel('sheet4',tagList(
+                                       tabPanel('处理表-BW',tagList(
+                                         fluidRow(column(4,box(
+                                           title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
+                                           'sheet4'
+                                         )),
+                                         column(8, box(
+                                           title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",
+                                           'rpt4'
+                                         )
+                                         ))
+                                         
+                                       )),
+                                       tabPanel('处理表-手调',tagList(
+                                         fluidRow(column(4,box(
+                                           title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
+                                           'sheet4'
+                                         )),
+                                         column(8, box(
+                                           title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",
+                                           'rpt4'
+                                         )
+                                         ))
+                                         
+                                       )),
+                                       tabPanel('处理表-回款指标',tagList(
+                                         fluidRow(column(4,box(
+                                           title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
+                                           'sheet4'
+                                         )),
+                                         column(8, box(
+                                           title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",
+                                           'rpt4'
+                                         )
+                                         ))
+                                         
+                                       )),
+                                       tabPanel('处理表-公司零售额',tagList(
+                                         fluidRow(column(4,box(
+                                           title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
+                                           'sheet4'
+                                         )),
+                                         column(8, box(
+                                           title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",
+                                           'rpt4'
+                                         )
+                                         ))
+                                         
+                                       )),
+                                       tabPanel('处理表-其他指标计算',tagList(
+                                         fluidRow(column(4,box(
+                                           title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
+                                           'sheet4'
+                                         )),
+                                         column(8, box(
+                                           title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",
+                                           'rpt4'
+                                         )
+                                         ))
+                                         
+                                       )),
+                                       tabPanel('处理表-横向拼接',tagList(
+                                         fluidRow(column(4,box(
+                                           title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
+                                           'sheet4'
+                                         )),
+                                         column(8, box(
+                                           title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",
+                                           'rpt4'
+                                         )
+                                         ))
+                                         
+                                       )),
+                                       tabPanel('反查表-品牌渠道',tagList(
+                                         fluidRow(column(4,box(
+                                           title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
+                                           'sheet4'
+                                         )),
+                                         column(8, box(
+                                           title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",
+                                           'rpt4'
+                                         )
+                                         ))
+                                         
+                                       )),
+                                       tabPanel('反查表-事业部',tagList(
                                          fluidRow(column(4,box(
                                            title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
                                            'sheet4'
