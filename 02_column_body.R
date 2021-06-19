@@ -78,7 +78,7 @@ menu_column <- tabItem(tabName = "column",
                                          ))
                                          
                                        )),
-                                       tabPanel('BW固定表头',tagList(
+                                       tabPanel('BW指标固定表头',tagList(
                                          fluidRow(column(4,box(
                                            title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
                                            actionButton('md_bw_Heading_preview',label = '查询BW表头'),
@@ -86,19 +86,20 @@ menu_column <- tabItem(tabName = "column",
                                          )),
                                          column(8, box(
                                            title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",
-                                           div(style = 'overflow-x: scroll', mdl_dataTable('md_bw_Heading_dataShow','BW表头数据预览'))
+                                           div(style = 'overflow-x: scroll', mdl_dataTable('md_bw_Heading_dataShow','BW指标固定表头数据预览'))
                                          )
                                          ))
                                          
                                        )),
-                                       tabPanel('sheet3',tagList(
+                                       tabPanel('BW维度变动表头',tagList(
                                          fluidRow(column(4,box(
                                            title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
-                                           'sheet3'
+                                           actionButton('md_bw_dim_preview',label = '查询BW维度变动表头'),
+                                           mdl_download_button('md_bw_dim_dl','下载BW维度变动表头')
                                          )),
                                          column(8, box(
                                            title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",
-                                           'rpt3'
+                                           div(style = 'overflow-x: scroll', mdl_dataTable('md_bw_dim_dataShow','BW维度变动表头数据预览'))
                                          )
                                          ))
                                          

@@ -561,7 +561,7 @@
       
     })
     
-    #2.6 BW固定表头--------
+    #2.6 BW指标固定表头--------
     observeEvent(input$md_bw_Heading_preview,{
       
       data <- jlrdspkg::mrpt_bw_ui_getHeadingName(conn = conn)
@@ -579,6 +579,25 @@
       
       
     })
+    #2.7 BW维度变动表头--------
+    observeEvent(input$md_bw_dim_preview,{
+      
+      data <- jlrdspkg::mrpt_bw_ui_getDimName(conn = conn)
+      print(data)
+      ncount <- nrow(data)
+      print('div')
+      
+      if (ncount >0){
+        run_dataTable2(id = 'md_bw_dim_dataShow',data = data)
+        run_download_xlsx(id = 'md_bw_dim_dl',data = data,filename = 'BW固定表头.xlsx')
+      }else{
+        pop_notice('没有查到数据，请检查参数！')
+      }
+      
+      
+      
+    })
+    
     
     
     
