@@ -414,7 +414,7 @@
     
     
     # 2.0管报自动化---
-    # 2.1---------
+    # 2.1成本中心划分及渠道费用分配表---------
     var_md_costCenter_FYear <- var_text("md_costCenter_FYear")
     var_md_costCenter_FPeriod <- var_text("md_costCenter_FPeriod")
     
@@ -450,7 +450,7 @@
       
     })
     
-    #2.2--------
+    #2.2事业部定义--------
     observeEvent(input$md_division_preview,{
     
       data <- jlrdspkg::mrpt_md_ui_division(conn = conn)
@@ -468,7 +468,7 @@
       
     })
     
-    #2.3-------
+    #2.3SAP数据源-------
     var_ds_sap_FYear <- var_text("ds_sap_FYear")
     var_ds_sap_FPeriod <- var_text("ds_sap_FPeriod")
     
@@ -504,7 +504,7 @@
       
     })
     
-    #2.4------------
+    #2.4成本项目及报表项目对照表------------
     
     var_itemMap_FYear <- var_text("itemMap_FYear")
     var_itemMap_FPeriod <- var_text("itemMap_FPeriod")
@@ -541,17 +541,18 @@
       
     })
     
-    #2.5----------
+    #2.5报表项目----------
     
-    observeEvent(input$md_itemRpt_preview,{
+    observeEvent(input$md_rptItem_preview,{
       
       data <- jlrdspkg::mrpt_md_ui_rptItem(conn = conn)
+      print(data)
       ncount <- nrow(data)
       print('div')
       
       if (ncount >0){
-        run_dataTable2(id = 'md_itemRpt_dataShow',data = data)
-        run_download_xlsx(id = 'md_itemRpt_dl',data = data,filename = '报表项目.xlsx')
+        run_dataTable2(id = 'md_rptItem_dataShow',data = data)
+        run_download_xlsx(id = 'md_rptItem_dl',data = data,filename = '报表项目.xlsx')
       }else{
         pop_notice('没有查到数据，请检查参数！')
       }
@@ -559,6 +560,26 @@
       
       
     })
+    
+    #2.6 BW固定表头--------
+    observeEvent(input$md_bw_Heading_preview,{
+      
+      data <- jlrdspkg::mrpt_bw_ui_getHeadingName(conn = conn)
+      print(data)
+      ncount <- nrow(data)
+      print('div')
+      
+      if (ncount >0){
+        run_dataTable2(id = 'md_bw_Heading_dataShow',data = data)
+        run_download_xlsx(id = 'md_bw_Heading_dl',data = data,filename = 'BW固定表头.xlsx')
+      }else{
+        pop_notice('没有查到数据，请检查参数！')
+      }
+      
+      
+      
+    })
+    
     
     
 

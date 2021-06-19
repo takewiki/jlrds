@@ -1,7 +1,7 @@
 menu_column <- tabItem(tabName = "column",
                        fluidRow(
                          column(width = 12,
-                                tabBox(title ="column工作台",width = 12,
+                                tabBox(title ="管报工作台",width = 12,
                                        id='tabSet_column',height = '300px',
                                        tabPanel('成本中心划分及渠道费用分配表',tagList(
                                          fluidRow(column(4,box(
@@ -78,14 +78,15 @@ menu_column <- tabItem(tabName = "column",
                                          ))
                                          
                                        )),
-                                       tabPanel('sheet3',tagList(
+                                       tabPanel('BW固定表头',tagList(
                                          fluidRow(column(4,box(
                                            title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
-                                           'sheet3'
+                                           actionButton('md_bw_Heading_preview',label = '查询BW表头'),
+                                           mdl_download_button('md_bw_Heading_dl','下载BW表头')
                                          )),
                                          column(8, box(
                                            title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",
-                                           'rpt3'
+                                           div(style = 'overflow-x: scroll', mdl_dataTable('md_bw_Heading_dataShow','BW表头数据预览'))
                                          )
                                          ))
                                          
