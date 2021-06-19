@@ -104,14 +104,15 @@ menu_column <- tabItem(tabName = "column",
                                          ))
                                          
                                        )),
-                                       tabPanel('sheet3',tagList(
+                                       tabPanel('BW报表取数规则',tagList(
                                          fluidRow(column(4,box(
                                            title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
-                                           'sheet3'
+                                           actionButton('md_bw_businessRule_preview',label = '查询BW报表业务规则'),
+                                           mdl_download_button('md_bw_businessRule_dl','下载BW报表业务规则')
                                          )),
                                          column(8, box(
                                            title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",
-                                           'rpt3'
+                                           div(style = 'overflow-x: scroll', mdl_dataTable('md_bw_businessRule_dataShow','BW业务规则数据预览'))
                                          )
                                          ))
                                          

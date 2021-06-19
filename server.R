@@ -589,7 +589,7 @@
       
       if (ncount >0){
         run_dataTable2(id = 'md_bw_dim_dataShow',data = data)
-        run_download_xlsx(id = 'md_bw_dim_dl',data = data,filename = 'BW固定表头.xlsx')
+        run_download_xlsx(id = 'md_bw_dim_dl',data = data,filename = 'BW维度变动表头.xlsx')
       }else{
         pop_notice('没有查到数据，请检查参数！')
       }
@@ -597,6 +597,27 @@
       
       
     })
+    
+    #2.8 BW报表业务规则----
+    observeEvent(input$md_bw_businessRule_preview,{
+      
+      data <- jlrdspkg::mrpt_bw_ui_businessRule(conn = conn)
+      print(data)
+      ncount <- nrow(data)
+      print('div')
+      
+      if (ncount >0){
+        run_dataTable2(id = 'md_bw_businessRule_dataShow',data = data)
+        run_download_xlsx(id = 'md_bw_businessRule_dl',data = data,filename = 'BW报表业务规则.xlsx')
+      }else{
+        pop_notice('没有查到数据，请检查参数！')
+      }
+      
+      
+      
+    })
+    
+    
     
     
     
