@@ -117,7 +117,22 @@ menu_column <- tabItem(tabName = "column",
                                          ))
                                          
                                        )),
-                                       tabPanel('sheet3',tagList(
+                                       tabPanel('数据源-BW数据',tagList(
+                                         fluidRow(column(4,box(
+                                           title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
+                                           mdl_text(id = 'ds_bw_FYear',label = '年份'),
+                                           mdl_text(id='ds_bw_FPeriod',label = '月份'),
+                                           actionButton('ds_bw_preview',label = '查询BW数据'),
+                                           mdl_download_button('ds_bw_dl','下载BW数据')
+                                         )),
+                                         column(8, box(
+                                           title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",
+                                           div(style = 'overflow-x: scroll', mdl_dataTable('ds_bw_dataShow','BW数据预览'))
+                                         )
+                                         ))
+                                         
+                                       )),
+                                       tabPanel('数据源-手工调整',tagList(
                                          fluidRow(column(4,box(
                                            title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
                                            'sheet3'
@@ -129,7 +144,7 @@ menu_column <- tabItem(tabName = "column",
                                          ))
                                          
                                        )),
-                                       tabPanel('sheet3',tagList(
+                                       tabPanel('数据源-执行预算',tagList(
                                          fluidRow(column(4,box(
                                            title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
                                            'sheet3'
@@ -141,7 +156,7 @@ menu_column <- tabItem(tabName = "column",
                                          ))
                                          
                                        )),
-                                       tabPanel('sheet3',tagList(
+                                       tabPanel('结果表-品牌',tagList(
                                          fluidRow(column(4,box(
                                            title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
                                            'sheet3'
@@ -153,7 +168,7 @@ menu_column <- tabItem(tabName = "column",
                                          ))
                                          
                                        )),
-                                       tabPanel('sheet3',tagList(
+                                       tabPanel('结果表-事业部',tagList(
                                          fluidRow(column(4,box(
                                            title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
                                            'sheet3'
@@ -165,19 +180,7 @@ menu_column <- tabItem(tabName = "column",
                                          ))
                                          
                                        )),
-                                       tabPanel('sheet3',tagList(
-                                         fluidRow(column(4,box(
-                                           title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
-                                           'sheet3'
-                                         )),
-                                         column(8, box(
-                                           title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",
-                                           'rpt3'
-                                         )
-                                         ))
-                                         
-                                       )),
-                                       tabPanel('sheet3',tagList(
+                                       tabPanel('结果表-集团',tagList(
                                          fluidRow(column(4,box(
                                            title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
                                            'sheet3'

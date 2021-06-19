@@ -617,6 +617,43 @@
       
     })
     
+    #2.9 bw数据源------
+    var_ds_bw_FYear <- var_text("ds_bw_FYear")
+    var_ds_bw_FPeriod <- var_text("ds_bw_FPeriod")
+    
+    observeEvent(input$ds_bw_preview,{
+      
+      FYear = as.integer(var_ds_bw_FYear())
+      
+      if(is.na(FYear)){
+        pop_notice('请输入年份')
+      }
+      
+      FPeriod = as.integer(var_ds_bw_FPeriod())
+      if ( is.na(FPeriod)){
+        pop_notice('请输入月份')
+      }
+      
+      if((!is.na(FYear)) & (!is.na(FPeriod))){
+        data <- jlrdspkg::mrpt_bw_ds_data(conn = conn,FYear = FYear,FPeriod = FPeriod )
+        ncount <- nrow(data)
+        
+        if (ncount >0){
+          run_dataTable2(id = 'ds_bw_dataShow',data = data)
+          run_download_xlsx(id = 'ds_bw_dl',data = data,filename = 'BW数据源.xlsx')
+        }else{
+          pop_notice('没有查到数据，请检查参数！')
+        }
+        
+      }
+      
+      
+      
+      
+      
+    })
+    
+    
     
     
     
