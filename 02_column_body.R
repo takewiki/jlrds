@@ -105,6 +105,8 @@ menu_column <- tabItem(tabName = "column",
                                            br(),
                                            tags$h4("用途：1.用于对数据源BW报表的处理2.所有数据源的功能需要迁移到RPA中; 3.用于支持数据的反向追溯"),
                                            br(),
+                                           tags$h4("备注：目前没有发现有什么关系"),
+                                           br(),
                                            hr(),
                                            actionButton('md_bw_dim_preview',label = '查询BW维度变动表头'),
                                            mdl_download_button('md_bw_dim_dl','下载BW维度变动表头')
@@ -116,9 +118,12 @@ menu_column <- tabItem(tabName = "column",
                                          ))
                                          
                                        )),
-                                       tabPanel('BW报表取数规则',tagList(
+                                       tabPanel('BW报表取数规则:指标固定表头与报表项目对应关系',tagList(
                                          fluidRow(column(4,box(
                                            title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
+                                           tags$h4("说明:1.定义了BW指标固定表头与报表项目的关系2.多个方案号才能表达一个完整的指标固定表头"),
+                                           br(),
+                                           hr(),
                                            actionButton('md_bw_businessRule_preview',label = '查询BW报表业务规则'),
                                            mdl_download_button('md_bw_businessRule_dl','下载BW报表业务规则')
                                          )),
@@ -129,50 +134,39 @@ menu_column <- tabItem(tabName = "column",
                                          ))
                                          
                                        )),
-                                       tabPanel('规则表-珀芙研供应商折扣清单',tagList(
+                                       tabPanel('规则表-客户折扣清单(整合后)',tagList(
                                          fluidRow(column(4,box(
                                            title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
-                                           'sheet4'
+                                           tags$h4('规则表-珀芙研客户折扣清单,未指定渠道,客户名称待核验'),
+                                           tags$h4('规则表-自然堂电商客户折扣清单，客户名称待核验'),
+                                           tags$h4('规则表-春夏电商客户折扣清单，客户名称待核验'),
+                                           br(),
+                                           hr(),
+                                           mdl_text(id='md_discount_FBrand',label = '品牌'),
+                                           actionButton('md_discount_preview',label = '查询客户折扣清单'),
+                                           mdl_download_button('md_discount_dl','客户折扣清单')
                                          )),
                                          column(8, box(
                                            title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",
-                                           'rpt4'
+                                           div(style = 'overflow-x: scroll', mdl_dataTable('md_discount_dataShow','客户折扣清单数据预览'))
                                          )
                                          ))
                                          
                                        )),
-                                       tabPanel('规则表-自然堂电商供应商折扣清单',tagList(
-                                         fluidRow(column(4,box(
-                                           title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
-                                           'sheet4'
-                                         )),
-                                         column(8, box(
-                                           title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",
-                                           'rpt4'
-                                         )
-                                         ))
-                                         
-                                       )),
-                                       tabPanel('规则表-春夏电商供应商折扣清单',tagList(
-                                         fluidRow(column(4,box(
-                                           title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
-                                           'sheet4'
-                                         )),
-                                         column(8, box(
-                                           title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",
-                                           'rpt4'
-                                         )
-                                         ))
-                                         
-                                       )),
+                                      
                                        tabPanel('数据源-历史数据',tagList(
                                          fluidRow(column(4,box(
                                            title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
-                                           'sheet3'
+                                           mdl_text(id='actual_FBrand',label = '品牌'),
+                                           mdl_text(id='actual_FChannel',label = '渠道'),
+                                           mdl_text(id='actual_FYear',label = '年'),
+                                           mdl_text(id='actual_FPeriod',label = '月'),
+                                           actionButton('actual_preview',label = '预览历史数据'),
+                                           mdl_download_button('actual_dl','下载历史数据')
                                          )),
                                          column(8, box(
                                            title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",
-                                           'rpt3'
+                                           div(style = 'overflow-x: scroll', mdl_dataTable('actual_dataShow','历史数据数据预览'))
                                          )
                                          ))
                                          

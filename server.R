@@ -653,6 +653,81 @@
       
     })
     
+    #2.10客户折扣清单-------
+    var_discount_FBrand <- var_text("md_discount_FBrand")
+
+    observeEvent(input$md_discount_preview,{
+      
+      FBrand = as.character(var_discount_FBrand())
+      
+      if(is.na(FBrand)){
+        pop_notice('请输入品牌')
+      }
+      
+  
+      
+      if(!is.na(FBrand)){
+        data <- jlrdspkg::mrpt_rule_discount(conn = conn,FBrand = FBrand )
+        ncount <- nrow(data)
+        
+        if (ncount >0){
+          run_dataTable2(id = 'md_discount_dataShow',data = data)
+          run_download_xlsx(id = 'md_discount_dl',data = data,filename = '管报客户折扣清单.xlsx')
+        }else{
+          pop_notice('没有查到数据，请检查参数！')
+        }
+        
+      }
+      
+      
+      
+      
+      
+    })
+    
+    #2.11历史数据------
+    var_actual_FBrand <- var_text('actual_FBrand')
+    var_actual_FChannel <- var_text('actual_FChannel')
+    var_actual_FYear <- var_text('actual_FYear')
+    var_actual_FPeriod <- var_text('actual_FPeriod')
+    
+    
+    observeEvent(input$actual_preview,{
+      
+      FBrand = as.character(var_actual_FBrand()) 
+      FChannel = as.character(var_actual_FChannel()) 
+      FYear =  as.integer(var_actual_FYear()) 
+      FPeriod = as.integer(var_actual_FPeriod()) 
+      if(is.na(FBrand)){
+        pop_notice('请输入品牌')
+      }
+      
+      if(is.na(FChannel)){
+        pop_notice('请输入渠道')
+      }
+      
+      if(is.na(FYear)){
+        pop_notice('请输入年份')
+      }
+      
+      if(is.na(FPeriod)){
+        pop_notice('请输入期间')
+      }
+      
+      data <- jlrdspkg::mrpt_actualData_read(conn=conn,FYear = FYear,FPeriod = FPeriod,FBrand = FBrand,FChannel = FChannel)
+      
+      ncount <- nrow(data)
+      
+      if (ncount >0){
+        run_dataTable2(id = 'actual_dataShow',data = data)
+        run_download_xlsx(id = 'actual_dl',data = data,filename = '历史数据.xlsx')
+      }else{
+        pop_notice('没有查到数据，请检查参数！')
+      }
+      
+      
+      
+    })
     
     
     
