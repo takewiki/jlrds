@@ -207,11 +207,14 @@ menu_column <- tabItem(tabName = "column",
                                        tabPanel('数据源-手工调整',tagList(
                                          fluidRow(column(4,box(
                                            title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
-                                           'sheet3'
+                                           mdl_text(id = 'adj_FYear',label = '年份'),
+                                           mdl_text(id='adj_FPeriod',label = '月份'),
+                                           actionButton('adj_preview',label = '查询手工调整数据'),
+                                           mdl_download_button('adj_dl','下载手工调整')
                                          )),
                                          column(8, box(
                                            title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",
-                                           'rpt3'
+                                           div(style = 'overflow-x: scroll', mdl_dataTable('adj_dataShow','手工调整数据预览'))
                                          )
                                          ))
                                          

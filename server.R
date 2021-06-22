@@ -729,6 +729,42 @@
       
     })
     
+    #2.12手工调整数据源------
+    
+    var_adj_FYear <- var_text("adj_FYear")
+    var_adj_FPeriod <- var_text("adj_FPeriod")
+    
+    observeEvent(input$adj_preview,{
+      
+      FYear = as.integer(var_adj_FYear())
+      
+      if(is.na(FYear)){
+        pop_notice('请输入年份')
+      }
+      
+      FPeriod = as.integer(var_adj_FPeriod())
+      if ( is.na(FPeriod)){
+        pop_notice('请输入月份')
+      }
+      
+      if((!is.na(FYear)) & (!is.na(FPeriod))){
+        data <- jlrdspkg::mrpt_adj_readData_ui(conn = conn,FYear = FYear,FPeriod = FPeriod )
+        ncount <- nrow(data)
+        
+        if (ncount >0){
+          run_dataTable2(id = 'adj_dataShow',data = data)
+          run_download_xlsx(id = 'adj_dl',data = data,filename = '手工调整数据下载.xlsx')
+        }else{
+          pop_notice('没有查到数据，请检查参数！')
+        }
+        
+      }
+      
+      
+      
+      
+      
+    })
     
     
     
