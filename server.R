@@ -854,6 +854,51 @@
       
     })
     
+    #2.15BW处理中间表
+    var_bw_deal_FBrand <- var_text('bw_deal_FBrand')
+    var_bw_deal_FChannel <- var_text('bw_deal_FChannel')
+    var_bw_deal_FYear <- var_text('bw_deal_FYear')
+    var_bw_deal_FPeriod <- var_text('bw_deal_FPeriod')
+    
+    
+    observeEvent(input$bw_deal_preview,{
+      
+      FBrand = as.character(var_bw_deal_FBrand()) 
+      FChannel = as.character(var_bw_deal_FChannel()) 
+      FYear =  as.integer(var_bw_deal_FYear()) 
+      FPeriod = as.integer(var_bw_deal_FPeriod()) 
+      if(is.na(FBrand)){
+        pop_notice('请输入品牌')
+      }
+      
+      if(is.na(FChannel)){
+        pop_notice('请输入渠道')
+      }
+      
+      if(is.na(FYear)){
+        pop_notice('请输入年份')
+      }
+      
+      if(is.na(FPeriod)){
+        pop_notice('请输入期间')
+      }
+      
+      data <- jlrdspkg::bw_res_ui_fromDB(conn=conn,FYear = FYear,FPeriod = FPeriod,FBrand = FBrand,FChannel = FChannel)
+      
+      ncount <- nrow(data)
+      
+      if (ncount >0){
+        run_dataTable2(id = 'bw_deal_dataShow',data = data)
+        run_download_xlsx(id = 'bw_deal_dl',data = data,filename = 'BW处理中间表.xlsx')
+      }else{
+        pop_notice('没有查到数据，请检查参数！')
+      }
+      
+      
+      
+    })
+    
+    
     
     
     
