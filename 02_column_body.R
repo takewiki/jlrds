@@ -358,11 +358,16 @@ menu_column <- tabItem(tabName = "column",
                                        tabPanel('4.03处理表-手调',tagList(
                                          fluidRow(column(4,box(
                                            title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
-                                           'sheet4'
+                                           mdl_text(id='adj_deal_FBrand',label = '品牌'),
+                                           mdl_text(id='adj_deal_FChannel',label = '渠道'),
+                                           mdl_text(id='adj_deal_FYear',label = '年'),
+                                           mdl_text(id='adj_deal_FPeriod',label = '月'),
+                                           actionButton('adj_deal_preview',label = '预览BW处理中间表'),
+                                           mdl_download_button('adj_deal_dl','下载BW处理中间表')
                                          )),
                                          column(8, box(
                                            title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",
-                                           'rpt4'
+                                           div(style = 'overflow-x: scroll', mdl_dataTable('adj_deal_dataShow','BW处理中间表数据预览'))
                                          )
                                          ))
                                          

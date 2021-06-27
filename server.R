@@ -897,8 +897,51 @@
       
       
     })
+    #2.16手调处理表------
     
     
+    var_bw_deal_FBrand <- var_text('adj_deal_FBrand')
+    var_adj_deal_FChannel <- var_text('adj_deal_FChannel')
+    var_adj_deal_FYear <- var_text('adj_deal_FYear')
+    var_adj_deal_FPeriod <- var_text('adj_deal_FPeriod')
+    
+    
+    observeEvent(input$adj_deal_preview,{
+      
+      FBrand = as.character(var_adj_deal_FBrand()) 
+      FChannel = as.character(var_adj_deal_FChannel()) 
+      FYear =  as.integer(var_adj_deal_FYear()) 
+      FPeriod = as.integer(var_adj_deal_FPeriod()) 
+      if(is.na(FBrand)){
+        pop_notice('请输入品牌')
+      }
+      
+      if(is.na(FChannel)){
+        pop_notice('请输入渠道')
+      }
+      
+      if(is.na(FYear)){
+        pop_notice('请输入年份')
+      }
+      
+      if(is.na(FPeriod)){
+        pop_notice('请输入期间')
+      }
+      
+      data <- jlrdspkg::adj_res_ui_fromDB(conn=conn,FYear = FYear,FPeriod = FPeriod,FBrand = FBrand,FChannel = FChannel)
+      
+      ncount <- nrow(data)
+      
+      if (ncount >0){
+        run_dataTable2(id = 'adj_deal_dataShow',data = data)
+        run_download_xlsx(id = 'adj_deal_dl',data = data,filename = '手工调整处理中间表.xlsx')
+      }else{
+        pop_notice('没有查到数据，请检查参数！')
+      }
+      
+      
+      
+    })
     
     
     
