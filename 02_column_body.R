@@ -222,11 +222,16 @@ menu_column <- tabItem(tabName = "column",
                                        tabPanel('2.05数据源-执行预算',tagList(
                                          fluidRow(column(4,box(
                                            title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
-                                           'sheet3'
+                                           mdl_text(id='budget_FBrand',label = '品牌'),
+                                           mdl_text(id='budget_FChannel',label = '渠道'),
+                                           mdl_text(id='budget_FYear',label = '年'),
+                                           mdl_text(id='budget_FPeriod',label = '月'),
+                                           actionButton('budget_preview',label = '预览执行预算'),
+                                           mdl_download_button('budget_dl','下载执行预算')
                                          )),
                                          column(8, box(
                                            title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",
-                                           'rpt3'
+                                           div(style = 'overflow-x: scroll', mdl_dataTable('budget_dataShow','执行预算数据预览'))
                                          )
                                          ))
                                          
@@ -319,11 +324,16 @@ menu_column <- tabItem(tabName = "column",
                                        tabPanel('4.01处理表-SAP',tagList(
                                          fluidRow(column(4,box(
                                            title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
-                                           'sheet4'
+                                           mdl_text(id='sap_deal_FBrand',label = '品牌'),
+                                           mdl_text(id='sap_deal_FChannel',label = '渠道'),
+                                           mdl_text(id='sap_deal_FYear',label = '年'),
+                                           mdl_text(id='sap_deal_FPeriod',label = '月'),
+                                           actionButton('sap_deal_preview',label = '预览SAP处理中间表'),
+                                           mdl_download_button('sap_deal_dl','下载SAP处理中间表')
                                          )),
                                          column(8, box(
                                            title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",
-                                           'rpt4'
+                                           div(style = 'overflow-x: scroll', mdl_dataTable('sap_deal_dataShow','SAP处理中间表数据预览'))
                                          )
                                          ))
                                          

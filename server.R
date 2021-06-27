@@ -766,6 +766,96 @@
       
     })
     
+    #2.13执行预算数据----
+    var_budget_FBrand <- var_text('budget_FBrand')
+    var_budget_FChannel <- var_text('budget_FChannel')
+    var_budget_FYear <- var_text('budget_FYear')
+    var_budget_FPeriod <- var_text('budget_FPeriod')
+    
+    
+    observeEvent(input$budget_preview,{
+      
+      FBrand = as.character(var_budget_FBrand()) 
+      FChannel = as.character(var_budget_FChannel()) 
+      FYear =  as.integer(var_budget_FYear()) 
+      FPeriod = as.integer(var_budget_FPeriod()) 
+      if(is.na(FBrand)){
+        pop_notice('请输入品牌')
+      }
+      
+      if(is.na(FChannel)){
+        pop_notice('请输入渠道')
+      }
+      
+      if(is.na(FYear)){
+        pop_notice('请输入年份')
+      }
+      
+      if(is.na(FPeriod)){
+        pop_notice('请输入期间')
+      }
+      
+      data <- jlrdspkg::mrpt_budget_readFromDB_ByBrandChannel(conn=conn,FYear = FYear,FPeriod = FPeriod,FBrand = FBrand,FChannel = FChannel)
+      
+      ncount <- nrow(data)
+      
+      if (ncount >0){
+        run_dataTable2(id = 'budget_dataShow',data = data)
+        run_download_xlsx(id = 'budget_dl',data = data,filename = '执行预算.xlsx')
+      }else{
+        pop_notice('没有查到数据，请检查参数！')
+      }
+      
+      
+      
+    })
+    
+    #2.14 SAP处理中间表-----
+    var_sap_deal_FBrand <- var_text('sap_deal_FBrand')
+    var_sap_deal_FChannel <- var_text('sap_deal_FChannel')
+    var_sap_deal_FYear <- var_text('sap_deal_FYear')
+    var_sap_deal_FPeriod <- var_text('sap_deal_FPeriod')
+    
+    
+    observeEvent(input$sap_deal_preview,{
+      
+      FBrand = as.character(var_sap_deal_FBrand()) 
+      FChannel = as.character(var_sap_deal_FChannel()) 
+      FYear =  as.integer(var_sap_deal_FYear()) 
+      FPeriod = as.integer(var_sap_deal_FPeriod()) 
+      if(is.na(FBrand)){
+        pop_notice('请输入品牌')
+      }
+      
+      if(is.na(FChannel)){
+        pop_notice('请输入渠道')
+      }
+      
+      if(is.na(FYear)){
+        pop_notice('请输入年份')
+      }
+      
+      if(is.na(FPeriod)){
+        pop_notice('请输入期间')
+      }
+      
+      data <- jlrdspkg::sap_res_ui_fromDB(conn=conn,FYear = FYear,FPeriod = FPeriod,FBrand = FBrand,FChannel = FChannel)
+      
+      ncount <- nrow(data)
+      
+      if (ncount >0){
+        run_dataTable2(id = 'sap_deal_dataShow',data = data)
+        run_download_xlsx(id = 'sap_deal_dl',data = data,filename = 'SAP处理中间表.xlsx')
+      }else{
+        pop_notice('没有查到数据，请检查参数！')
+      }
+      
+      
+      
+    })
+    
+    
+    
     
     
     
