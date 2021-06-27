@@ -362,12 +362,12 @@ menu_column <- tabItem(tabName = "column",
                                            mdl_text(id='adj_deal_FChannel',label = '渠道'),
                                            mdl_text(id='adj_deal_FYear',label = '年'),
                                            mdl_text(id='adj_deal_FPeriod',label = '月'),
-                                           actionButton('adj_deal_preview',label = '预览BW处理中间表'),
-                                           mdl_download_button('adj_deal_dl','下载BW处理中间表')
+                                           actionButton('adj_deal_preview',label = '预览手工调整中间表'),
+                                           mdl_download_button('adj_deal_dl','下载手工调整中间表')
                                          )),
                                          column(8, box(
                                            title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",
-                                           div(style = 'overflow-x: scroll', mdl_dataTable('adj_deal_dataShow','BW处理中间表数据预览'))
+                                           div(style = 'overflow-x: scroll', mdl_dataTable('adj_deal_dataShow','手工调整中间表数据预览'))
                                          )
                                          ))
                                          

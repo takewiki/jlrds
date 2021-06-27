@@ -864,9 +864,13 @@
     observeEvent(input$bw_deal_preview,{
       
       FBrand = as.character(var_bw_deal_FBrand()) 
+      print(FBrand)
       FChannel = as.character(var_bw_deal_FChannel()) 
+      print(FChannel)
       FYear =  as.integer(var_bw_deal_FYear()) 
+      print(FYear)
       FPeriod = as.integer(var_bw_deal_FPeriod()) 
+      print(FPeriod)
       if(is.na(FBrand)){
         pop_notice('请输入品牌')
       }
@@ -884,6 +888,7 @@
       }
       
       data <- jlrdspkg::bw_res_ui_fromDB(conn=conn,FYear = FYear,FPeriod = FPeriod,FBrand = FBrand,FChannel = FChannel)
+      print(data)
       
       ncount <- nrow(data)
       
@@ -897,10 +902,10 @@
       
       
     })
-    #2.16手调处理表------
+    #2.16手调处理表222------
     
     
-    var_bw_deal_FBrand <- var_text('adj_deal_FBrand')
+    var_adj_deal_FBrand <- var_text('adj_deal_FBrand')
     var_adj_deal_FChannel <- var_text('adj_deal_FChannel')
     var_adj_deal_FYear <- var_text('adj_deal_FYear')
     var_adj_deal_FPeriod <- var_text('adj_deal_FPeriod')
