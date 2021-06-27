@@ -5,7 +5,7 @@ menu_column <- tabItem(tabName = "column",
                                        id='tabSet_column',height = '300px',
                                 
                                  
-                                       tabPanel('品牌渠道及事业部的定义',tagList(
+                                       tabPanel('1.01品牌渠道及事业部的定义',tagList(
                                          fluidRow(column(4,box(
                                            title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
                                            tags$h4("说明：1.定义了品牌与渠道;2.定义了品牌与事业部的关系;3.定义了品牌渠道的2个描述性名称,用于成本中心的渠道费用分配;4.定义了虚拟的市场类型的渠道，用于市场费用的二次分配"),
@@ -23,7 +23,7 @@ menu_column <- tabItem(tabName = "column",
                                          ))
                                          
                                        )),
-                                       tabPanel('成本中心划分及渠道费用分配表',tagList(
+                                       tabPanel('1.02成本中心划分及渠道费用分配表',tagList(
                                          fluidRow(column(4,box(
                                            title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
                                            tags$h4('说明：1.用于根据成本中心带出品牌及渠道2.根据成本中心带出渠道费用的分配比例'),
@@ -44,7 +44,7 @@ menu_column <- tabItem(tabName = "column",
                                          ))
                                          
                                        )),
-                                       tabPanel('成本要素与统一费用名称对应表',tagList(
+                                       tabPanel('1.03成本要素与统一费用名称对应表',tagList(
                                          fluidRow(column(4,box(
                                            title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
                                            tags$h4('说明:1.定义了成本要素与报表项目之间的相对关系2.不是直接费用，而是采用统一的费用名称然后再结合成本中心的渠道与市场费用一起才能发生使用。'),
@@ -62,7 +62,7 @@ menu_column <- tabItem(tabName = "column",
                                          ))
                                          
                                        )),
-                                       tabPanel('报表项目及统一费用名称对应表',tagList(
+                                       tabPanel('1.04报表项目及统一费用名称对应表',tagList(
                                          fluidRow(column(4,box(
                                            title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
                                            tags$h4("说明：1.定义的标准的报表项目2.定义了报表项目与统一费用名称及渠道类型的关系"),
@@ -80,7 +80,7 @@ menu_column <- tabItem(tabName = "column",
                                          ))
                                          
                                        )),
-                                       tabPanel('BW指标固定表头',tagList(
+                                       tabPanel('1.05BW指标固定表头',tagList(
                                          fluidRow(column(4,box(
                                            title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
                                            tags$h4('说明:1.BW报表固定报头,其实是指标，所有方案原则上一致2.可以用于存储数据源3.目前15项数据源'),
@@ -98,7 +98,7 @@ menu_column <- tabItem(tabName = "column",
                                          ))
                                          
                                        )),
-                                       tabPanel('BW维度变动表头',tagList(
+                                       tabPanel('1.06BW维度变动表头',tagList(
                                          fluidRow(column(4,box(
                                            title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
                                            tags$h4("说明：1.每个方案对应的变动表头不一致2.变动表头影响后续业务分析3.应该使用所有变动表头的最大集处理数据源4.目前采用的方式有待改进。"),
@@ -118,7 +118,7 @@ menu_column <- tabItem(tabName = "column",
                                          ))
                                          
                                        )),
-                                       tabPanel('BW报表取数规则:指标固定表头与报表项目对应关系',tagList(
+                                       tabPanel('1.07BW报表取数规则:指标固定表头与报表项目对应关系',tagList(
                                          fluidRow(column(4,box(
                                            title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
                                            tags$h4("说明:1.定义了BW指标固定表头与报表项目的关系2.多个方案号才能表达一个完整的指标固定表头"),
@@ -134,7 +134,7 @@ menu_column <- tabItem(tabName = "column",
                                          ))
                                          
                                        )),
-                                       tabPanel('规则表-客户折扣清单(整合后)',tagList(
+                                       tabPanel('1.08规则表-客户折扣清单(整合后)',tagList(
                                          fluidRow(column(4,box(
                                            title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
                                            tags$h4('规则表-珀芙研客户折扣清单,未指定渠道,客户名称待核验'),
@@ -154,7 +154,7 @@ menu_column <- tabItem(tabName = "column",
                                          
                                        )),
                                       
-                                       tabPanel('数据源-历史数据',tagList(
+                                       tabPanel('2.01数据源-历史数据',tagList(
                                          fluidRow(column(4,box(
                                            title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
                                            mdl_text(id='actual_FBrand',label = '品牌'),
@@ -171,7 +171,7 @@ menu_column <- tabItem(tabName = "column",
                                          ))
                                          
                                        )),
-                                       tabPanel('数据源-SAP数据查询',tagList(
+                                       tabPanel('2.02数据源-SAP数据查询',tagList(
                                          fluidRow(column(4,box(
                                            title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
                                            mdl_text(id = 'ds_sap_FYear',label = '年份'),
@@ -189,7 +189,7 @@ menu_column <- tabItem(tabName = "column",
                                  
                                  
                                       
-                                       tabPanel('数据源-BW数据',tagList(
+                                       tabPanel('2.03数据源-BW数据',tagList(
                                          fluidRow(column(4,box(
                                            title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
                                            mdl_text(id = 'ds_bw_FYear',label = '年份'),
@@ -204,7 +204,7 @@ menu_column <- tabItem(tabName = "column",
                                          ))
                                          
                                        )),
-                                       tabPanel('数据源-手工调整',tagList(
+                                       tabPanel('2.04数据源-手工调整',tagList(
                                          fluidRow(column(4,box(
                                            title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
                                            mdl_text(id = 'adj_FYear',label = '年份'),
@@ -219,7 +219,7 @@ menu_column <- tabItem(tabName = "column",
                                          ))
                                          
                                        )),
-                                       tabPanel('数据源-执行预算',tagList(
+                                       tabPanel('2.05数据源-执行预算',tagList(
                                          fluidRow(column(4,box(
                                            title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
                                            'sheet3'
@@ -231,7 +231,7 @@ menu_column <- tabItem(tabName = "column",
                                          ))
                                          
                                        )),
-                                       tabPanel('数据源-平板数据',tagList(
+                                       tabPanel('2.06数据源-平板数据',tagList(
                                          fluidRow(column(4,box(
                                            title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
                                            'sheet4'
@@ -243,7 +243,7 @@ menu_column <- tabItem(tabName = "column",
                                          ))
                                          
                                        )),
-                                       tabPanel('数据源-回款数据',tagList(
+                                       tabPanel('2.07数据源-回款数据',tagList(
                                          fluidRow(column(4,box(
                                            title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
                                            'sheet4'
@@ -255,7 +255,7 @@ menu_column <- tabItem(tabName = "column",
                                          ))
                                          
                                        )),
-                                       tabPanel('数据源-零售指标数据',tagList(
+                                       tabPanel('2.08数据源-零售指标数据',tagList(
                                          fluidRow(column(4,box(
                                            title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
                                            'sheet4'
@@ -267,7 +267,7 @@ menu_column <- tabItem(tabName = "column",
                                          ))
                                          
                                        )),
-                                       tabPanel('数据源-NKA数据',tagList(
+                                       tabPanel('2.09数据源-NKA数据',tagList(
                                          fluidRow(column(4,box(
                                            title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
                                            'sheet4'
@@ -279,7 +279,7 @@ menu_column <- tabItem(tabName = "column",
                                          ))
                                          
                                        )),
-                                       tabPanel('结果表-品牌',tagList(
+                                       tabPanel('3.01结果表-品牌',tagList(
                                          fluidRow(column(4,box(
                                            title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
                                            'sheet3'
@@ -291,7 +291,7 @@ menu_column <- tabItem(tabName = "column",
                                          ))
                                          
                                        )),
-                                       tabPanel('结果表-事业部',tagList(
+                                       tabPanel('3.02结果表-事业部',tagList(
                                          fluidRow(column(4,box(
                                            title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
                                            'sheet3'
@@ -303,7 +303,7 @@ menu_column <- tabItem(tabName = "column",
                                          ))
                                          
                                        )),
-                                       tabPanel('结果表-集团',tagList(
+                                       tabPanel('3.03结果表-集团',tagList(
                                          fluidRow(column(4,box(
                                            title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
                                            'sheet3'
@@ -316,7 +316,7 @@ menu_column <- tabItem(tabName = "column",
                                          
                                        )),
                                
-                                       tabPanel('处理表-SAP',tagList(
+                                       tabPanel('4.01处理表-SAP',tagList(
                                          fluidRow(column(4,box(
                                            title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
                                            'sheet4'
@@ -328,7 +328,7 @@ menu_column <- tabItem(tabName = "column",
                                          ))
                                          
                                        )),
-                                       tabPanel('处理表-BW',tagList(
+                                       tabPanel('4.02处理表-BW',tagList(
                                          fluidRow(column(4,box(
                                            title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
                                            'sheet4'
@@ -340,7 +340,7 @@ menu_column <- tabItem(tabName = "column",
                                          ))
                                          
                                        )),
-                                       tabPanel('处理表-手调',tagList(
+                                       tabPanel('4.03处理表-手调',tagList(
                                          fluidRow(column(4,box(
                                            title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
                                            'sheet4'
@@ -352,7 +352,7 @@ menu_column <- tabItem(tabName = "column",
                                          ))
                                          
                                        )),
-                                       tabPanel('处理表-回款指标',tagList(
+                                       tabPanel('4.04处理表-回款指标',tagList(
                                          fluidRow(column(4,box(
                                            title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
                                            'sheet4'
@@ -364,7 +364,7 @@ menu_column <- tabItem(tabName = "column",
                                          ))
                                          
                                        )),
-                                       tabPanel('处理表-公司零售额',tagList(
+                                       tabPanel('4.05处理表-公司零售额',tagList(
                                          fluidRow(column(4,box(
                                            title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
                                            'sheet4'
@@ -376,7 +376,7 @@ menu_column <- tabItem(tabName = "column",
                                          ))
                                          
                                        )),
-                                       tabPanel('处理表-其他指标计算',tagList(
+                                       tabPanel('4.06处理表-其他指标计算',tagList(
                                          fluidRow(column(4,box(
                                            title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
                                            'sheet4'
@@ -388,7 +388,7 @@ menu_column <- tabItem(tabName = "column",
                                          ))
                                          
                                        )),
-                                       tabPanel('处理表-横向拼接',tagList(
+                                       tabPanel('4.07处理表-横向拼接',tagList(
                                          fluidRow(column(4,box(
                                            title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
                                            'sheet4'
@@ -400,7 +400,7 @@ menu_column <- tabItem(tabName = "column",
                                          ))
                                          
                                        )),
-                                       tabPanel('反查表-品牌渠道',tagList(
+                                       tabPanel('5.01反查表-品牌渠道',tagList(
                                          fluidRow(column(4,box(
                                            title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
                                            'sheet4'
@@ -412,7 +412,7 @@ menu_column <- tabItem(tabName = "column",
                                          ))
                                          
                                        )),
-                                       tabPanel('反查表-事业部',tagList(
+                                       tabPanel('5.02反查表-事业部',tagList(
                                          fluidRow(column(4,box(
                                            title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
                                            'sheet4'
