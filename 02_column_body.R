@@ -237,9 +237,10 @@ menu_column <- tabItem(tabName = "column",
                                            br(),
                                           
                                            tags$a(href='执行预算模板.xlsx','第一次使用，请下载执行预算模板'),
+                                           tags$h4('注意上传的执行预算数据的页签必须与上述选择的渠道名称保持一致，否则上传失败'),
                                            mdl_file(id = 'budget_upload_file',label = '请选择执行预算'),
                                            
-                                           actionButton('budget_preview_upload',label = '预览执行预算'),
+                                         
                                            actionButton('budget_upload_done','上传执行预算')
                                          )),
                                          column(8, box(
@@ -269,9 +270,10 @@ menu_column <- tabItem(tabName = "column",
                                            mdl_ListChoose1(id = 'budget_upload_type_sub',label = '月份类型',choiceNames = list('当月数','1月至当前月'),choiceValues = (list(TRUE,FALSE))),
                                            br(),
                                            tags$a(href='执行预算模板 - 子渠道.xlsx','第一次使用，请下载子渠道执行预算模板'),
+                                           tags$h4('注意上传的执行预算数据的页签必须与上述选择的子渠道名称保持一致，否则上传失败'),
                                            mdl_file(id = 'budget_upload_file_sub',label = '请选择执行预算'),
                                            
-                                           actionButton('budget_preview_upload_sub',label = '预览执行预算'),
+                                     
                                            actionButton('budget_upload_done_sub','上传执行预算')
                                          )),
                                          column(8, box(
