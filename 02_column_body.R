@@ -219,13 +219,79 @@ menu_column <- tabItem(tabName = "column",
                                          ))
                                          
                                        )),
-                                       tabPanel('2.05数据源-执行预算',tagList(
+                                       tabPanel('2.05A数据源-执行预算-上传[品牌渠道]',tagList(
+                                         fluidRow(column(4,box(
+                                           title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
+                                           
+                                           selectInput('budget_FBrand_upload',label = '请选择品牌',
+                                                           choices  = jlrdspkg::mrpt_md_brand()),
+                                                           
+                      
+                                           mdl_ListChooseN(id = 'budget_FChannel_upload',label = '请选择至少一个渠道',
+                                                           choiceNames = jlrdspkg::mrpt_md_channel(),
+                                                           choiceValues = jlrdspkg::mrpt_md_channel()
+                                                          ),
+                                           mdl_text(id='budget_FYear_upload',label = '年'),
+                                           mdl_text(id='budget_FPeriod_upload',label = '月'),
+                                           mdl_ListChoose1(id = 'budget_upload_type',label = '月份类型',choiceNames = list('当月数','1月至当前月'),choiceValues = (list(TRUE,FALSE))),
+                                           br(),
+                                          
+                                           tags$a(href='执行预算模板.xlsx','第一次使用，请下载执行预算模板'),
+                                           mdl_file(id = 'budget_upload_file',label = '请选择执行预算'),
+                                           
+                                           actionButton('budget_preview_upload',label = '预览执行预算'),
+                                           actionButton('budget_upload_done','上传执行预算')
+                                         )),
+                                         column(8, box(
+                                           title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",
+                                           div(style = 'overflow-x: scroll', mdl_dataTable('budget_upload_dataShow','执行预算数据预览'))
+                                         )
+                                         ))
+                                         
+                                       )),
+                                       tabPanel('2.05B数据源-执行预算-上传[子渠道]',tagList(
+                                         fluidRow(column(4,box(
+                                           title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
+                                           selectInput( 'budget_FChannel_upload_sub',label = '请选择至少一个渠道',
+                                                       choices  = jlrdspkg::mrpt_md_channel2()),
+                                           mdl_ListChooseN(id = 'budget_FChannel_upload_sub2',label = '请选择至少一个子渠道',
+                                                           choiceNames = jlrdspkg::mrpt_md_subChannel(),
+                                                           choiceValues = jlrdspkg::mrpt_md_subChannel()
+                                           ),
+                                           
+                                           selectInput('budget_FBrand_upload_sub',label = '适用品牌',
+                                                       choices  = jlrdspkg::mrpt_md_brand()),
+                                           
+                                           
+                                          
+                                           mdl_text(id='budget_FYear_upload_sub',label = '年'),
+                                           mdl_text(id='budget_FPeriod_upload_sub',label = '月'),
+                                           mdl_ListChoose1(id = 'budget_upload_type_sub',label = '月份类型',choiceNames = list('当月数','1月至当前月'),choiceValues = (list(TRUE,FALSE))),
+                                           br(),
+                                           tags$a(href='执行预算模板 - 子渠道.xlsx','第一次使用，请下载子渠道执行预算模板'),
+                                           mdl_file(id = 'budget_upload_file_sub',label = '请选择执行预算'),
+                                           
+                                           actionButton('budget_preview_upload_sub',label = '预览执行预算'),
+                                           actionButton('budget_upload_done_sub','上传执行预算')
+                                         )),
+                                         column(8, box(
+                                           title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",
+                                           div(style = 'overflow-x: scroll', mdl_dataTable('budget_upload_sub_dataShow','执行预算数据预览'))
+                                         )
+                                         ))
+                                         
+                                       )),
+                                       tabPanel('2.05C数据源-执行预算-查询',tagList(
                                          fluidRow(column(4,box(
                                            title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
                                            mdl_text(id='budget_FBrand',label = '品牌'),
                                            mdl_text(id='budget_FChannel',label = '渠道'),
+                                          
                                            mdl_text(id='budget_FYear',label = '年'),
                                            mdl_text(id='budget_FPeriod',label = '月'),
+                                  
+                                       
+                                           
                                            actionButton('budget_preview',label = '预览执行预算'),
                                            mdl_download_button('budget_dl','下载执行预算')
                                          )),
@@ -236,6 +302,7 @@ menu_column <- tabItem(tabName = "column",
                                          ))
                                          
                                        )),
+                                    
                                        tabPanel('2.06数据源-平板数据',tagList(
                                          fluidRow(column(4,box(
                                            title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",

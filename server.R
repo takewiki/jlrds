@@ -810,6 +810,98 @@
       
     })
     
+    #执行预算,品牌渠道----
+    var_budget_FChannel_upload <- var_ListChooseN('budget_FChannel_upload')
+    varbudget_FYear_upload <- var_text('budget_FYear_upload')
+    varbudget_FPeriod_upload <- var_text('budget_FPeriod_upload')
+    var_budget_upload_type <- var_ListChoose1('budget_upload_type')
+    var_budget_upload_file <- var_file('budget_upload_file')
+    observeEvent(input$budget_upload_done,{
+      FBrand <- input$budget_FBrand_upload
+      FChannels <- var_budget_FChannel_upload()
+      FYear <- as.integer(varbudget_FYear_upload())
+      FPeriod <-as.integer(varbudget_FPeriod_upload())
+      FType = var_budget_upload_type()
+      file_name <- var_budget_upload_file()
+      
+      print(FBrand)
+      print(FChannels)
+      print(FYear)
+      print(FPeriod)
+      print(FType)
+      print(file_name)
+      
+      ncount = length(FChannels)
+      if (ncount >0){
+        lapply(FChannels,function(FChannel){
+          
+          if(FType){
+            #当月数据
+            try(jlrdspkg::mrpt_budget_readData_ByDivision_currentPeriod(conn = conn,file = file_name,sheet = FChannel,FBrand = FBrand,FChannel = FChannel,FYear = FYear,FPeriod = FPeriod))
+          }else{
+            try(jlrdspkg::mrpt_budget_readData_ByDivision_cumPeriod(conn = conn,file = file_name,sheet = FChannel,FBrand = FBrand,FChannel = FChannel,FYear = FYear,FPeriod = FPeriod))
+          }
+          
+          
+        })
+        pop_notice(paste0(FBrand,FChannels,'上传服务器成功'))
+      }
+      
+      
+      
+      
+      
+      
+    })
+    
+    
+    #执行预算,子渠道----
+    
+    varbudget_FYear_upload_sub <- var_text('budget_FYear_upload_sub')
+    varbudget_FPeriod_upload_sub <- var_text('budget_FPeriod_upload_sub')
+    var_budget_upload_type_sub <- var_ListChoose1('budget_upload_type_sub')
+    var_budget_upload_file_sub <- var_file('budget_upload_file_sub')
+    var_budget_FChannel_upload_sub2 <- var_ListChooseN('budget_FChannel_upload_sub2')
+    observeEvent(input$budget_upload_done_sub,{
+      FBrand <- input$budget_FBrand_upload_sub
+      FChannel <- input$budget_FChannel_upload_sub
+      FSubChannels <-  var_budget_FChannel_upload_sub2()
+      FYear <- as.integer(varbudget_FYear_upload_sub())
+      FPeriod <-as.integer( varbudget_FPeriod_upload_sub())
+      FType = var_budget_upload_type_sub()
+      file_name <- var_budget_upload_file_sub()
+      
+      print(FBrand)
+      print(FChannel)
+      print(FSubChannels)
+      print(FYear)
+      print(FPeriod)
+      print(FType)
+      print(file_name)
+      
+      ncount = length(FSubChannels)
+      if (ncount >0){
+        lapply(FSubChannels,function(FSubChannel){
+          
+          if(FType){
+            #当月数据
+            try(jlrdspkg::mrpt_budget_readData_ByDivision_currentPeriod(conn = conn,file = file_name,sheet = FSubChannel,FBrand = FBrand,FChannel = FChannel,FYear = FYear,FPeriod = FPeriod,FSubChannel = FSubChannel))
+          }else{
+            try(jlrdspkg::mrpt_budget_readData_ByDivision_cumPeriod(conn = conn,file = file_name,sheet = FSubChannel,FBrand = FBrand,FChannel = FChannel,FYear = FYear,FPeriod = FPeriod,FSubChannel = FSubChannel))
+          }
+          
+          
+        })
+        pop_notice(paste0(FBrand,FChannel,FSubChannels,'上传服务器成功'))
+      }
+      
+      
+      
+      
+      
+      
+    })
+    
     #2.14 SAP处理中间表-----
     var_sap_deal_FBrand <- var_text('sap_deal_FBrand')
     var_sap_deal_FChannel <- var_text('sap_deal_FChannel')
