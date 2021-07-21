@@ -13,6 +13,11 @@ menu_column <- tabItem(tabName = "column",
                                           tags$h4("用途:1.使用了[描述1]字段生成渠道费用分配表2.根据渠道渠道找到相应事业部的定义"),
                                           br(),
                                           hr(),
+                                          # tags$h4('元数据信息'),
+                                          # h4('R：jlrdspkg::mrpt_md_ui_division(conn = conn)'),
+                                          # h4('Loc: R/mrpt02_sap_ui.R'),
+                                          # h4('SQL: select * from t_mrpt_division'),
+                                          
                                            actionButton('md_division_preview',label = '查询事业部'),
                                            mdl_download_button('md_division_dl','下载事业部')
                                          )),
@@ -353,6 +358,18 @@ menu_column <- tabItem(tabName = "column",
                                          ))
                                          
                                        )),
+                                       tabPanel('2.10数据源-经营快报',tagList(
+                                         fluidRow(column(4,box(
+                                           title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
+                                           '每月3日左右提供'
+                                         )),
+                                         column(8, box(
+                                           title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",
+                                           'rpt4'
+                                         )
+                                         ))
+                                         
+                                       )),
                                        tabPanel('3.01结果表-品牌',tagList(
                                          fluidRow(column(4,box(
                                            title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
@@ -477,18 +494,7 @@ menu_column <- tabItem(tabName = "column",
                                          ))
                                          
                                        )),
-                                       tabPanel('4.07处理表-横向拼接',tagList(
-                                         fluidRow(column(4,box(
-                                           title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
-                                           'sheet4'
-                                         )),
-                                         column(8, box(
-                                           title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",
-                                           'rpt4'
-                                         )
-                                         ))
-                                         
-                                       )),
+                                   
                                        tabPanel('5.01反查表-品牌渠道',tagList(
                                          fluidRow(column(4,box(
                                            title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
