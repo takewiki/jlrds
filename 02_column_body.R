@@ -158,8 +158,72 @@ menu_column <- tabItem(tabName = "column",
                                          ))
                                          
                                        )),
+                                       tabPanel('2.01A数据源-历史数据-上传[品牌渠道]',tagList(
+                                         fluidRow(column(4,box(
+                                           title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
+                                           
+                                           selectInput('actual_FBrand_upload1',label = '请选择品牌',
+                                                       choices  = jlrdspkg::mrpt_md_brand()),
+                                           
+                                           
+                                           mdl_ListChooseN(id = 'actual_FChannel_upload1',label = '请选择至少一个渠道',
+                                                           choiceNames = jlrdspkg::mrpt_md_channel(),
+                                                           choiceValues = jlrdspkg::mrpt_md_channel()
+                                           ),
+                                           mdl_text(id='actual_FYear_upload1',label = '年'),
+                                           mdl_text(id='actual_FPeriod_upload1',label = '月'),
+                                           mdl_ListChoose1(id = 'actual_upload_type1',label = '月份类型',choiceNames = list('当月数','1月至当前月'),choiceValues = (list(TRUE,FALSE))),
+                                           br(),
+                                           
+                                           tags$a(href='历史数据模板.xlsx','第一次使用，请下载历史数据模板'),
+                                           tags$h4('注意上传的历史数据的页签必须与上述选择的渠道名称保持一致，否则上传失败'),
+                                           mdl_file(id = 'actual_upload_file1',label = '请选择历史数据'),
+                                           
+                                           
+                                           actionButton('actual_upload_done1','上传历史数据')
+                                         )),
+                                         column(8, box(
+                                           title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",
+                                           div(style = 'overflow-x: scroll', mdl_dataTable('actual_upload_dataShow1','历史数据预览'))
+                                         )
+                                         ))
+                                         
+                                       )),
+                                       tabPanel('2.01B数据源-历史数据-上传[子渠道]',tagList(
+                                         fluidRow(column(4,box(
+                                           title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
+                                           selectInput( 'actual_FChannel_upload_sub2',label = '请选择至少一个渠道',
+                                                        choices  = jlrdspkg::mrpt_md_channel2()),
+                                           mdl_ListChooseN(id = 'actual_FChannel_upload_sub2',label = '请选择至少一个子渠道',
+                                                           choiceNames = jlrdspkg::mrpt_md_subChannel(),
+                                                           choiceValues = jlrdspkg::mrpt_md_subChannel()
+                                           ),
+                                           
+                                           selectInput('actual_FBrand_upload_sub2',label = '适用品牌',
+                                                       choices  = jlrdspkg::mrpt_md_brand()),
+                                           
+                                           
+                                           
+                                           mdl_text(id='actual_FYear_upload_sub2',label = '年'),
+                                           mdl_text(id='actual_FPeriod_upload_sub2',label = '月'),
+                                           mdl_ListChoose1(id = 'actual_upload_type_sub2',label = '月份类型',choiceNames = list('当月数','1月至当前月'),choiceValues = (list(TRUE,FALSE))),
+                                           br(),
+                                           tags$a(href='历史数据模板 - 子渠道.xlsx','第一次使用，请下载子渠道历史数据模板'),
+                                           tags$h4('注意上传的历史数据数据的页签必须与上述选择的子渠道名称保持一致，否则上传失败'),
+                                           mdl_file(id = 'actual_upload_file_sub2',label = '请选择历史数据'),
+                                           
+                                           
+                                           actionButton('actual_upload_done_sub2','上传历史数据')
+                                         )),
+                                         column(8, box(
+                                           title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",
+                                           div(style = 'overflow-x: scroll', mdl_dataTable('actual_upload_sub_dataShow2','历史数据预览'))
+                                         )
+                                         ))
+                                         
+                                       )),
                                       
-                                       tabPanel('2.01数据源-历史数据',tagList(
+                                       tabPanel('2.01C数据源-历史数据-查询',tagList(
                                          fluidRow(column(4,box(
                                            title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
                                            mdl_text(id='actual_FBrand',label = '品牌'),
@@ -175,7 +239,8 @@ menu_column <- tabItem(tabName = "column",
                                          )
                                          ))
                                          
-                                       )),
+                                       ))
+                                       ,
                                        tabPanel('2.02数据源-SAP数据查询',tagList(
                                          fluidRow(column(4,box(
                                            title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
