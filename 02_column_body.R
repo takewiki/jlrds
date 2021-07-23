@@ -37,7 +37,13 @@ menu_column <- tabItem(tabName = "column",
                                           mdl_text(id = 'md_costCenter_FYear',label = '年份'),
                                           mdl_text(id='md_costCenter_FPeriod',label = '月份'),
                                           actionButton('md_costCenter_preview',label = '查询成本中心'),
-                                          mdl_download_button('md_costCenter_dl','下载成本中心')
+                                          mdl_download_button('md_costCenter_dl','下载成本中心'),
+                                          br(),
+                                          hr(),
+                                          tags$a(href='成本中心划分及渠道费用分配表模板.xlsx','第一次使用，请下载成本中心划分及渠道费用分配表模板'),
+                                          tags$h4('注意选择上述的年份与月份，将作为新上传的年月生效信息。'),
+                                          mdl_file('md_costCenter_file','请选择一个成本中心文件'),
+                                          actionButton('md_costCenter_upload','上传成本成本中心')
                                           
                                            
                                          )),
@@ -154,6 +160,26 @@ menu_column <- tabItem(tabName = "column",
                                          column(8, box(
                                            title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",
                                            div(style = 'overflow-x: scroll', mdl_dataTable('md_discount_dataShow','客户折扣清单数据预览'))
+                                         )
+                                         ))
+                                         
+                                       )),
+                                       
+                                       tabPanel('1.09自然堂电商科目及报表项目对照表',tagList(
+                                         fluidRow(column(4,box(
+                                           title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
+                                         
+                                           tags$a(href='自然堂电商科目及报表项目对照表模板.xlsx','第一次使用，请下载自然堂电商科目与报表项目对照表模板'),
+                                          
+                                           mdl_file(id = 'md_chando_eCom_acctRpt_mapping_file',label = '请选择对照表'),
+                                           
+                                           
+                                           actionButton('md_chando_eCom_acctRpt_mapping_upload','上传对照表'),
+                                           actionButton('md_chando_eCom_acctRpt_mapping_query','查看对照表')
+                                         )),
+                                         column(8, box(
+                                           title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",
+                                           div(style = 'overflow-x: scroll', mdl_dataTable('md_chando_eCom_acctRpt_mapping_dataShow','对照表数据预览'))
                                          )
                                          ))
                                          

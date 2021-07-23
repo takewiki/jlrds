@@ -450,6 +450,38 @@
       
     })
     
+    var_md_costCenter_file <- var_file('md_costCenter_file')
+    
+    observeEvent(input$md_costCenter_upload,{
+      
+      FYear = as.integer(var_md_costCenter_FYear())
+      
+      if(is.na(FYear)){
+        pop_notice('请输入年份')
+      }
+      
+      FPeriod = as.integer(var_md_costCenter_FPeriod())
+      if ( is.na(FPeriod)){
+        pop_notice('请输入月份')
+      }
+      
+      file_name = var_md_costCenter_file()
+      if(is.null(file_name)){
+        pop_notice('请选择文件')
+      }
+      
+      if((!is.na(FYear)) & (!is.na(FPeriod))  & (!is.null(file_name))){
+        
+        jlrdspkg::mrpt_md_ui_costCenter_read(conn = conn,file_name = file_name,FYear = FYear,FPeriod = FPeriod)
+        #
+        pop_notice('上传成功')
+        
+      }
+      
+      
+      
+    })
+    
     #2.2事业部定义--------
     observeEvent(input$md_division_preview,{
     
@@ -1142,8 +1174,24 @@
     
     
     
+    #自然堂科目对照表-----
     
-    
+    var_md_chando_eCom_acctRpt_mapping_file <- var_file('md_chando_eCom_acctRpt_mapping_file')
+    observeEvent(input$md_chando_eCom_acctRpt_mapping_upload,{
+      file_name <- var_md_chando_eCom_acctRpt_mapping_file()
+      if(is.null(file_name)){
+        pop_notice('请先选择一个对照表文件')
+      }else{
+        data <- jlrdspkg::mrpt_md_chando_acctRpt_read(conn = conn,file_name = file_name)
+        pop_notice('上传成功')
+      }
+   
+      
+    })
+    observeEvent(input$md_chando_eCom_acctRpt_mapping_query,{
+      data <- jlrdspkg::mrpt_md_chando_acctRpt_select(conn = conn)
+      run_dataTable2('md_chando_eCom_acctRpt_mapping_dataShow',data = data)
+    })
     
 
     
