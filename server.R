@@ -573,6 +573,42 @@
       
     })
     
+    var_itemMap_file <- var_file('itemMap_file')
+    #成本要素上传---
+     observeEvent(input$itemMap_upload,{
+       file_name = var_itemMap_file() 
+       FYear = as.integer(var_itemMap_FYear())
+       
+       if(is.na(FYear)){
+         pop_notice('请输入年份')
+       }
+       
+       FPeriod = as.integer(var_itemMap_FPeriod())
+       if ( is.na(FPeriod)){
+         pop_notice('请输入月份')
+       }
+       
+       if(is.null(file_name)){
+         pop_notice('请选择一下文件')
+       }
+       
+       if((!is.na(FYear)) & (!is.na(FPeriod)) & (!is.null(file_name))){
+         
+         jlrdspkg::mrpt_md_ui_costItem_read(conn = conn,file_name = file_name,FYear = FYear,FPeriod = FPeriod)
+         pop_notice('上传成本要素成功！')
+
+         
+       }
+       
+       
+       
+       
+       
+       
+     })
+    
+    
+    
     #2.5报表项目----------
     
     observeEvent(input$md_rptItem_preview,{
