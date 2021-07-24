@@ -731,6 +731,29 @@
       
       
     })
+      
+    #重分类--------
+      observeEvent(input$md_reClassifyAcct_mapping_query,{
+        data <-jlrdspkg::mrpt_md_reClassify_select(conn = conn)
+        run_dataTable2('md_reClassifyAcct_mapping_dataShow',data = data)
+        run_download_xlsx(id = 'md_reClassifyAcct_mapping_dl',data = data,filename = '重分类及科目对照表.xlsx')
+        
+      })
+      
+      var_md_reClassifyAcct_mapping_file <- var_file('md_reClassifyAcct_mapping_file')
+      observeEvent(input$md_reClassifyAcct_mapping_upload,{
+        file_name <- var_md_reClassifyAcct_mapping_file()
+        
+        if(is.null(file_name)){
+          pop_notice('请选择一下重分类对照表文件！')
+        }else{
+          jlrdspkg::mrpt_md_reClassify_read(conn = conn,file_name = file_name)
+          pop_notice('上传成功！')
+        }
+        
+        
+        
+      })
     
     #2.9 bw数据源------
     var_ds_bw_FYear <- var_text("ds_bw_FYear")

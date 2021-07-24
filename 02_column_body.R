@@ -211,6 +211,30 @@ menu_column <- tabItem(tabName = "column",
                                          ))
                                          
                                        )),
+                                       tabPanel('1.10重分类与科目对照表',tagList(
+                                         fluidRow(column(4,box(
+                                           title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
+                                           actionButton('md_reClassifyAcct_mapping_query','查看对照表'),
+                                           mdl_download_button('md_reClassifyAcct_mapping_dl','下载对照表'),
+                                           br(),
+                                           hr(),
+                                           
+                                           tags$a(href='重分类及科目对照表模板.xlsx','第一次使用，请下载重分类及科目对照表模板'),
+                                           tags$h4('目前使用科目代码匹配，科目名称可以选填'),
+                                           
+                                           mdl_file(id = 'md_reClassifyAcct_mapping_file',label = '请选择对照表文件'),
+                                           
+                                           
+                                           actionButton('md_reClassifyAcct_mapping_upload','上传对照表'),
+                                        
+                                         )),
+                                         column(8, box(
+                                           title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",
+                                           div(style = 'overflow-x: scroll', mdl_dataTable('md_reClassifyAcct_mapping_dataShow','对照表数据预览'))
+                                         )
+                                         ))
+                                         
+                                       )),
                                        tabPanel('2.01A数据源-历史数据-上传[品牌渠道]',tagList(
                                          fluidRow(column(4,box(
                                            title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
