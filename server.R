@@ -482,6 +482,25 @@
       
     })
     
+    #定义品牌及事业部定义文件-----
+    var_md_division_preview_file <- var_file('md_division_preview_file')
+    
+    observeEvent(input$md_division_upload,{
+      file_name <- var_md_division_preview_file()
+      if(is.null(file_name)){
+        pop_notice('请选择一下品牌渠道事业部定义文件')
+      }else{
+        jlrdspkg::mrpt_md_ui_division_read(file_name = file_name,conn = conn) 
+        pop_notice('上传成功')
+
+      }
+      
+      
+      
+      
+    })
+
+    
     #2.2事业部定义--------
     observeEvent(input$md_division_preview,{
     
@@ -628,6 +647,20 @@
       
       
     })
+     
+     var_md_rptItem_file <- var_file('md_rptItem_file')
+     observeEvent(input$md_rptItem_upload,{
+       file_name =  var_md_rptItem_file()
+       if(is.null(file_name)){
+         '请选择一下上传文件'
+       }else{
+         jlrdspkg::mrpt_md_ui_rptItem_read(conn = conn,file_name = file_name)
+         pop_notice('上传服务项目成功')
+
+       }
+       
+       
+     })
     
     #2.6 BW指标固定表头--------
     observeEvent(input$md_bw_Heading_preview,{
@@ -665,6 +698,20 @@
       
       
     })
+     #上传BW报表维度
+     var_md_bw_dim_file <- var_file('md_bw_dim_file')
+      observeEvent(input$md_bw_dim_upload,{
+        
+        file_name <- var_md_bw_dim_file()
+        if(is.null(file_name)){
+          pop_notice('请选择上传文件')
+        }else{
+          jlrdspkg::mrpt_bw_ui_getDimName_read(conn = conn,file_name = file_name)
+          pop_notice('上传BW报表维度成功！')
+        }
+        
+        
+      })
     
     #2.8 BW报表业务规则----
     observeEvent(input$md_bw_businessRule_preview,{
@@ -1229,7 +1276,32 @@
       run_dataTable2('md_chando_eCom_acctRpt_mapping_dataShow',data = data)
     })
     
+  #4.报表分析-----
+    # display the data that is available to be drilled down
+    #下面数据
+    data_division_summary <- jlrdspkg::mrpt_analysis_md_division_summary(conn = conn)
 
+    
+    output$mrpt_analysis_md_division_summary <- DT::renderDataTable(data_division_summary,selection = 'single')
+    
+    # subset the records to the row that was clicked
+    drilldata <- reactive({
+      shiny::validate(
+        need(length(input$mrpt_analysis_md_division_summary_rows_selected) > 0, "请选中任意一行")
+      )    
+      
+      # subset the summary table and extract the column to subset on
+      # if you have more than one column, consider a merge instead
+      # NOTE: the selected row indices will be character type so they
+      #   must be converted to numeric or integer before subsetting
+      selected_row <- data_division_summary[as.integer(input$mrpt_analysis_md_division_summary_rows_selected), '财务伙伴']
+      data_detail <- jlrdspkg::mrpt_analysis_md_division_detail(conn = conn,FFinancialPartner =selected_row )
+      return(data_detail)
+
+    })
+    
+    # display the subsetted data
+    output$mrpt_analysis_md_division_drilldown <- DT::renderDataTable(drilldata())
     
   
 })

@@ -5,7 +5,7 @@ menu_column <- tabItem(tabName = "column",
                                        id='tabSet_column',height = '300px',
                                 
                                  
-                                       tabPanel('1.01品牌渠道及事业部的定义',tagList(
+                                       tabPanel('1.01品牌渠道事业部',tagList(
                                          fluidRow(column(4,box(
                                            title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
                                            tags$h4("说明：1.定义了品牌与渠道;2.定义了品牌与事业部的关系;3.定义了品牌渠道的2个描述性名称,用于成本中心的渠道费用分配;4.定义了虚拟的市场类型的渠道，用于市场费用的二次分配"),
@@ -19,7 +19,15 @@ menu_column <- tabItem(tabName = "column",
                                           # h4('SQL: select * from t_mrpt_division'),
                                           
                                            actionButton('md_division_preview',label = '查询事业部'),
-                                           mdl_download_button('md_division_dl','下载事业部')
+                                           mdl_download_button('md_division_dl','下载事业部'),
+                                          br(),
+                                          hr(),
+                                          tags$a(href='品牌渠道事业部模板.xlsx','第一次使用，请下载品牌渠道事业部模板'),
+                                          br(),
+                                          mdl_file('md_division_preview_file','请选择品牌渠道事业部定义文件'),
+                                          actionButton('md_division_upload',label = '上传品牌渠道事业部定义')
+                                          
+                                          
                                          )),
                                          column(8, box(
                                            title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",
@@ -28,7 +36,7 @@ menu_column <- tabItem(tabName = "column",
                                          ))
                                          
                                        )),
-                                       tabPanel('1.02成本中心划分及渠道费用分配表',tagList(
+                                       tabPanel('1.02成本中心',tagList(
                                          fluidRow(column(4,box(
                                            title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
                                            tags$h4('说明：1.用于根据成本中心带出品牌及渠道2.根据成本中心带出渠道费用的分配比例'),
@@ -55,7 +63,7 @@ menu_column <- tabItem(tabName = "column",
                                          ))
                                          
                                        )),
-                                       tabPanel('1.03成本要素与统一费用名称对应表',tagList(
+                                       tabPanel('1.03成本要素',tagList(
                                          fluidRow(column(4,box(
                                            title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
                                            tags$h4('说明:1.定义了成本要素与报表项目之间的相对关系2.不是直接费用，而是采用统一的费用名称然后再结合成本中心的渠道与市场费用一起才能发生使用。'),
@@ -79,7 +87,7 @@ menu_column <- tabItem(tabName = "column",
                                          ))
                                          
                                        )),
-                                       tabPanel('1.04报表项目及统一费用名称对应表',tagList(
+                                       tabPanel('1.04报表项目',tagList(
                                          fluidRow(column(4,box(
                                            title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
                                            tags$h4("说明：1.定义的标准的报表项目2.定义了报表项目与统一费用名称及渠道类型的关系"),
@@ -88,7 +96,14 @@ menu_column <- tabItem(tabName = "column",
                                            br(),
                                            hr(),
                                            actionButton('md_rptItem_preview',label = '查询报表项目'),
-                                           mdl_download_button('md_rptItem_dl','下载报表项目')
+                                           mdl_download_button('md_rptItem_dl','下载报表项目'),
+                                           br(),
+                                           hr(),
+                                           tags$a(href='报表项目模板.xlsx','第一次使用，请下载报表项目模板'),
+                                           mdl_file('md_rptItem_file','请选择一下报表项目文件'),
+                                           actionButton('md_rptItem_upload',label = '上传报表项目'),
+                                           
+                                           
                                          )),
                                          column(8, box(
                                            title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",
@@ -97,7 +112,7 @@ menu_column <- tabItem(tabName = "column",
                                          ))
                                          
                                        )),
-                                       tabPanel('1.05BW指标固定表头',tagList(
+                                       tabPanel('1.05BW指标',tagList(
                                          fluidRow(column(4,box(
                                            title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
                                            tags$h4('说明:1.BW报表固定报头,其实是指标，所有方案原则上一致2.可以用于存储数据源3.目前15项数据源'),
@@ -115,7 +130,7 @@ menu_column <- tabItem(tabName = "column",
                                          ))
                                          
                                        )),
-                                       tabPanel('1.06BW维度变动表头',tagList(
+                                       tabPanel('1.06BW维度',tagList(
                                          fluidRow(column(4,box(
                                            title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
                                            tags$h4("说明：1.每个方案对应的变动表头不一致2.变动表头影响后续业务分析3.应该使用所有变动表头的最大集处理数据源4.目前采用的方式有待改进。"),
@@ -125,8 +140,14 @@ menu_column <- tabItem(tabName = "column",
                                            tags$h4("备注：目前没有发现有什么关系"),
                                            br(),
                                            hr(),
-                                           actionButton('md_bw_dim_preview',label = '查询BW维度变动表头'),
-                                           mdl_download_button('md_bw_dim_dl','下载BW维度变动表头')
+                                           actionButton('md_bw_dim_preview',label = '查询BW维度'),
+                                           mdl_download_button('md_bw_dim_dl','下载BW维度'),
+                                           br(),
+                                           hr(),
+                                           tags$a(href='BW维度模板.xlsx','第一次使用，请下载BW维度模板'),
+                                           mdl_file('md_bw_dim_file','请选择一下BW报表维度文件'),
+                                           actionButton('md_bw_dim_upload',label = '上传BW报表维度'),
+                                           
                                          )),
                                          column(8, box(
                                            title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",
@@ -135,7 +156,7 @@ menu_column <- tabItem(tabName = "column",
                                          ))
                                          
                                        )),
-                                       tabPanel('1.07BW报表取数规则:指标固定表头与报表项目对应关系',tagList(
+                                       tabPanel('1.07BW报表业务规则',tagList(
                                          fluidRow(column(4,box(
                                            title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
                                            tags$h4("说明:1.定义了BW指标固定表头与报表项目的关系2.多个方案号才能表达一个完整的指标固定表头"),
@@ -151,7 +172,7 @@ menu_column <- tabItem(tabName = "column",
                                          ))
                                          
                                        )),
-                                       tabPanel('1.08规则表-客户折扣清单(整合后)',tagList(
+                                       tabPanel('1.08客户折扣',tagList(
                                          fluidRow(column(4,box(
                                            title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
                                            tags$h4('规则表-珀芙研客户折扣清单,未指定渠道,客户名称待核验'),

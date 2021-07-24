@@ -6,12 +6,13 @@ menu_series<- tabItem(tabName = "series",
                                       tabPanel('sheet1',tagList(
                                         fluidRow(column(4,box(
                                           title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
-                                          'sheet1'
+                                          dataTableOutput("mrpt_analysis_md_division_summary")
+                                          
                                         )),
                                         column(8, box(
                                           title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",
                                           
-                                          'rpt1'
+                                          dataTableOutput("mrpt_analysis_md_division_drilldown")
                                         )
                                         ))
                                         
