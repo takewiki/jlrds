@@ -163,7 +163,13 @@ menu_column <- tabItem(tabName = "column",
                                            br(),
                                            hr(),
                                            actionButton('md_bw_businessRule_preview',label = '查询BW报表业务规则'),
-                                           mdl_download_button('md_bw_businessRule_dl','下载BW报表业务规则')
+                                           mdl_download_button('md_bw_businessRule_dl','下载BW报表业务规则'),
+                                           br(),
+                                           hr(),
+                                           tags$a(href='BW报表业务规则模板.xlsx','第一次使用，请下载BW报表业务规则模板'),
+                                           mdl_file('md_bw_businessRule_file','请选择一下BW报表业务规则文件'),
+                                           actionButton('md_bw_businessRule_upload',label = '上传BW报表业务规则')
+                                           
                                          )),
                                          column(8, box(
                                            title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",

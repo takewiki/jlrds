@@ -716,8 +716,10 @@
     #2.8 BW报表业务规则----
     observeEvent(input$md_bw_businessRule_preview,{
       
-      data <- jlrdspkg::mrpt_bw_ui_businessRule(conn = conn)
-      print(data)
+      #data <- jlrdspkg::mrpt_bw_ui_businessRule(conn = conn)
+      #第一版做了升级
+      data <- jlrdspkg::mrpt_md_rule_bw2_select(conn = conn)
+      # print(data)
       ncount <- nrow(data)
       print('div')
       
@@ -731,6 +733,20 @@
       
       
     })
+      
+      #上传BW报表业务规则----
+      var_md_bw_businessRule_file <- var_file('md_bw_businessRule_file')
+      observeEvent(input$md_bw_businessRule_upload,{
+        file_name = var_md_bw_businessRule_file()
+        if(is.null(file_name)){
+          pop_notice('请选择一个文件')
+        }else{
+          jlrdspkg::mrpt_md_rule_bw2_read(conn = conn,file_name = file_name)
+          pop_notice('上传BW报表业务规则成功')
+        }
+        
+        
+      })
       
     #重分类--------
       observeEvent(input$md_reClassifyAcct_mapping_query,{
