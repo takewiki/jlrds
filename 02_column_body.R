@@ -646,11 +646,18 @@ menu_column <- tabItem(tabName = "column",
                                        tabPanel('5.01反查表-品牌渠道',tagList(
                                          fluidRow(column(4,box(
                                            title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
-                                           'sheet4'
+                                           mdl_ListChoose1(id = 'res_review_brandChannel_man',
+                                                           label = '请选择财务人员',choiceNames = jlrdspkg::mrpt_res_review_financialMan(),
+                                                           choiceValues = jlrdspkg::mrpt_res_review_financialMan()
+                                                           ),
+                                           mdl_text(id = 'res_review_brandChannel_Year',label = '年份'),
+                                           mdl_text(id = 'res_review_brandChannel_period',label = '月份'),
+                                           actionButton(inputId = 'res_review_brandChannel_btn',label = '查询对比数'),
+                                           mdl_download_button(id = 'res_review_brandChannel_dl',label = '下载对比数')
                                          )),
                                          column(8, box(
                                            title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",
-                                           'rpt4'
+                                           div(style = 'overflow-x: scroll', mdl_dataTable('res_review_brandChannel_dataShow','手工调整中间表数据预览'))
                                          )
                                          ))
                                          

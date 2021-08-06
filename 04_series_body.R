@@ -3,7 +3,7 @@ menu_series<- tabItem(tabName = "series",
                         column(width = 12,
                                tabBox(title ="series工作台",width = 12,
                                       id='tabSet_series',height = '300px',
-                                      tabPanel('sheet1',tagList(
+                                      tabPanel('财务人员分析',tagList(
                                         fluidRow(column(4,box(
                                           title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
                                           dataTableOutput("mrpt_analysis_md_division_summary")
@@ -17,18 +17,30 @@ menu_series<- tabItem(tabName = "series",
                                         ))
                                         
                                       )),
-                                      tabPanel('sheet2',tagList(
-                                        fluidRow(column(4,box(
+                                      tabPanel('凭证分析重分类前',tagList(
+                                        fluidRow(column(5,box(
                                           title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
-                                          'sheet2'
+                                         
+                                          mdl_text('voucher_audit_beforeReclass_Year',label = '年份',value =tsdo::left(as.character(Sys.Date()),4)),
+                                          mdl_integer(id = 'voucher_audit_beforeReclass_Period',label = '月份',min = 1,max = 12,
+                                                      value = as.integer(strsplit(as.character(Sys.Date()),'-')[[1]][2]),step = 1),
+                                          actionButton(inputId = 'voucher_audit_beforeReclass_btn',label = '凭证分析'),
+                                          tags$h4('成本要素汇总分析:'),
+                                          div(style = 'overflow-x: scroll',dataTableOutput("voucher_beforeReClass_summary_dt"))
+                                          
                                         )),
-                                        column(8, box(
+                                        column(7, box(
                                           title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",
-                                          'rpt2'
+                                          tags$h4('成本要素+成本中心代码汇总分析:'),
+                                          div(style = 'overflow-x: scroll',dataTableOutput("voucher_beforeReClass_detail_dt1"))
                                         )
-                                        ))
+                                        )),
+                                        fluidRow(column(12,box(
+                                          title = "明细信息", width = NULL, solidHeader = TRUE, status = "primary",
+                                          div(style = 'overflow-x: scroll',dataTableOutput("voucher_beforeReClass_detail_dt2"))
+                                          ))
                                         
-                                      )),
+                                      ))),
                                       
                                       tabPanel('sheet3',tagList(
                                         fluidRow(column(4,box(

@@ -1342,5 +1342,77 @@
     # display the subsetted data
     output$mrpt_analysis_md_division_drilldown <- DT::renderDataTable(drilldata())
     
+    var_res_review_brandChannel_man <- var_ListChoose1('res_review_brandChannel_man')
+    var_res_review_brandChannel_Year <- var_text('res_review_brandChannel_Year')
+    var_res_review_brandChannel_period <- var_text('res_review_brandChannel_period')
+    observeEvent(input$res_review_brandChannel_btn,{
+      FFinancialMan <- var_res_review_brandChannel_man()
+      FYear <-as.integer(var_res_review_brandChannel_Year())
+      FPeriod <- as.integer(var_res_review_brandChannel_period())
+      print(FFinancialMan)
+      print(FYear)
+      print(FPeriod)
+      data <- jlrdspkg::mrpt_res_review_brandChannel(FFinancialPartner = FFinancialMan,FYear = FYear,FPeriod = FPeriod)
+      run_dataTable2('res_review_brandChannel_dataShow',data = data)
+      run_download_xlsx('res_review_brandChannel_dl',data = data,filename = '管报对照表.xlsx')
+      
+    })
+    #凭证分析-----
+    var_voucher_audit_beforeReclass_Year <- var_text('voucher_audit_beforeReclass_Year')
+    var_voucher_audit_beforeReclass_Period <- var_integer('voucher_audit_beforeReclass_Period')
+    
+    
+    data_voucher_before_summary <- eventReactive(input$voucher_audit_beforeReclass_btn,{
+      FYear =  as.integer(var_voucher_audit_beforeReclass_Year())
+      FPeriod =  as.integer( var_voucher_audit_beforeReclass_Period())
+      data_summary <- mrptpkg::voucher_beforeReClass_costItem_summary(conn = conn,FYear = FYear,FPeriod = FPeriod)
+      return(data_summary)
+      
+    })
+    observeEvent(input$voucher_audit_beforeReclass_btn,{
+      
+      output$voucher_beforeReClass_summary_dt <- DT::renderDataTable(data_voucher_before_summary(),selection = 'single')
+      
+    })
+    
+   
+    
+    
+    drilldata1 <- reactive({
+      FYear =  as.integer(var_voucher_audit_beforeReclass_Year())
+      FPeriod =  as.integer( var_voucher_audit_beforeReclass_Period())
+      shiny::validate(
+        need(length(input$voucher_beforeReClass_summary_dt_rows_selected) > 0, "请选中任意一行")
+      )    
+      data_summary <- data_voucher_before_summary()
+      FCostItemNumber <- data_summary[as.integer(input$voucher_beforeReClass_summary_dt_rows_selected), 'FCostItemNumber']
+      data_detail1 <- mrptpkg::voucher_beforeReClass_costItem_detail_costCenterNo(conn = conn,FYear = FYear,FPeriod = FPeriod,FCostItemNumber = FCostItemNumber)
+      return(data_detail1)
+      
+    })
+    
+    output$voucher_beforeReClass_detail_dt1 <- DT::renderDataTable(drilldata1(),selection = 'single')
+    
+    drilldata2 <- reactive({
+      FYear =  as.integer(var_voucher_audit_beforeReclass_Year())
+      FPeriod =  as.integer( var_voucher_audit_beforeReclass_Period())
+      shiny::validate(
+        need(length(input$voucher_beforeReClass_detail_dt1_rows_selected) > 0, "请选中任意一行")
+      )    
+      #data1 = drilldata1()
+      FCostItemNumber <- drilldata1()[as.integer(input$voucher_beforeReClass_detail_dt1_rows_selected), 'FCostItemNumber']
+      print(FCostItemNumber)
+      FCostCenterNo <- drilldata1()[as.integer(input$voucher_beforeReClass_detail_dt1_rows_selected), 'FCostCenterNo']
+      print(FCostCenterNo)
+      data_detail2 <- mrptpkg::voucher_beforeReClass_costItem_detail_list(conn = conn,FYear = FYear,FPeriod = FPeriod,FCostItemNumber = FCostItemNumber,FCostCenterNo = FCostCenterNo)
+      return(data_detail2)
+      
+    })
+    
+    #print(drilldata2())
+    
+    output$voucher_beforeReClass_detail_dt2 <- DT::renderDataTable(drilldata2(),selection = 'single')
+    
+    
   
 })
