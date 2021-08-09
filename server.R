@@ -1357,7 +1357,7 @@
       run_download_xlsx('res_review_brandChannel_dl',data = data,filename = '管报对照表.xlsx')
       
     })
-    #凭证分析-----
+    #凭证分析-重分类前凭证-----
     var_voucher_audit_beforeReclass_Year <- var_text('voucher_audit_beforeReclass_Year')
     var_voucher_audit_beforeReclass_Period <- var_integer('voucher_audit_beforeReclass_Period')
     
@@ -1366,9 +1366,12 @@
       FYear =  as.integer(var_voucher_audit_beforeReclass_Year())
       FPeriod =  as.integer( var_voucher_audit_beforeReclass_Period())
       data_summary <- mrptpkg::voucher_beforeReClass_costItem_summary(conn = conn,FYear = FYear,FPeriod = FPeriod)
+      names(data_summary) <-c('成本要素代码','成本要素名称','总金额','记录数')
       return(data_summary)
       
     })
+    
+    
     observeEvent(input$voucher_audit_beforeReclass_btn,{
       
       output$voucher_beforeReClass_summary_dt <- DT::renderDataTable(data_voucher_before_summary(),selection = 'single')
@@ -1385,8 +1388,9 @@
         need(length(input$voucher_beforeReClass_summary_dt_rows_selected) > 0, "请选中任意一行")
       )    
       data_summary <- data_voucher_before_summary()
-      FCostItemNumber <- data_summary[as.integer(input$voucher_beforeReClass_summary_dt_rows_selected), 'FCostItemNumber']
+      FCostItemNumber <- data_summary[as.integer(input$voucher_beforeReClass_summary_dt_rows_selected), '成本要素代码']
       data_detail1 <- mrptpkg::voucher_beforeReClass_costItem_detail_costCenterNo(conn = conn,FYear = FYear,FPeriod = FPeriod,FCostItemNumber = FCostItemNumber)
+      names(data_detail1) <- c('成本要素代码','成本中心代码','成本中心名称','总金额','记录数')
       return(data_detail1)
       
     })
@@ -1400,11 +1404,12 @@
         need(length(input$voucher_beforeReClass_detail_dt1_rows_selected) > 0, "请选中任意一行")
       )    
       #data1 = drilldata1()
-      FCostItemNumber <- drilldata1()[as.integer(input$voucher_beforeReClass_detail_dt1_rows_selected), 'FCostItemNumber']
-      print(FCostItemNumber)
-      FCostCenterNo <- drilldata1()[as.integer(input$voucher_beforeReClass_detail_dt1_rows_selected), 'FCostCenterNo']
-      print(FCostCenterNo)
+      FCostItemNumber <- drilldata1()[as.integer(input$voucher_beforeReClass_detail_dt1_rows_selected), '成本要素代码']
+      #print(FCostItemNumber)
+      FCostCenterNo <- drilldata1()[as.integer(input$voucher_beforeReClass_detail_dt1_rows_selected), '成本中心代码']
+      #print(FCostCenterNo)
       data_detail2 <- mrptpkg::voucher_beforeReClass_costItem_detail_list(conn = conn,FYear = FYear,FPeriod = FPeriod,FCostItemNumber = FCostItemNumber,FCostCenterNo = FCostCenterNo)
+      names(data_detail2) <- c('凭证日期','过账日期','成本中心代码','成本中心名称','成本要素代码','成本要素名称','凭证金额','凭证摘要','重分类代码','凭证号')
       return(data_detail2)
       
     })
@@ -1412,6 +1417,276 @@
     #print(drilldata2())
     
     output$voucher_beforeReClass_detail_dt2 <- DT::renderDataTable(drilldata2(),selection = 'single')
+    
+    
+    #凭证分析重分类后-----
+    var_voucher_audit_afterReclass_Year <- var_text('voucher_audit_afterReclass_Year')
+    var_voucher_audit_afterReclass_Period <- var_integer('voucher_audit_afterReclass_Period')
+    
+    
+    data_voucher_after_summary <- eventReactive(input$voucher_audit_afterReclass_btn,{
+      FYear =  as.integer(var_voucher_audit_afterReclass_Year())
+      FPeriod =  as.integer( var_voucher_audit_afterReclass_Period())
+      data_summary <- mrptpkg::voucher_afterReClass_costItem_summary(conn = conn,FYear = FYear,FPeriod = FPeriod)
+      names(data_summary) <-c('成本要素代码','成本要素名称','总金额','记录数')
+      return(data_summary)
+      
+    })
+    
+    
+    observeEvent(input$voucher_audit_afterReclass_btn,{
+      
+      output$voucher_afterReClass_summary_dt <- DT::renderDataTable(data_voucher_after_summary(),selection = 'single')
+      
+    })
+    
+    
+    
+    
+    drilldata1_after <- reactive({
+      FYear =  as.integer(var_voucher_audit_afterReclass_Year())
+      FPeriod =  as.integer( var_voucher_audit_afterReclass_Period())
+      shiny::validate(
+        need(length(input$voucher_afterReClass_summary_dt_rows_selected) > 0, "请选中任意一行")
+      )    
+      data_summary <- data_voucher_after_summary()
+      FCostItemNumber <- data_summary[as.integer(input$voucher_afterReClass_summary_dt_rows_selected), '成本要素代码']
+      data_detail1 <- mrptpkg::voucher_afterReClass_costItem_detail_costCenterNo(conn = conn,FYear = FYear,FPeriod = FPeriod,FCostItemNumber = FCostItemNumber)
+      names(data_detail1) <- c('成本要素代码','成本中心代码','成本中心名称','总金额','记录数')
+      return(data_detail1)
+      
+    })
+    
+    output$voucher_afterReClass_detail_dt1 <- DT::renderDataTable(drilldata1_after(),selection = 'single')
+    
+    drilldata2_after <- reactive({
+      FYear =  as.integer(var_voucher_audit_afterReclass_Year())
+      FPeriod =  as.integer( var_voucher_audit_afterReclass_Period())
+      shiny::validate(
+        need(length(input$voucher_afterReClass_detail_dt1_rows_selected) > 0, "请选中任意一行")
+      )    
+      #data1 = drilldata1()
+      FCostItemNumber <- drilldata1_after()[as.integer(input$voucher_afterReClass_detail_dt1_rows_selected), '成本要素代码']
+      #print(FCostItemNumber)
+      FCostCenterNo <- drilldata1_after()[as.integer(input$voucher_afterReClass_detail_dt1_rows_selected), '成本中心代码']
+      #print(FCostCenterNo)
+      data_detail2 <- mrptpkg::voucher_afterReClass_costItem_detail_list(conn = conn,FYear = FYear,FPeriod = FPeriod,FCostItemNumber = FCostItemNumber,FCostCenterNo = FCostCenterNo)
+      names(data_detail2) <- c('凭证日期','过账日期','成本中心代码','成本中心名称','成本要素代码1','成本要素名称1','凭证金额','凭证摘要','重分类代码','凭证号','成本要素代码2','成本要素名称2','成本要素代码','成本要素名称')
+      return(data_detail2)
+      
+    })
+    
+    #print(drilldata2())
+    
+    output$voucher_afterReClass_detail_dt2 <- DT::renderDataTable(drilldata2_after(),selection = 'single')
+    
+    
+    
+    #凭证分析-仅重分类凭证-----
+    var_voucher_audit_onlyReclass_Year <- var_text('voucher_audit_onlyReclass_Year')
+    var_voucher_audit_onlyReclass_Period <- var_integer('voucher_audit_onlyReclass_Period')
+    
+    
+    data_voucher_only_summary <- eventReactive(input$voucher_audit_onlyReclass_btn,{
+      FYear =  as.integer(var_voucher_audit_onlyReclass_Year())
+      FPeriod =  as.integer( var_voucher_audit_onlyReclass_Period())
+      data_summary <- mrptpkg::voucher_onlyReClass_costItem_summary(conn = conn,FYear = FYear,FPeriod = FPeriod)
+      names(data_summary) <-c('重分类代码','成本要素代码','成本要素名称','总金额','记录数')
+      return(data_summary)
+      
+    })
+    
+    
+    observeEvent(input$voucher_audit_onlyReclass_btn,{
+      
+      output$voucher_onlyReClass_summary_dt <- DT::renderDataTable(data_voucher_only_summary(),selection = 'single')
+      
+    })
+    
+    
+    
+    
+    drilldata1_only <- reactive({
+      FYear =  as.integer(var_voucher_audit_onlyReclass_Year())
+      FPeriod =  as.integer( var_voucher_audit_onlyReclass_Period())
+      shiny::validate(
+        need(length(input$voucher_onlyReClass_summary_dt_rows_selected) > 0, "请选中任意一行")
+      )    
+      data_summary <- data_voucher_only_summary()
+      FReClassifiedNumber  <- data_summary[as.integer(input$voucher_onlyReClass_summary_dt_rows_selected), '重分类代码']
+      data_detail1 <- mrptpkg::voucher_onlyReClass_costItem_detail_costCenterNo(conn = conn,FYear = FYear,FPeriod = FPeriod,FReClassifiedNumber = FReClassifiedNumber)
+      names(data_detail1) <- c('重分类代码','成本要素代码','成本中心代码','成本中心名称','总金额','记录数')
+      return(data_detail1)
+      
+    })
+    
+    output$voucher_onlyReClass_detail_dt1 <- DT::renderDataTable(drilldata1_only(),selection = 'single')
+    
+    drilldata2_only <- reactive({
+      FYear =  as.integer(var_voucher_audit_onlyReclass_Year())
+      FPeriod =  as.integer( var_voucher_audit_onlyReclass_Period())
+      shiny::validate(
+        need(length(input$voucher_onlyReClass_detail_dt1_rows_selected) > 0, "请选中任意一行")
+      )    
+      #data1 = drilldata1()
+      FReClassifiedNumber <- drilldata1_only()[as.integer(input$voucher_onlyReClass_detail_dt1_rows_selected), '重分类代码']
+      #print(FCostItemNumber)
+      FCostCenterNo <- drilldata1_only()[as.integer(input$voucher_onlyReClass_detail_dt1_rows_selected), '成本中心代码']
+      #print(FCostCenterNo)
+      data_detail2 <- mrptpkg::voucher_onlyReClass_costItem_detail_list(conn = conn,FYear = FYear,FPeriod = FPeriod,FReClassifiedNumber = FReClassifiedNumber,FCostCenterNo = FCostCenterNo)
+      names(data_detail2) <- c('凭证日期','过账日期','成本中心代码','成本中心名称','成本要素代码1','成本要素名称1','凭证金额','凭证摘要','重分类代码','凭证号','成本要素代码2','成本要素名称2','成本要素代码','成本要素名称')
+      return(data_detail2)
+      
+    })
+    
+    #print(drilldata2())
+    
+    output$voucher_onlyReClass_detail_dt2 <- DT::renderDataTable(drilldata2_only(),selection = 'single')
+    
+    #成本要素分析-------
+
+    var_mrpt_audit_md_costItem_Year <- var_text('mrpt_audit_md_costItem_Year')
+    var_mrpt_audit_md_costItem_Period <- var_integer('mrpt_audit_md_costItem_Period')
+    
+    
+    data_costItem_summary <- eventReactive(input$mrpt_audit_md_costItem_btn,{
+      FYear =  as.integer(var_mrpt_audit_md_costItem_Year())
+      FPeriod =  as.integer( var_mrpt_audit_md_costItem_Period())
+      data_summary <- mrptpkg::md_costItem_audit_summary(conn = conn,FYear = FYear,FPeriod = FPeriod)
+      names(data_summary) <-c('统一费用名称','记录数')
+      return(data_summary)
+      
+    })
+    
+    
+    observeEvent(input$mrpt_audit_md_costItem_btn,{
+      
+      output$mrpt_audit_md_costItem_summary <- DT::renderDataTable(data_costItem_summary(),selection = 'single')
+      
+    })
+    
+    
+    
+    
+    drilldata1_costItem <- reactive({
+      FYear =  as.integer(var_mrpt_audit_md_costItem_Year())
+      FPeriod =  as.integer( var_mrpt_audit_md_costItem_Period())
+      shiny::validate(
+        need(length(input$mrpt_audit_md_costItem_summary_rows_selected) > 0, "请选中任意一行")
+      )    
+      data_summary <- data_costItem_summary()
+      FFeeName  <- data_summary[as.integer(input$mrpt_audit_md_costItem_summary_rows_selected), '统一费用名称']
+      data_detail1 <- mrptpkg::md_costItem_audit_detail(conn = conn,FYear = FYear,FPeriod = FPeriod,FFeeName = FFeeName)
+      names(data_detail1) <- c('统一费用名称(规范)','成本要素代码','成本要素名称','统一费用名称(待核)')
+      return(data_detail1)
+      
+    })
+    
+    output$mrpt_audit_md_costItem_detail <- DT::renderDataTable(drilldata1_costItem(),selection = 'single')
+    
+    #成本中心分析------
+    
+    var_mrpt_audit_md_costCenter_Year <- var_text('mrpt_audit_md_costCenter_Year')
+    var_mrpt_audit_md_costCenter_Period <- var_integer('mrpt_audit_md_costCenter_Period')
+    
+    
+    data_md_costCenter_summary <- eventReactive(input$mrpt_audit_md_costCenter_btn,{
+      FYear =  as.integer(var_mrpt_audit_md_costCenter_Year())
+      FPeriod =  as.integer( var_mrpt_audit_md_costCenter_Period())
+      data_summary <- mrptpkg::md_costCenter_audit_summary(conn = conn,FYear = FYear,FPeriod = FPeriod)
+      names(data_summary) <-c('财务伙伴','成本中心类型','分配总比例','记录数')
+      return(data_summary)
+      
+    })
+    
+    
+    observeEvent(input$mrpt_audit_md_costCenter_btn,{
+      
+      output$mrpt_audit_md_costCenter_summary <- DT::renderDataTable(data_md_costCenter_summary(),selection = 'single')
+      
+    })
+    
+    
+    
+    
+    drilldata_detail_costCenter <- reactive({
+      FYear =  as.integer(var_mrpt_audit_md_costCenter_Year())
+      FPeriod =  as.integer( var_mrpt_audit_md_costCenter_Period())
+      shiny::validate(
+        need(length(input$mrpt_audit_md_costCenter_summary_rows_selected) > 0, "请选中任意一行")
+      )    
+      data_summary <- data_md_costCenter_summary()
+      FFinancialPartner  <- data_summary[as.integer(input$mrpt_audit_md_costCenter_summary_rows_selected), '财务伙伴']
+      FType  <- data_summary[as.integer(input$mrpt_audit_md_costCenter_summary_rows_selected), '成本中心类型']
+      data_detail1 <- mrptpkg::md_costCenter_audit_detail(conn = conn,FYear = FYear,FPeriod = FPeriod,FFinancialPartner = FFinancialPartner,FType = FType)
+      names(data_detail1) <- c('财务伙伴','成本中心类型','品牌','渠道','分配总比例','记录数')
+      return(data_detail1)
+      
+    })
+    
+    output$mrpt_audit_md_costCenter_detail <- DT::renderDataTable(drilldata_detail_costCenter(),selection = 'single')
+    
+    drilldata2_costCenter_detail_owned <- reactive({
+      FYear =  as.integer(var_mrpt_audit_md_costCenter_Year())
+      FPeriod =  as.integer( var_mrpt_audit_md_costCenter_Period())
+      shiny::validate(
+        need(length(input$mrpt_audit_md_costCenter_detail_rows_selected) > 0, "请选中任意一行")
+      )    
+      data1 = drilldata_detail_costCenter()
+      FBrand <- data1[as.integer(input$mrpt_audit_md_costCenter_detail_rows_selected), '品牌']
+      #print(FCostItemNumber)
+      FChannel <- data1[as.integer(input$mrpt_audit_md_costCenter_detail_rows_selected), '渠道']
+      #print(FCostCenterNo)
+      data_detail2 <- mrptpkg::md_costCenter_audit_detail_owned(conn = conn,FYear = FYear,FPeriod = FPeriod,FBrand2 = FBrand,FChannel2 = FChannel)
+      names(data_detail2) <- c('成本中心代码','类型','分配比例','品牌','渠道','分配类型')
+      return(data_detail2)
+      
+    })
+    
+    #print(drilldata2())
+    
+    output$mrpt_audit_md_costCenter_detail_owned <- DT::renderDataTable(drilldata2_costCenter_detail_owned(),selection = 'single')
+    drilldata2_costCenter_detail_shared <- reactive({
+      FYear =  as.integer(var_mrpt_audit_md_costCenter_Year())
+      FPeriod =  as.integer( var_mrpt_audit_md_costCenter_Period())
+      shiny::validate(
+        need(length(input$mrpt_audit_md_costCenter_detail_rows_selected) > 0, "请选中任意一行")
+      )    
+      data1 = drilldata_detail_costCenter()
+      FBrand <- data1[as.integer(input$mrpt_audit_md_costCenter_detail_rows_selected), '品牌']
+      #print(FCostItemNumber)
+      FChannel <- data1[as.integer(input$mrpt_audit_md_costCenter_detail_rows_selected), '渠道']
+      #print(FCostCenterNo)
+      data_detail2 <- mrptpkg::md_costCenter_audit_detail_shared(conn = conn,FYear = FYear,FPeriod = FPeriod,FBrand2 = FBrand,FChannel2 = FChannel)
+      names(data_detail2) <- c('成本中心代码','类型','分配比例','品牌','渠道','分配类型')
+      return(data_detail2)
+      
+    })
+    
+    #print(drilldata2())
+    
+    output$mrpt_audit_md_costCenter_detail_shared <- DT::renderDataTable(drilldata2_costCenter_detail_shared(),selection = 'single')
+    
+    drilldata3_costCenter_detail_shared_list <- reactive({
+      FYear =  as.integer(var_mrpt_audit_md_costCenter_Year())
+      FPeriod =  as.integer( var_mrpt_audit_md_costCenter_Period())
+      shiny::validate(
+        need(length(input$mrpt_audit_md_costCenter_detail_shared_rows_selected) > 0, "请选中任意一行")
+      )    
+      data2 = drilldata2_costCenter_detail_shared()
+      FCostCenter <- data2[as.integer(input$mrpt_audit_md_costCenter_detail_shared_rows_selected), '成本中心代码']
+      
+     
+      data_detail3 <- mrptpkg::md_costCenter_audit_detail_shared_list(conn = conn,FYear = FYear,FPeriod = FPeriod,FCostCenter = FCostCenter)
+      names(data_detail3) <- c('成本中心代码','类型','分配比例','品牌','渠道','分配类型')
+      return(data_detail3)
+      
+    })
+    
+    #print(drilldata2())
+    
+    output$mrpt_audit_md_costCenter_detail_list <- DT::renderDataTable(drilldata3_costCenter_detail_shared_list(),selection = 'single')
+    
     
     
   
