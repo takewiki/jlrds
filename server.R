@@ -1687,6 +1687,208 @@
     
     output$mrpt_audit_md_costCenter_detail_list <- DT::renderDataTable(drilldata3_costCenter_detail_shared_list(),selection = 'single')
     
+    #报表反查------
+    var_audit_FI_RPA_Year <- var_text('audit_FI_RPA_Year')
+    var_audit_FI_RPA_Period<- var_integer('audit_FI_RPA_Period')
+    data_audit_FI_RPA_summary <- eventReactive(input$audit_FI_RPA_btn,{
+      FYear =  as.integer(var_audit_FI_RPA_Year())
+      FPeriod =  as.integer( var_audit_FI_RPA_Period())
+      print(FYear)
+      print(FPeriod)
+      data_summary <- mrptpkg::audit_fi_rpa_brandChannel(conn = conn,FYear = FYear,FPeriod = FPeriod)
+      names(data_summary) <- c('品牌','渠道')
+      return(data_summary)
+    })
+    
+    observeEvent(input$audit_FI_RPA_btn,{
+      output$audit_FI_RPA_summary <- DT::renderDataTable(data_audit_FI_RPA_summary(),selection = 'single')
+   
+
+    })
+    
+    #展开了相应的管理报表
+    drilldata_audit_FI_RPA_detail <- reactive({
+      FYear =  as.integer(var_audit_FI_RPA_Year())
+      FPeriod =  as.integer( var_audit_FI_RPA_Period())
+      shiny::validate(
+        need(length(input$audit_FI_RPA_summary_rows_selected) > 0, "请选中任意一行")
+      )    
+      data_summary <- data_audit_FI_RPA_summary()
+      FBrand  <- data_summary[as.integer(input$audit_FI_RPA_summary_rows_selected), '品牌']
+      FChannel <- data_summary[as.integer(input$audit_FI_RPA_summary_rows_selected), '渠道']
+      data_detail1 <- mrptpkg::audit_fi_rpa_rpt(conn = conn,FYear = FYear,FPeriod = FPeriod,FBrand = FBrand,FChannel = FChannel)
+      names(data_detail1) <- c('品牌','渠道','报表项目代码','报表项目金额','当期金额')
+      return(data_detail1)
+      
+    })
+    
+    output$audit_FI_RPA_detail <- DT::renderDataTable(drilldata_audit_FI_RPA_detail(),selection = 'single')
+    # 反查到SAP凭证
+    drilldata_detail_SAP <- reactive({
+      FYear =  as.integer(var_audit_FI_RPA_Year())
+      FPeriod =  as.integer( var_audit_FI_RPA_Period())
+      shiny::validate(
+        need(length(input$audit_FI_RPA_detail_rows_selected) > 0, "请选中任意一行")
+      )    
+      data_detail <- drilldata_audit_FI_RPA_detail()
+      FBrand  <- data_detail[as.integer(input$audit_FI_RPA_detail_rows_selected), '品牌']
+      FChannel <- data_detail[as.integer(input$audit_FI_RPA_detail_rows_selected), '渠道']
+      FRptItemNumber <-data_detail[as.integer(input$audit_FI_RPA_detail_rows_selected), '报表项目代码']
+      data_detail1 <- mrptpkg::audit_detail_fromDS1_SAP(conn = conn,FYear = FYear,FPeriod = FPeriod,FBrand = FBrand,FChannel = FChannel,FRptItemNumber = FRptItemNumber)
+      ncount <- nrow(data_detail1)
+      if (ncount >0){
+        names(data_detail1) <- c('年份','月份','品牌','渠道','报表项目代码','报表项目名称','当期金额','成本中心代码','成本要素名称','凭证号','凭证金额','渠道费用比率')
+      }
+      
+      return(data_detail1)
+      
+    })
+    #显示筛选的选择
+    
+    output$audit_FI_RPA_detail_SAP <- DT::renderDataTable(drilldata_detail_SAP(),selection = 'single')
+    # 更新数据选择
+     observeEvent(input$audit_FI_RPA_detail_rows_selected,{
+       data <- drilldata_detail_SAP()
+       ncount <- nrow(data)
+       if (ncount >0){
+         FYear = as.integer(data[1,'年份'])
+         FPeriod = as.integer(data[1,'月份'])
+         FYearPeriod = as.character(FYear*100+FPeriod)
+         FBrand = data[1,'品牌']
+         FChannel = data[1,'渠道']
+         FRptItemNumber =data[1,'报表项目代码']
+         file_name_xlsx = paste0('管报过程表_',FBrand,FChannel,'_',FYearPeriod,'_',FRptItemNumber,'_SAP凭证数据源.xlsx')
+         run_download_xlsx(id = 'audit_FI_RPA_detail_SAP_dl',data = drilldata_detail_SAP(),filename = file_name_xlsx)
+       }else{
+         pop_notice('不存在SAP数据源')
+       }
+      
+       
+     })
+    #反查手调凭证
+     drilldata_detail_ADJ <- reactive({
+       FYear =  as.integer(var_audit_FI_RPA_Year())
+       FPeriod =  as.integer( var_audit_FI_RPA_Period())
+       shiny::validate(
+         need(length(input$audit_FI_RPA_detail_rows_selected) > 0, "请选中任意一行")
+       )    
+       data_detail <- drilldata_audit_FI_RPA_detail()
+       FBrand  <- data_detail[as.integer(input$audit_FI_RPA_detail_rows_selected), '品牌']
+       FChannel <- data_detail[as.integer(input$audit_FI_RPA_detail_rows_selected), '渠道']
+       FRptItemNumber <-data_detail[as.integer(input$audit_FI_RPA_detail_rows_selected), '报表项目代码']
+       data_detail1 <- mrptpkg::audit_detail_fromDS1_ADJ(conn = conn,FYear = FYear,FPeriod = FPeriod,FBrand = FBrand,FChannel = FChannel,FRptItemNumber = FRptItemNumber)
+       ncount <- nrow(data_detail1)
+       if (ncount >0){
+         names(data_detail1) <- c('年份','月份','品牌','渠道','报表项目代码','报表项目名称','当期金额','成本中心代码','成本要素名称','凭证号','凭证金额','渠道费用比率')
+       }
+       
+       return(data_detail1)
+       
+     })
+     #显示筛选的选择
+     
+     output$audit_FI_RPA_detail_ADJ <- DT::renderDataTable(drilldata_detail_ADJ(),selection = 'single')
+     # 更新数据选择
+     observeEvent(input$audit_FI_RPA_detail_rows_selected,{
+       data <- drilldata_detail_ADJ()
+       ncount <- nrow(data)
+       if (ncount >0){
+         FYear = as.integer(data[1,'年份'])
+         FPeriod = as.integer(data[1,'月份'])
+         FYearPeriod = as.character(FYear*100+FPeriod)
+         FBrand = data[1,'品牌']
+         FChannel = data[1,'渠道']
+         FRptItemNumber =data[1,'报表项目代码']
+         file_name_xlsx = paste0('管报过程表_',FBrand,FChannel,'_',FYearPeriod,'_',FRptItemNumber,'_手调凭证数据源.xlsx')
+         run_download_xlsx(id = 'audit_FI_RPA_detail_ADJ_dl',data = drilldata_detail_ADJ(),filename = file_name_xlsx)
+       }else{
+         pop_notice('不存在手调凭证数据源')
+       }
+       
+       
+     })
+     
+     #BW报表
+     
+     drilldata_detail_BW <- reactive({
+       FYear =  as.integer(var_audit_FI_RPA_Year())
+       FPeriod =  as.integer( var_audit_FI_RPA_Period())
+       shiny::validate(
+         need(length(input$audit_FI_RPA_detail_rows_selected) > 0, "请选中任意一行")
+       )    
+       data_detail <- drilldata_audit_FI_RPA_detail()
+       FBrand  <- data_detail[as.integer(input$audit_FI_RPA_detail_rows_selected), '品牌']
+       FChannel <- data_detail[as.integer(input$audit_FI_RPA_detail_rows_selected), '渠道']
+       FRptItemNumber <-data_detail[as.integer(input$audit_FI_RPA_detail_rows_selected), '报表项目代码']
+       data_detail1 <- mrptpkg::audit_detail_fromDS1_BW(conn = conn,FYear = FYear,FPeriod = FPeriod,FBrand = FBrand,FChannel = FChannel,FRptItemNumber = FRptItemNumber)
+       ncount <- nrow(data_detail1)
+       if (ncount >0){
+         names(data_detail1) <- c('年份','月份','品牌','渠道','报表项目代码','报表项目名称','当期金额','方案代码','子方案号','指标类型',
+                                  'F13物料组代码','F13物料组名称','F14品牌代码','F14品牌名称','F30客户代码','F30客户名称',
+                                  'F33子渠道代码','F33子渠道名称','F37地区销售部代码','F37地区销售部名称','41分析用渠道',
+                                  'F61成本中心控制代码','F61成本中心控制名称')
+       }
+       
+       return(data_detail1)
+       
+     })
+     #显示筛选的选择
+     
+     output$audit_FI_RPA_detail_BW <- DT::renderDataTable(drilldata_detail_BW(),selection = 'single')
+     # 更新数据选择
+     observeEvent(input$audit_FI_RPA_detail_rows_selected,{
+       data <- drilldata_detail_BW()
+       ncount <- nrow(data)
+       if (ncount >0){
+         FYear = as.integer(data[1,'年份'])
+         FPeriod = as.integer(data[1,'月份'])
+         FYearPeriod = as.character(FYear*100+FPeriod)
+         FBrand = data[1,'品牌']
+         FChannel = data[1,'渠道']
+         FRptItemNumber =data[1,'报表项目代码']
+         file_name_xlsx = paste0('管报过程表_',FBrand,FChannel,'_',FYearPeriod,'_',FRptItemNumber,'_BW报表数据源.xlsx')
+         run_download_xlsx(id = 'audit_FI_RPA_detail_BW_dl',data = drilldata_detail_BW(),filename = file_name_xlsx)
+       }else{
+         pop_notice('不存在BW报表数据源')
+       }
+       
+       
+     })
+     
+     #重分类凭证按凭证号查询--------
+     var_voucher_audit_afterReclass_Year2 <- var_text('voucher_audit_afterReclass_Year2')
+     var_voucher_audit_afterReclass_Period2 <- var_integer('voucher_audit_afterReclass_Period2')
+     var_voucher_audit_afterReclass_vchNo2 <- var_text('voucher_audit_afterReclass_vchNo2')
+     observeEvent(input$voucher_audit_afterReclass_btn2,{
+       FYear = as.integer(var_voucher_audit_afterReclass_Year2())
+       FPeriod = as.integer(var_voucher_audit_afterReclass_Period2())
+       FVchNo = var_voucher_audit_afterReclass_vchNo2()
+       print(FYear)
+       print(FPeriod)
+       print(FVchNo)
+       data <- mrptpkg::voucher_afterReClass_vchNo_list(conn = conn,FYear = FYear,FPeriod = FPeriod,FVchNo = FVchNo)
+       print(data)
+       ncount =nrow(data)
+       if(ncount >0){
+         names(data) <- c('凭证日期','过账日期','成本中心代码','成本中心名称','成本要素代码1','成本要素名称1','凭证金额','凭证摘要','重分类代码','凭证号','成本要素代码2','成本要素名称2','成本要素代码','成本要素名称')
+         run_dataTable2('voucher_audit_afterReclass_dataView2',data = data)
+         var_file_name = paste0("按凭证号查询_",as.character(FYear*100+FPeriod),'_',FVchNo,'.xlsx')
+         run_download_xlsx(id = 'voucher_audit_afterReclass_dl2',data = data,filename = var_file_name )
+         
+         
+       }else{
+         
+         pop_notice('未查询到凭证数据，请检查一下凭证号是否有误')
+         
+         
+       }
+       
+       
+       
+     })
+     
+
+    
     
     
   

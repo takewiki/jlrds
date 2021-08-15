@@ -137,26 +137,51 @@ menu_series<- tabItem(tabName = "series",
                                         
                                         ))),
                                       
-                                      tabPanel('sheet3',tagList(
+                                      tabPanel('报表分析-管报反查表',tagList(
                                         fluidRow(column(4,box(
                                           title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
-                                          'sheet3'
+                                          mdl_text('audit_FI_RPA_Year',label = '年份',value =tsdo::left(as.character(Sys.Date()),4)),
+                                          mdl_integer(id = 'audit_FI_RPA_Period',label = '月份',min = 1,max = 12,
+                                                      value = as.integer(strsplit(as.character(Sys.Date()),'-')[[1]][2]),step = 1),
+                                          actionButton(inputId = 'audit_FI_RPA_btn',label = '报表反查'),
+                                          dataTableOutput("audit_FI_RPA_summary")
                                         )),
                                         column(8, box(
                                           title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",
-                                          'rpt3'
+                                          
+                                          dataTableOutput("audit_FI_RPA_detail")
                                         )
-                                        ))
+                                        )),
+                                        fluidRow(column(12,box(title = "过程表-SAP凭证", width = NULL, solidHeader = TRUE, status = "primary",
+                                                              div(style = 'overflow-x: scroll',dataTableOutput("audit_FI_RPA_detail_SAP")),
+                                                              mdl_download_button(id = 'audit_FI_RPA_detail_SAP_dl',label = '下载SAP凭证数据源')))
+                                                 ),
+                                        fluidRow(column(12,box(title = "过程表-手调凭证", width = NULL, solidHeader = TRUE, status = "primary",
+                                                               div(style = 'overflow-x: scroll',dataTableOutput("audit_FI_RPA_detail_ADJ")),
+                                                               mdl_download_button(id = 'audit_FI_RPA_detail_ADJ_dl',label = '下载手调凭证数据源')
+                                                               ))),
                                         
-                                      )),
-                                      tabPanel('sheet4',tagList(
+                                        fluidRow(column(12,box(title = "过程表-BW报表", width = NULL, solidHeader = TRUE, status = "primary",
+                                                               div(style = 'overflow-x: scroll',dataTableOutput("audit_FI_RPA_detail_BW")),
+                                                               mdl_download_button(id = 'audit_FI_RPA_detail_BW_dl',label = '下载BW报表数据源')
+                                                               ))
+                                                 
+                                                 
+                                                 
+                                        ))),
+                                      tabPanel('报表分析-SAP凭证号查询',tagList(
                                         fluidRow(column(4,box(
                                           title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
-                                          'sheet4'
+                                          mdl_text('voucher_audit_afterReclass_Year2',label = '年份',value =tsdo::left(as.character(Sys.Date()),4)),
+                                          mdl_integer(id = 'voucher_audit_afterReclass_Period2',label = '月份',min = 1,max = 12,
+                                                      value = as.integer(strsplit(as.character(Sys.Date()),'-')[[1]][2]),step = 1),
+                                          mdl_text('voucher_audit_afterReclass_vchNo2',label = '参考凭证号',value = '4901907219'),
+                                          actionButton(inputId = 'voucher_audit_afterReclass_btn2',label = '凭证分析'),
+                                          mdl_download_button(id = 'voucher_audit_afterReclass_dl2',label = '下载凭证')
                                         )),
                                         column(8, box(
                                           title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",
-                                          'rpt4'
+                                          div(style = 'overflow-x: scroll',mdl_dataTable("voucher_audit_afterReclass_dataView2"))
                                         )
                                         ))
                                         
