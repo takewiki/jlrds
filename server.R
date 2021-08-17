@@ -1886,6 +1886,59 @@
        
        
      })
+     #管报过程表查询
+ 
+     var_audit_FI_RPA_Year3 <- var_text('audit_FI_RPA_Year3')
+     var_audit_FI_RPA_Period3<- var_integer('audit_FI_RPA_Period3')
+     data_audit_FI_RPA_summary3 <- eventReactive(input$audit_FI_RPA_btn3,{
+       FYear =  as.integer(var_audit_FI_RPA_Year3())
+       FPeriod =  as.integer( var_audit_FI_RPA_Period3())
+       print(FYear)
+       print(FPeriod)
+       data_summary <- mrptpkg::audit_fi_rpa_brandChannel(conn = conn,FYear = FYear,FPeriod = FPeriod)
+       names(data_summary) <- c('品牌','渠道')
+       return(data_summary)
+     })
+     
+     observeEvent(input$audit_FI_RPA_btn3,{
+       output$audit_FI_RPA_summary3 <- DT::renderDataTable(data_audit_FI_RPA_summary3(),selection = 'single')
+       
+       
+     })
+     
+     #展开了相应的管理报表
+     drilldata_audit_FI_RPA_detail3 <- reactive({
+       FYear =  as.integer(var_audit_FI_RPA_Year3())
+       FPeriod =  as.integer( var_audit_FI_RPA_Period3())
+       shiny::validate(
+         need(length(input$audit_FI_RPA_summary3_rows_selected) > 0, "请选中任意一行")
+       )    
+       data_summary <- data_audit_FI_RPA_summary3()
+       FBrand  <- data_summary[as.integer(input$audit_FI_RPA_summary3_rows_selected), '品牌']
+       FChannel <- data_summary[as.integer(input$audit_FI_RPA_summary3_rows_selected), '渠道']
+       data_detail1 <- mrptpkg::audit_detail_All(conn = conn,FYear = FYear,FPeriod = FPeriod,FBrand = FBrand,FChannel = FChannel)
+       names(data_detail1) <- c('年份','月份','品牌','渠道','子渠道','报表项目代码','报表项目金额','当期金额','数据源','BW方案号','子方案号','指标类型',
+                                'F13物料组代码','F13物料组名称','F14品牌代码','F14品牌名称','F30客户代码','F30客户名称',
+                                'F33子渠道代码','F33子渠道名称','F37地区销售部代码','F37地区销售部名称','41分析用渠道',
+                                'F61成本中心控制代码','F61成本中心控制名称','成本中心代码','成本要素名称','凭证号','凭证金额',
+                                '凭证抬头','渠道费用分配率','成本中心类型','市场费用金额','市场费用分配率')
+       return(data_detail1)
+       
+     })
+     
+       observeEvent(input$audit_FI_RPA_summary3_rows_selected,{
+         data = drilldata_audit_FI_RPA_detail3()
+         output$audit_FI_RPA_detail3 <- DT::renderDataTable(data,selection = 'single')
+         FYear =  as.integer(var_audit_FI_RPA_Year3())
+         FPeriod =  as.integer( var_audit_FI_RPA_Period3())
+         FBrand = data[1,'品牌']
+         FChannel =data[1,'渠道']
+         var_file_name = paste0('管报过程表_',as.character(FYear*100+FPeriod),'_',FBrand,FChannel,'.xlsx')
+         run_download_xlsx('audit_FI_RPA_detail_dl3',data = data,filename = var_file_name)
+         
+       })
+     
+     
      
 
     

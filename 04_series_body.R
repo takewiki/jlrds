@@ -169,6 +169,21 @@ menu_series<- tabItem(tabName = "series",
                                                  
                                                  
                                         ))),
+                                      tabPanel('报表分析-品牌费用明细查询',tagList(
+                                        fluidRow(column(4,box(
+                                          title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
+                                          mdl_text('audit_FI_RPA_Year3',label = '年份',value =tsdo::left(as.character(Sys.Date()),4)),
+                                          mdl_integer(id = 'audit_FI_RPA_Period3',label = '月份',min = 1,max = 12,
+                                                      value = as.integer(strsplit(as.character(Sys.Date()),'-')[[1]][2]),step = 1),
+                                          actionButton(inputId = 'audit_FI_RPA_btn3',label = '过程表查询'),
+                                          dataTableOutput("audit_FI_RPA_summary3")
+                                          
+                                        ))),
+                                        fluidRow(column(12,box(title = "过程表-品牌渠道所有明细", width = NULL, solidHeader = TRUE, status = "primary",
+                                                               div(style = 'overflow-x: scroll',dataTableOutput("audit_FI_RPA_detail3")),
+                                                               mdl_download_button(id = 'audit_FI_RPA_detail_dl3',label = '下载管理过程表')))
+                                        )
+                                        )),
                                       tabPanel('报表分析-SAP凭证号查询',tagList(
                                         fluidRow(column(4,box(
                                           title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
