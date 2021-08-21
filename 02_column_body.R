@@ -363,7 +363,16 @@ menu_column <- tabItem(tabName = "column",
                                            mdl_text(id = 'adj_FYear',label = '年份'),
                                            mdl_text(id='adj_FPeriod',label = '月份'),
                                            actionButton('adj_preview',label = '查询手工调整数据'),
-                                           mdl_download_button('adj_dl','下载手工调整')
+                                           mdl_download_button('adj_dl','下载手工调整'),
+                                           hr(),
+                                           br(),
+                                           #添加手调凭证模板数据
+                                           tags$a(href='手调凭证模板.xlsx','第一次使用，请下载手调凭证模板'),
+                                           tags$h4('请选择一下需要上传的手调凭证文件'),
+                                           mdl_file(id = 'adj_upload_file',label = '选择一个手调凭证'),
+                                           actionButton(inputId = 'adj_upload_btn',label = '上传手调凭证至服务器')
+                                           
+                                           
                                          )),
                                          column(8, box(
                                            title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",

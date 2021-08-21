@@ -1937,6 +1937,23 @@
          run_download_xlsx('audit_FI_RPA_detail_dl3',data = data,filename = var_file_name)
          
        })
+       
+       #上传手调整凭证-----
+       var_adj_upload_file <- var_file('adj_upload_file')
+       observeEvent(input[['adj_upload_btn']],{
+         #有点意思，显示所有的内容
+         #print(names(input)) 
+         file_name = var_adj_upload_file()
+         if(is.null(file_name)){
+           pop_notice('请选择一下手调凭证文件')
+         }else{
+           res <- jlrdspkg::adj_readData(file = file_name,conn = conn)
+           pop_notice('上传服务器成功！')
+         }
+         
+         
+       })
+       
      
      
      
