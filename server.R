@@ -1717,7 +1717,7 @@
       FBrand  <- data_summary[as.integer(input$audit_FI_RPA_summary_rows_selected), '品牌']
       FChannel <- data_summary[as.integer(input$audit_FI_RPA_summary_rows_selected), '渠道']
       data_detail1 <- mrptpkg::audit_fi_rpa_rpt(conn = conn,FYear = FYear,FPeriod = FPeriod,FBrand = FBrand,FChannel = FChannel)
-      names(data_detail1) <- c('品牌','渠道','报表项目代码','报表项目名称','手工金额','当期金额','差异金额')
+      names(data_detail1) <- c('品牌','渠道','报表项目代码','报表项目名称','手工金额（调整后）','RPA当期金额','RPA差异','手工金额(调整前)','手工调整原因')
       return(data_detail1)
       
     })
