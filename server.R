@@ -1723,6 +1723,79 @@
     })
     
     output$audit_FI_RPA_detail <- DT::renderDataTable(drilldata_audit_FI_RPA_detail(),selection = 'single')
+    #添加修改操作
+    observeEvent(input$audit_FI_RPA_detail_rows_selected,{
+      FYear =  as.integer(var_audit_FI_RPA_Year())
+      FPeriod =  as.integer( var_audit_FI_RPA_Period())
+      data_detail <- drilldata_audit_FI_RPA_detail()
+      FBrand  <- data_detail[as.integer(input$audit_FI_RPA_detail_rows_selected), '品牌']
+      FChannel <- data_detail[as.integer(input$audit_FI_RPA_detail_rows_selected), '渠道']
+      FRptItemNumber <-data_detail[as.integer(input$audit_FI_RPA_detail_rows_selected), '报表项目代码']
+      info <- mrptpkg::audit_fi_rpa_getValue(conn = conn,FYear = FYear,FPeriod = FPeriod,FBrand = FBrand,FChannel = FChannel,FRptItemNumber = FRptItemNumber)
+      print(input$audit_FI_RPA_detail_rows_selected)
+      if(length(FBrand) >0){
+        output$audit_FI_RPA_detail_action <- renderUI(
+          tagList(
+            mdl_text(id = 'audit_FI_RPA_detail_action1',label = '手工金额(调整后)',value = as.character(info$FRptAmt)),
+            mdl_text(id = 'audit_FI_RPA_detail_action2',label = '调整原因',value = as.character(info$FRemark)),
+            mdl_password(id = 'audit_FI_RPA_detail_action3',label = '提交密码'),
+            actionButton(inputId ='audit_FI_RPA_detail_action4','提交服务器' )
+            
+          )
+          
+        )
+      }else{
+        output$audit_FI_RPA_detail_action <- renderUI({
+          tags$h4('没有选中任意一行报表项目')
+        })
+        
+      }
+
+      
+    })
+    
+    #添加提交功能
+    var_audit_FI_RPA_detail_action1 <- var_text('audit_FI_RPA_detail_action1')
+    var_audit_FI_RPA_detail_action2 <- var_text('audit_FI_RPA_detail_action2')
+    var_audit_FI_RPA_detail_action3 <- var_password('audit_FI_RPA_detail_action3')
+    observeEvent(input$audit_FI_RPA_detail_action4,{
+      FYear =  as.integer(var_audit_FI_RPA_Year())
+      FPeriod =  as.integer( var_audit_FI_RPA_Period())
+      data_detail <- drilldata_audit_FI_RPA_detail()
+      FBrand  <- data_detail[as.integer(input$audit_FI_RPA_detail_rows_selected), '品牌']
+      FChannel <- data_detail[as.integer(input$audit_FI_RPA_detail_rows_selected), '渠道']
+      FRptItemNumber <-data_detail[as.integer(input$audit_FI_RPA_detail_rows_selected), '报表项目代码']
+      FRptAmt <- var_audit_FI_RPA_detail_action1()
+      FRemark <- var_audit_FI_RPA_detail_action2()
+      FPWD = var_audit_FI_RPA_detail_action3()
+      print(FYear)
+      print(FPeriod)
+      print(FBrand)
+      print(FChannel)
+      
+      if(length(FBrand) >0){
+        if(FPWD == 'rds@2021'){
+          
+          try(
+            mrptpkg::audit_fi_rpa_setValue(conn = conn,FYear = FYear,FPeriod = FPeriod,FBrand = FBrand,FChannel = FChannel,
+                                           FRptItemNumber = FRptItemNumber,FRptAmt = FRptAmt,FRemark = FRemark
+            )
+          )
+          
+          pop_notice('更新成功')
+          
+        }else{
+          pop_notice('提交密码有误,请重新输入或联系管理员!') 
+        }
+      }else{
+        pop_notice('请选中一行!') 
+      }
+      
+      
+
+    })
+    
+    
     # 反查到SAP凭证
     drilldata_detail_SAP <- reactive({
       FYear =  as.integer(var_audit_FI_RPA_Year())

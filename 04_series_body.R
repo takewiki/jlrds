@@ -149,7 +149,8 @@ menu_series<- tabItem(tabName = "series",
                                         column(8, box(
                                           title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",
                                           
-                                          dataTableOutput("audit_FI_RPA_detail")
+                                          dataTableOutput("audit_FI_RPA_detail"),
+                                          uiOutput('audit_FI_RPA_detail_action')
                                         )
                                         )),
                                         fluidRow(column(12,box(title = "过程表-SAP凭证", width = NULL, solidHeader = TRUE, status = "primary",
