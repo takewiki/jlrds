@@ -144,7 +144,11 @@ menu_series<- tabItem(tabName = "series",
                                           mdl_integer(id = 'audit_FI_RPA_Period',label = '月份',min = 1,max = 12,
                                                       value = as.integer(strsplit(as.character(Sys.Date()),'-')[[1]][2]),step = 1),
                                           actionButton(inputId = 'audit_FI_RPA_btn',label = '报表反查'),
-                                          dataTableOutput("audit_FI_RPA_summary")
+                                          dataTableOutput("audit_FI_RPA_summary"),
+                                          hr(),
+                                          mdl_download_button(id = 'audit_FI_RPA_dl',label = '下载管报反查表')
+                                
+                                          
                                         )),
                                         column(8, box(
                                           title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",

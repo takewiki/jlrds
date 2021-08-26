@@ -1723,6 +1723,20 @@
     })
     
     output$audit_FI_RPA_detail <- DT::renderDataTable(drilldata_audit_FI_RPA_detail(),selection = 'single')
+    
+    #添加下载表的功能
+    observeEvent(input$audit_FI_RPA_summary_rows_selected,{
+      FYear =  as.integer(var_audit_FI_RPA_Year())
+      FPeriod =  as.integer( var_audit_FI_RPA_Period())
+      data_summary <- data_audit_FI_RPA_summary()
+      FBrand  <- data_summary[as.integer(input$audit_FI_RPA_summary_rows_selected), '品牌']
+      FChannel <- data_summary[as.integer(input$audit_FI_RPA_summary_rows_selected), '渠道']
+      var_file_name = paste0("管报反查表_",FBrand,FChannel,"_",as.character(FYear*100+FPeriod),'.xlsx')
+      
+      run_download_xlsx(id = 'audit_FI_RPA_dl',data = drilldata_audit_FI_RPA_detail(),filename = var_file_name)
+    })
+
+    
     #添加修改操作
     observeEvent(input$audit_FI_RPA_detail_rows_selected,{
       FYear =  as.integer(var_audit_FI_RPA_Year())
