@@ -2040,6 +2040,22 @@
          
          
        })
+       #管报业务规则生效
+       observeEvent(input$md_bw_businessRule_activate,{
+         
+         try(mrpt_md_rule_bw2_dim_allocAll(conn = conn))
+         tsui::pop_notice('业务规则表生效')
+         
+       })
+       #管报运算
+       var_mrpt_run_Year <-var_text('mrpt_run_Year')
+       var_mrpt_run_Period <- var_integer('mrpt_run_Period')
+       observeEvent(input$mrpt_run,{
+         FYear = as.integer(var_mrpt_run_Year())
+         FPeriod =as.integer(var_mrpt_run_Period())
+         jlrdspkg::mrpt_run(conn = conn,FYear = FYear,FPeriod = FPeriod)
+         pop_notice('管报运算成功')
+       })
        
      
      

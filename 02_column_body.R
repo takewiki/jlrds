@@ -3,6 +3,29 @@ menu_column <- tabItem(tabName = "column",
                          column(width = 12,
                                 tabBox(title ="管报工作台",width = 12,
                                        id='tabSet_column',height = '300px',
+                                       
+                                       tabPanel('管报自动化运算',tagList(
+                                         fluidRow(column(4,box(
+                                           title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
+                                           tags$h4("计算"),
+                                           br(),
+                                           mdl_text('mrpt_run_Year',label = '年份',value =tsdo::left(as.character(Sys.Date()),4)),
+                                           mdl_integer(id = 'mrpt_run_Period',label = '月份',min = 1,max = 12,
+                                                       value = as.integer(strsplit(as.character(Sys.Date()),'-')[[1]][2]),step = 1),
+                                           
+                                           actionButton('mrpt_run',label = '管报运算'),
+                                           actionButton('mrpt_to_bw',label = '管报写入BW报表')
+                                           
+                                           
+                                           
+                                         )),
+                                         column(8, box(
+                                           title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",
+                                           ''
+                                         )
+                                         ))
+                                         
+                                       )),
                                 
                                  
                                        tabPanel('1.01品牌渠道事业部',tagList(
@@ -168,7 +191,8 @@ menu_column <- tabItem(tabName = "column",
                                            hr(),
                                            tags$a(href='BW报表业务规则模板.xlsx','第一次使用，请下载BW报表业务规则模板'),
                                            mdl_file('md_bw_businessRule_file','请选择一下BW报表业务规则文件'),
-                                           actionButton('md_bw_businessRule_upload',label = '上传BW报表业务规则')
+                                           actionButton('md_bw_businessRule_upload',label = '上传BW报表业务规则'),
+                                           actionButton('md_bw_businessRule_activate',label = 'BW报表业务规则更新生效')
                                            
                                          )),
                                          column(8, box(
