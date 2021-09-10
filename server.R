@@ -1690,11 +1690,18 @@
     #报表反查------
     var_audit_FI_RPA_Year <- var_text('audit_FI_RPA_Year')
     var_audit_FI_RPA_Period<- var_integer('audit_FI_RPA_Period')
+    #显示差异值
+    var_audit_onlyError_value <-var_numeric('audit_onlyError_value')
     data_audit_FI_RPA_summary <- eventReactive(input$audit_FI_RPA_btn,{
       FYear =  as.integer(var_audit_FI_RPA_Year())
       FPeriod =  as.integer( var_audit_FI_RPA_Period())
+      FErrorValue = var_audit_onlyError_value()
       print(FYear)
       print(FPeriod)
+      #测试相关的差异功能
+      print(FErrorValue)
+      print(input$audit_onlyError_btn)
+      
       data_summary <- mrptpkg::audit_fi_rpa_brandChannel(conn = conn,FYear = FYear,FPeriod = FPeriod)
       names(data_summary) <- c('品牌','渠道')
       return(data_summary)
@@ -1710,13 +1717,15 @@
     drilldata_audit_FI_RPA_detail <- reactive({
       FYear =  as.integer(var_audit_FI_RPA_Year())
       FPeriod =  as.integer( var_audit_FI_RPA_Period())
+      FErrorValue = var_audit_onlyError_value()
+      FOnlyError =  input$audit_onlyError_btn
       shiny::validate(
         need(length(input$audit_FI_RPA_summary_rows_selected) > 0, "请选中任意一行")
       )    
       data_summary <- data_audit_FI_RPA_summary()
       FBrand  <- data_summary[as.integer(input$audit_FI_RPA_summary_rows_selected), '品牌']
       FChannel <- data_summary[as.integer(input$audit_FI_RPA_summary_rows_selected), '渠道']
-      data_detail1 <- mrptpkg::audit_fi_rpa_rpt(conn = conn,FYear = FYear,FPeriod = FPeriod,FBrand = FBrand,FChannel = FChannel)
+      data_detail1 <- mrptpkg::audit_fi_rpa_rpt(conn = conn,FYear = FYear,FPeriod = FPeriod,FBrand = FBrand,FChannel = FChannel,FOnlyError = FOnlyError,FErrorValue = FErrorValue)
       names(data_detail1) <- c('品牌','渠道','报表项目代码','报表项目名称','手工金额（调整后）','RPA当期金额','RPA差异','手工金额(调整前)','手工调整原因')
       return(data_detail1)
       
@@ -1847,7 +1856,7 @@
          file_name_xlsx = paste0('管报过程表_',FBrand,FChannel,'_',FYearPeriod,'_',FRptItemNumber,'_SAP凭证数据源.xlsx')
          run_download_xlsx(id = 'audit_FI_RPA_detail_SAP_dl',data = drilldata_detail_SAP(),filename = file_name_xlsx)
        }else{
-         pop_notice('不存在SAP数据源')
+         # pop_notice('不存在SAP数据源')
        }
       
        
@@ -1889,7 +1898,7 @@
          file_name_xlsx = paste0('管报过程表_',FBrand,FChannel,'_',FYearPeriod,'_',FRptItemNumber,'_手调凭证数据源.xlsx')
          run_download_xlsx(id = 'audit_FI_RPA_detail_ADJ_dl',data = drilldata_detail_ADJ(),filename = file_name_xlsx)
        }else{
-         pop_notice('不存在手调凭证数据源')
+         # pop_notice('不存在手调凭证数据源')
        }
        
        
@@ -1936,7 +1945,7 @@
          file_name_xlsx = paste0('管报过程表_',FBrand,FChannel,'_',FYearPeriod,'_',FRptItemNumber,'_BW报表数据源.xlsx')
          run_download_xlsx(id = 'audit_FI_RPA_detail_BW_dl',data = drilldata_detail_BW(),filename = file_name_xlsx)
        }else{
-         pop_notice('不存在BW报表数据源')
+         # pop_notice('不存在BW报表数据源')
        }
        
        

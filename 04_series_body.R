@@ -143,10 +143,21 @@ menu_series<- tabItem(tabName = "series",
                                           mdl_text('audit_FI_RPA_Year',label = '年份',value =tsdo::left(as.character(Sys.Date()),4)),
                                           mdl_integer(id = 'audit_FI_RPA_Period',label = '月份',min = 1,max = 12,
                                                       value = as.integer(strsplit(as.character(Sys.Date()),'-')[[1]][2]),step = 1),
+                                          checkboxInput(inputId = 'audit_onlyError_btn',label = '仅显示差异项',value = FALSE,width = '100%'),
+                                          mdl_numeric(id = 'audit_onlyError_value',label = '差异值设置',value = 0.1,min = 0.1,max = 1.0,step = 0.1,width = '100%'),
+                                          
+                                          
+                                          
                                           actionButton(inputId = 'audit_FI_RPA_btn',label = '报表反查'),
-                                          dataTableOutput("audit_FI_RPA_summary"),
+                                          mdl_download_button(id = 'audit_FI_RPA_dl',label = '下载反查表'),
                                           hr(),
-                                          mdl_download_button(id = 'audit_FI_RPA_dl',label = '下载管报反查表')
+                                          dataTableOutput("audit_FI_RPA_summary"),
+                                    
+                                       
+                                          
+                                          
+                                      
+                                          
                                 
                                           
                                         )),
