@@ -1797,7 +1797,7 @@
       print(FChannel)
       
       if(length(FBrand) >0){
-        if(FPWD == 'rds@2021'){
+        if(FPWD == 'asd'){
           
           try(
             mrptpkg::audit_fi_rpa_setValue(conn = conn,FYear = FYear,FPeriod = FPeriod,FBrand = FBrand,FChannel = FChannel,
