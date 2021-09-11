@@ -138,53 +138,88 @@ menu_series<- tabItem(tabName = "series",
                                         ))),
                                       
                                       tabPanel('报表分析-管报反查表',tagList(
-                                        fluidRow(column(4,box(
+                                        fluidRow(column(5,box(
                                           title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
-                                          mdl_text('audit_FI_RPA_Year',label = '年份',value =tsdo::left(as.character(Sys.Date()),4)),
-                                          mdl_integer(id = 'audit_FI_RPA_Period',label = '月份',min = 1,max = 12,
-                                                      value = as.integer(strsplit(as.character(Sys.Date()),'-')[[1]][2]),step = 1),
-                                          checkboxInput(inputId = 'audit_onlyError_btn',label = '仅显示差异项',value = FALSE,width = '100%'),
-                                          mdl_numeric(id = 'audit_onlyError_value',label = '差异值设置',value = 0.1,min = 0.1,max = 1.0,step = 0.1,width = '100%'),
+                                          fluidRow(column(6,mdl_text('audit_FI_RPA_Year',label = '年份',value =tsdo::left(as.character(Sys.Date()),4))),
+                                                   column(6,mdl_numeric(id = 'audit_onlyError_value',label = '差异值设置',value = 0.1,min = 0.1,max = 1.0,step = 0.1)
+                                                          )),
+                                          
+                                    
+                                          fluidRow(column(8,mdl_integer(id = 'audit_FI_RPA_Period',label = '月份',min = 1,max = 12,
+                                                                        value = as.integer(strsplit(as.character(Sys.Date()),'-')[[1]][2]),step = 1)),
+                                                   column(4,checkboxInput(inputId = 'audit_onlyError_btn',label = '仅显示差异项',value = FALSE))
+                                                   ),
+                                          
+                                          
                                           
                                           
                                           
                                           actionButton(inputId = 'audit_FI_RPA_btn',label = '报表反查'),
                                           mdl_download_button(id = 'audit_FI_RPA_dl',label = '下载反查表'),
-                                          hr(),
-                                          dataTableOutput("audit_FI_RPA_summary"),
-                                    
-                                       
+                                     
                                           
+                                )),
+                                        column(7, box(
+                                          title = "修改区域", width = NULL, solidHeader = TRUE, status = "primary",
+                                         
                                           
-                                      
-                                          
-                                
-                                          
-                                        )),
-                                        column(8, box(
-                                          title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",
-                                          
-                                          dataTableOutput("audit_FI_RPA_detail"),
+                                          #添加修改区域
                                           uiOutput('audit_FI_RPA_detail_action')
                                         )
                                         )),
-                                        fluidRow(column(12,box(title = "过程表-SAP凭证", width = NULL, solidHeader = TRUE, status = "primary",
-                                                              div(style = 'overflow-x: scroll',dataTableOutput("audit_FI_RPA_detail_SAP")),
-                                                              mdl_download_button(id = 'audit_FI_RPA_detail_SAP_dl',label = '下载SAP凭证数据源')))
-                                                 ),
-                                        fluidRow(column(12,box(title = "过程表-手调凭证", width = NULL, solidHeader = TRUE, status = "primary",
-                                                               div(style = 'overflow-x: scroll',dataTableOutput("audit_FI_RPA_detail_ADJ")),
-                                                               mdl_download_button(id = 'audit_FI_RPA_detail_ADJ_dl',label = '下载手调凭证数据源')
-                                                               ))),
                                         
-                                        fluidRow(column(12,box(title = "过程表-BW报表", width = NULL, solidHeader = TRUE, status = "primary",
-                                                               div(style = 'overflow-x: scroll',dataTableOutput("audit_FI_RPA_detail_BW")),
-                                                               mdl_download_button(id = 'audit_FI_RPA_detail_BW_dl',label = '下载BW报表数据源')
-                                                               ))
+                                        fluidRow(column(12, box(
+                                          title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",
+                                          tabBox(title ="",width = 12,
+                                                                   id='tabSet_rptTraceBack',height = '800px', 
+                                                                   tabPanel('管报反查-品牌选择',tagList(
+                                                                     dataTableOutput("audit_FI_RPA_summary")
+                                                                   )),
+                                                                   tabPanel('管报反查-报表项目',
+                                                                            tagList(  div(style = 'overflow-x: scroll',dataTableOutput("audit_FI_RPA_detail")))),
+                                                                   tabPanel('管报过程表-SAP',tagList(
+                                                                     div(style = 'overflow-x: scroll',dataTableOutput("audit_FI_RPA_detail_SAP")),
+                                                                     mdl_download_button(id = 'audit_FI_RPA_detail_SAP_dl',label = '下载SAP凭证数据源')
+                                                                   )),
+                                                                   tabPanel('管报过程表-BW',tagList(
+                                                                     div(style = 'overflow-x: scroll',dataTableOutput("audit_FI_RPA_detail_BW")),
+                                                                     mdl_download_button(id = 'audit_FI_RPA_detail_BW_dl',label = '下载BW报表数据源')
+                                                                   )),
+                                                                   tabPanel('管报过程表-手调',tagList(
+                                                                     div(style = 'overflow-x: scroll',dataTableOutput("audit_FI_RPA_detail_ADJ")),
+                                                                     mdl_download_button(id = 'audit_FI_RPA_detail_ADJ_dl',label = '下载手调凭证数据源')
+                                                                   ))
+                                                                   
+                                                                   
+                                                                   
+                                                                   
+                                                                   ))))
+                                        
+                                        
+                                        # 
+                                        # fluidRow(column(12,box(title = "管报-报表项目", width = NULL, solidHeader = TRUE, status = "primary",
+                                        #                       
+                                        #                      ''
+                                        #                       
+                                        #                     
+                                        #                        ))
+                                        # ),
+                                        # 
+                                        # 
+                                        # fluidRow(column(12,box(title = "过程表-SAP凭证", width = NULL, solidHeader = TRUE, status = "primary",
+                                        #                      ))
+                                        #          ),
+                                        # fluidRow(column(12,box(title = "过程表-手调凭证", width = NULL, solidHeader = TRUE, status = "primary",
+                                        #                     ''
+                                        #                        ))),
+                                        # 
+                                        # fluidRow(column(12,box(title = "过程表-BW报表", width = NULL, solidHeader = TRUE, status = "primary",
+                                        #                     ''
+                                        #                        ))
                                                  
                                                  
                                                  
-                                        ))),
+                                        )),
                                       tabPanel('报表分析-品牌费用明细查询',tagList(
                                         fluidRow(column(4,box(
                                           title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",

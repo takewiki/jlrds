@@ -1709,6 +1709,7 @@
     
     observeEvent(input$audit_FI_RPA_btn,{
       output$audit_FI_RPA_summary <- DT::renderDataTable(data_audit_FI_RPA_summary(),selection = 'single')
+      #updateTabsetPanel(session = session,inputId = 'tabSet_rptTraceBack',selected = '管报反查-报表项目')
    
 
     })
@@ -1726,7 +1727,8 @@
       FBrand  <- data_summary[as.integer(input$audit_FI_RPA_summary_rows_selected), '品牌']
       FChannel <- data_summary[as.integer(input$audit_FI_RPA_summary_rows_selected), '渠道']
       data_detail1 <- mrptpkg::audit_fi_rpa_rpt(conn = conn,FYear = FYear,FPeriod = FPeriod,FBrand = FBrand,FChannel = FChannel,FOnlyError = FOnlyError,FErrorValue = FErrorValue)
-      names(data_detail1) <- c('品牌','渠道','报表项目代码','报表项目名称','手工金额（调整后）','RPA当期金额','RPA差异','手工金额(调整前)','手工调整原因')
+      names(data_detail1) <- c('品牌','渠道','报表项目代码','报表项目名称','手工金额（调整后）','RPA当期金额','RPA差异','手工金额(调整前)','手工调整原因','1-SAP汇总金额','2-BW汇总金额','3-手调汇总金额','前2项小计','3项合计')
+     
       return(data_detail1)
       
     })
@@ -1735,6 +1737,7 @@
     
     #添加下载表的功能
     observeEvent(input$audit_FI_RPA_summary_rows_selected,{
+      updateTabsetPanel(session = session,inputId ='tabSet_rptTraceBack' ,selected = '管报反查-报表项目')
       FYear =  as.integer(var_audit_FI_RPA_Year())
       FPeriod =  as.integer( var_audit_FI_RPA_Period())
       data_summary <- data_audit_FI_RPA_summary()
@@ -1761,8 +1764,10 @@
           tagList(
             mdl_text(id = 'audit_FI_RPA_detail_action1',label = '手工金额(调整后)',value = as.character(info$FRptAmt)),
             mdl_text(id = 'audit_FI_RPA_detail_action2',label = '调整原因',value = as.character(info$FRemark)),
-            mdl_password(id = 'audit_FI_RPA_detail_action3',label = '提交密码'),
-            actionButton(inputId ='audit_FI_RPA_detail_action4','提交服务器' )
+            fluidRow(column(6, mdl_password(id = 'audit_FI_RPA_detail_action3',label = '提交密码')),
+                     column(6,tagList(br(),actionButton(inputId ='audit_FI_RPA_detail_action4','提交服务器' ))))
+           
+            
             
           )
           
