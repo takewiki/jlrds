@@ -19,6 +19,7 @@ library(DTedit);
 library(jlrdspkg);
 library(shinyjs);
 library(mrptpkg)
+library(esquisse)
 
 
 source('00_data.R',encoding = 'utf-8');

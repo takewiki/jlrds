@@ -177,18 +177,77 @@ menu_series<- tabItem(tabName = "series",
                                                                    )),
                                                                    tabPanel('管报反查-报表项目',
                                                                             tagList(  div(style = 'overflow-x: scroll',dataTableOutput("audit_FI_RPA_detail")))),
-                                                                   tabPanel('管报过程表-SAP',tagList(
+                                                                   tabPanel('管报过程表-SAP凭证',tagList(
                                                                      div(style = 'overflow-x: scroll',dataTableOutput("audit_FI_RPA_detail_SAP")),
                                                                      mdl_download_button(id = 'audit_FI_RPA_detail_SAP_dl',label = '下载SAP凭证数据源')
                                                                    )),
-                                                                   tabPanel('管报过程表-BW',tagList(
+                                                                   tabPanel('管报过程表-BW报表',tagList(
                                                                      div(style = 'overflow-x: scroll',dataTableOutput("audit_FI_RPA_detail_BW")),
                                                                      mdl_download_button(id = 'audit_FI_RPA_detail_BW_dl',label = '下载BW报表数据源')
                                                                    )),
-                                                                   tabPanel('管报过程表-手调',tagList(
+                                                                   tabPanel('管报过程表-手调凭证',tagList(
                                                                      div(style = 'overflow-x: scroll',dataTableOutput("audit_FI_RPA_detail_ADJ")),
                                                                      mdl_download_button(id = 'audit_FI_RPA_detail_ADJ_dl',label = '下载手调凭证数据源')
-                                                                   ))
+                                                                   )),
+                                                 tabPanel('1-SAP凭证-分析',tagList(
+                                                   fluidRow(column(4,   dragulaInput(
+                                                     inputId = "formula_selection",
+                                                     label = '聚合函数设置',
+                                                     sourceLabel = "可选公式",
+                                                     targetsLabels = c("设置公式"),
+                                                     replace = TRUE,
+                                                     copySource = TRUE,
+                                                     selected = list("设置公式" = '求和'),
+                                                     choices = c('求和','计数','平均数','最大值','最小值','方差','标准差'),
+                                                     width = "300px"
+                                                   ),
+                                                   #verbatimTextOutput('res_formula_selection'),
+                                                    checkboxInput(inputId = 'traceBack_sap_addMargins',label = '分类汇总',value = TRUE),
+                                                    actionButton(inputId = 'traceBack_sap_crossTable_run',label = '生成数据透视表'),
+                                                   mdl_download_button('traceBack_sap_crossTable_dl','下载透视表')
+                                                   
+                                                   ),column(8,  
+                                                            #生成数据透视表的标签
+                                                            uiOutput('col_selection_holder')
+                                                            # ,
+                                                            # verbatimTextOutput('res_col_selection')
+                                              )),
+                                                
+                                                 
+                                                   div(style = 'overflow-x: scroll',dataTableOutput("traceBack_ana_SAP"))
+                                                 
+                                                
+                                                 )),
+                                              
+                                              tabPanel('2-BW报表-分析',tagList(
+                                                fluidRow(column(4,   dragulaInput(
+                                                  inputId = "formula_selection_bw",
+                                                  label = '聚合函数设置',
+                                                  sourceLabel = "可选公式",
+                                                  targetsLabels = c("设置公式"),
+                                                  replace = TRUE,
+                                                  copySource = TRUE,
+                                                  selected = list("设置公式" = '求和'),
+                                                  choices = c('求和','计数','平均数','最大值','最小值','方差','标准差'),
+                                                  width = "300px"
+                                                ),
+                                                #verbatimTextOutput('res_formula_selection'),
+                                                checkboxInput(inputId = 'traceBack_bw_addMargins',label = '分级汇总',value = TRUE),
+                                                actionButton(inputId = 'traceBack_bw_crossTable_run',label = '生成数据透视表'),
+                                                mdl_download_button('traceBack_bw_crossTable_dl','下载透视表')
+                                                
+                                                ),column(8,  
+                                                         #生成数据透视表的标签
+                                                         uiOutput('col_selection_holder_bw')
+                                                         # ,
+                                                         # verbatimTextOutput('res_col_selection')
+                                                )),
+                                                
+                                                
+                                                div(style = 'overflow-x: scroll',dataTableOutput("traceBack_ana_bw"))
+                                                
+                                                
+                                              ))
                                                                    
                                                                    
                                                                    

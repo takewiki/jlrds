@@ -1838,7 +1838,9 @@
       data_detail1 <- mrptpkg::audit_detail_fromDS1_SAP(conn = conn,FYear = FYear,FPeriod = FPeriod,FBrand = FBrand,FChannel = FChannel,FRptItemNumber = FRptItemNumber)
       ncount <- nrow(data_detail1)
       if (ncount >0){
-        names(data_detail1) <- c('年份','月份','品牌','渠道','报表项目代码','报表项目名称','当期金额','成本中心代码','成本要素名称','凭证号','凭证金额','渠道费用比率')
+        names(data_detail1) <- c('年份','月份','品牌','渠道','报表项目代码','报表项目名称',
+                                 
+                                 '当期金额','数据源','成本中心代码','成本要素代码','凭证号','凭证金额','费用类型','统一费用名称','费用比率','分配类型','成本中心类型','品牌渠道')
       }
       
       return(data_detail1)
@@ -1847,6 +1849,11 @@
     #显示筛选的选择
     
     output$audit_FI_RPA_detail_SAP <- DT::renderDataTable(drilldata_detail_SAP(),selection = 'single')
+    
+    
+    
+    
+    
     # 更新数据选择
      observeEvent(input$audit_FI_RPA_detail_rows_selected,{
        data <- drilldata_detail_SAP()
@@ -1860,6 +1867,74 @@
          FRptItemNumber =data[1,'报表项目代码']
          file_name_xlsx = paste0('管报过程表_',FBrand,FChannel,'_',FYearPeriod,'_',FRptItemNumber,'_SAP凭证数据源.xlsx')
          run_download_xlsx(id = 'audit_FI_RPA_detail_SAP_dl',data = drilldata_detail_SAP(),filename = file_name_xlsx)
+         #启用SAP 凭证分析功能
+         output$col_selection_holder <- renderUI({
+           dragulaInput(
+             inputId = "col_selection",
+             sourceLabel = "列标题",
+             targetsLabels = c("行", "列","值"),
+             choices = names(data),
+             width = "650px"
+           )
+           
+         })
+         #启用运算功能-----
+         observeEvent(input$traceBack_sap_crossTable_run,{
+           row_holder = input$col_selection$target$`行`
+           row_flag = is.null(row_holder)
+           row_flag2 =  !row_flag
+           
+           if(row_flag){
+             #pop_notice('请选择一列维度用于分析')
+           }
+           
+           #列可以为空
+           column_holder = input$col_selection$target$`列`
+           col_flag = is.null(column_holder)
+           if(col_flag){
+             column_holder = ''
+           }
+           
+           
+           value_hoder = input$col_selection$target$`值`
+           value_flag = is.null(value_hoder)
+           value_flag2 = !value_flag
+           if(value_flag){
+              #pop_notice('请选择一列数值列用于计算')
+           }else{
+             if(length(value_hoder) >1){
+              # pop_notice('只支持分析一列数值列')
+             }
+           }
+           
+          fun_name = input$formula_selection$target$`设置公式`
+          
+          margin_flag = input$traceBack_sap_addMargins
+          
+          if(row_flag2 & value_flag2 ){
+            #print('ana1')
+            #print(data)
+            data_analysis_sap <-tsdo::df_crossTable_run(data = data,row_holder = row_holder,column_holder = column_holder,
+                                                        value_hoder = value_hoder,fun_name = fun_name,margins = margin_flag)
+            #print(data_analysis_sap)
+            #print('ana2')
+            #run_dataTable2('traceBack_ana_SAP',data = data_analysis_sap)   
+            output$traceBack_ana_SAP <- DT::renderDataTable(data_analysis_sap,selection  = 'single')
+            #添加下载功能
+            file_name_xlsx2 = paste0('管报过程表_',FBrand,FChannel,'_',FYearPeriod,'_',FRptItemNumber,'_SAP凭证数据透视表.xlsx')
+            run_download_xlsx(id = 'traceBack_sap_crossTable_dl',data =data_analysis_sap,filename = file_name_xlsx2 )
+          }
+           
+           
+           
+    
+           
+           
+         })
+         
+         
+         
+         
        }else{
          # pop_notice('不存在SAP数据源')
        }
@@ -1880,7 +1955,9 @@
        data_detail1 <- mrptpkg::audit_detail_fromDS1_ADJ(conn = conn,FYear = FYear,FPeriod = FPeriod,FBrand = FBrand,FChannel = FChannel,FRptItemNumber = FRptItemNumber)
        ncount <- nrow(data_detail1)
        if (ncount >0){
-         names(data_detail1) <- c('年份','月份','品牌','渠道','报表项目代码','报表项目名称','当期金额','成本中心代码','成本要素名称','凭证号','凭证金额','渠道费用比率')
+         names(data_detail1) <- c('年份','月份','品牌','渠道','报表项目代码','报表项目名称',
+                                  
+                                  '当期金额','数据源','成本中心代码','成本要素代码','凭证号','凭证金额','费用类型','统一费用名称','费用比率','分配类型','成本中心类型','品牌渠道')
        }
        
        return(data_detail1)
@@ -1924,10 +2001,10 @@
        data_detail1 <- mrptpkg::audit_detail_fromDS1_BW(conn = conn,FYear = FYear,FPeriod = FPeriod,FBrand = FBrand,FChannel = FChannel,FRptItemNumber = FRptItemNumber)
        ncount <- nrow(data_detail1)
        if (ncount >0){
-         names(data_detail1) <- c('年份','月份','品牌','渠道','报表项目代码','报表项目名称','当期金额','方案代码','子方案号','指标类型',
+         names(data_detail1) <- c('年份','月份','品牌','渠道','报表项目代码','报表项目名称','当期金额','数据源','方案代码','子方案号','指标类型',
                                   'F13物料组代码','F13物料组名称','F14品牌代码','F14品牌名称','F30客户代码','F30客户名称',
                                   'F33子渠道代码','F33子渠道名称','F37地区销售部代码','F37地区销售部名称','41分析用渠道',
-                                  'F61成本中心控制代码','F61成本中心控制名称')
+                                  'F61成本中心控制代码','F61成本中心控制名称','报表金额','费用类型','统一费用名称','费用比率','分配类型','成本中心类型','品牌渠道')
        }
        
        return(data_detail1)
@@ -1949,6 +2026,74 @@
          FRptItemNumber =data[1,'报表项目代码']
          file_name_xlsx = paste0('管报过程表_',FBrand,FChannel,'_',FYearPeriod,'_',FRptItemNumber,'_BW报表数据源.xlsx')
          run_download_xlsx(id = 'audit_FI_RPA_detail_BW_dl',data = drilldata_detail_BW(),filename = file_name_xlsx)
+         
+         #启用SAP 凭证分析功能
+         output$col_selection_holder_bw <- renderUI({
+           dragulaInput(
+             inputId = "col_selection_bw",
+             sourceLabel = "列标题",
+             targetsLabels = c("行", "列","值"),
+             choices = names(data),
+             width = "650px",
+             height = '150px'
+           )
+           
+         })
+         #启用运算功能-----
+         observeEvent(input$traceBack_bw_crossTable_run,{
+           row_holder = input$col_selection_bw$target$`行`
+           row_flag = is.null(row_holder)
+           row_flag2 =  !row_flag
+           
+           if(row_flag){
+             #pop_notice('请选择一列维度用于分析')
+           }
+           
+           #列可以为空
+           column_holder = input$col_selection_bw$target$`列`
+           col_flag = is.null(column_holder)
+           if(col_flag){
+             column_holder = ''
+           }
+           
+           
+           value_hoder = input$col_selection_bw$target$`值`
+           value_flag = is.null(value_hoder)
+           value_flag2 = !value_flag
+           if(value_flag){
+             #pop_notice('请选择一列数值列用于计算')
+           }else{
+             if(length(value_hoder) >1){
+               # pop_notice('只支持分析一列数值列')
+             }
+           }
+           
+           fun_name = input$formula_selection_bw$target$`设置公式`
+           
+           margin_flag = input$traceBack_bw_addMargins
+           
+           if(row_flag2 & value_flag2 ){
+             #print('ana1')
+             #print(data)
+             data_analysis_bw <-tsdo::df_crossTable_run(data = data,row_holder = row_holder,column_holder = column_holder,
+                                                         value_hoder = value_hoder,fun_name = fun_name,margins = margin_flag)
+             #print(data_analysis_sap)
+             #print('ana2')
+             #run_dataTable2('traceBack_ana_SAP',data = data_analysis_sap)   
+             output$traceBack_ana_bw <- DT::renderDataTable(data_analysis_bw,selection  = 'single')
+             #添加下载功能
+             file_name_xlsx2 = paste0('管报过程表_',FBrand,FChannel,'_',FYearPeriod,'_',FRptItemNumber,'_BW报表证数据透视表.xlsx')
+             run_download_xlsx(id = 'traceBack_bw_crossTable_dl',data =data_analysis_bw,filename = file_name_xlsx2 )
+           }
+           
+           
+           
+           
+           
+           
+         })
+         
+         
        }else{
          # pop_notice('不存在BW报表数据源')
        }
@@ -2072,7 +2217,14 @@
        })
        
      
-     
+      # #设置选择内容
+      #  output$res_formula_selection <- renderPrint({
+      #    input$formula_selection$target$`设置公式`
+      #  })
+      #  
+      #  output$res_col_selection <-renderPrint({
+      #    input$col_selection$target
+      #  })
      
 
     
