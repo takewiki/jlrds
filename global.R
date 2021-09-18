@@ -20,6 +20,7 @@ library(jlrdspkg);
 library(shinyjs);
 library(mrptpkg)
 library(esquisse)
+library(hana)
 
 
 source('00_data.R',encoding = 'utf-8');

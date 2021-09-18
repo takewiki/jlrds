@@ -10,11 +10,13 @@ menu_column <- tabItem(tabName = "column",
                                            tags$h4("计算"),
                                            br(),
                                            mdl_text('mrpt_run_Year',label = '年份',value =tsdo::left(as.character(Sys.Date()),4)),
-                                           mdl_integer(id = 'mrpt_run_Period',label = '月份',min = 1,max = 12,
-                                                       value = as.integer(strsplit(as.character(Sys.Date()),'-')[[1]][2]),step = 1),
+                                           mdl_text('mrpt_run_Period',label = '月份'),
+                                           # mdl_integer(id = 'mrpt_run_Period',label = '月份',min = 1,max = 12,
+                                           #             value = as.integer(strsplit(as.character(Sys.Date()),'-')[[1]][2]),step = 1),
                                            
-                                           actionButton('mrpt_run',label = '管报运算'),
-                                           actionButton('mrpt_to_bw',label = '管报写入BW报表')
+                                           actionButton('mrpt_run',label = '管报运算并写入BW报表')
+                                           #为了方便RPA进行运算，进行相关的调整
+                                           #actionButton('mrpt_to_bw',label = '管报写入BW报表')
                                            
                                            
                                            

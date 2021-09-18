@@ -2208,12 +2208,20 @@
        })
        #管报运算
        var_mrpt_run_Year <-var_text('mrpt_run_Year')
-       var_mrpt_run_Period <- var_integer('mrpt_run_Period')
+       var_mrpt_run_Period <-var_text('mrpt_run_Period')
+       #var_mrpt_run_Period <- var_integer('mrpt_run_Period')
        observeEvent(input$mrpt_run,{
          FYear = as.integer(var_mrpt_run_Year())
          FPeriod =as.integer(var_mrpt_run_Period())
          jlrdspkg::mrpt_run(conn = conn,FYear = FYear,FPeriod = FPeriod)
-         pop_notice('管报运算成功')
+         conn_hana = hana::hana_conn()
+         
+         #写入管报结果表
+         jlrdspkg::hana_write_res(conn = conn,FYear = FYear,FPeriod = FPeriod)
+         #写入管报过程表
+         jlrdspkg::hana_write_detail(conn = conn,FYear = FYear,FPeriod = FPeriod)
+         
+         pop_notice('管报运算成功并写入BW报表!')
        })
        
      
