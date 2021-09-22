@@ -2236,7 +2236,34 @@
       #  output$res_col_selection <-renderPrint({
       #    input$col_selection$target
       #  })
-     
+      
+     # 手工管报上传功能----
+       var_mrpt_manual_year <- var_text('mrpt_manual_year')
+       var_mrpt_manual_period <- var_text('mrpt_manual_period')
+       var_mrpt_manual_brand <- var_text('mrpt_manual_brand')
+       var_mrpt_manual_channel <- var_text('mrpt_manual_channel')
+       #手工管报的查询---
+       observeEvent(input$mrpt_manual_query_btn,{
+         FBrand <- var_mrpt_manual_brand()
+         FChannel <- var_mrpt_manual_channel()
+         FYear <-as.integer(var_mrpt_manual_year())
+         FPeriod <- as.integer(var_mrpt_manual_period())
+         data <- jlrdspkg::mrpt2_manual_query(conn = conn,FBrand = FBrand,FChannel = FChannel,FYear = FYear,FPeriod = FPeriod)
+         run_dataTable2('mrpt_manual_dataShow',data = data)
+       })
+       
+       #手工管报上传
+       var_mrpt_manual_file <- var_file('mrpt_manual_file')
+       observeEvent(input$mrpt_manual_upload,{
+         file_name = var_mrpt_manual_file()
+         
+         if(is.null(file_name)){
+           pop_notice('请选择一个文件')
+         }else{
+           jlrdspkg::mrpt2_manual_read(conn = conn,file_name = file_name)
+           pop_notice('已经提交服务器上传')
+         }
+       })
 
     
     
