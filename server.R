@@ -29,6 +29,8 @@
     })
     
     user_info <- reactive({credentials()$info})
+    #显示用户信息
+    print(user_info)
     
     #显示用户信息
     output$show_user <- renderUI({
@@ -160,6 +162,7 @@
     sidebarMenu <- reactive({
        
        res <- setSideBarMenu(conn_rds('rdbe'),app_id,user_info()$Fpermissions)
+       # print(user_info()$Fpermissions)
        return(res)
     })
     
