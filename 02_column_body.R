@@ -14,7 +14,8 @@ menu_column <- tabItem(tabName = "column",
                                            # mdl_integer(id = 'mrpt_run_Period',label = '月份',min = 1,max = 12,
                                            #             value = as.integer(strsplit(as.character(Sys.Date()),'-')[[1]][2]),step = 1),
                                            
-                                           actionButton('mrpt_run',label = '管报运算并写入BW报表')
+                                           actionButton('mrpt_run',label = '管报运算并写入BW报表'),
+                                           actionButton('mrpt_run_activate',label = '激活再次运算')
                                            #为了方便RPA进行运算，进行相关的调整
                                            #actionButton('mrpt_to_bw',label = '管报写入BW报表')
                                            
@@ -187,6 +188,8 @@ menu_column <- tabItem(tabName = "column",
                                            tags$h4("说明:1.定义了BW指标固定表头与报表项目的关系2.多个方案号才能表达一个完整的指标固定表头"),
                                            br(),
                                            hr(),
+                                           mdl_text(id = 'md_bwRule_FYear',label = '年份'),
+                                           mdl_text(id='md_bwRule_FPeriod',label = '月份'),
                                            actionButton('md_bw_businessRule_preview',label = '查询BW报表业务规则'),
                                            mdl_download_button('md_bw_businessRule_dl','下载BW报表业务规则'),
                                            br(),

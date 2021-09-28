@@ -717,14 +717,18 @@
       })
     
     #2.8 BW报表业务规则----
+      var_md_bwRule_FYear <- var_text('md_bwRule_FYear')
+      var_md_bwRule_FPeriod <- var_text('md_bwRule_FPeriod')
     observeEvent(input$md_bw_businessRule_preview,{
+      FYear = as.integer(var_md_bwRule_FYear())
+      FPeriod = as.integer(var_md_bwRule_FPeriod())
       
       #data <- jlrdspkg::mrpt_bw_ui_businessRule(conn = conn)
       #第一版做了升级
-      data <- jlrdspkg::mrpt_md_rule_bw2_select(conn = conn)
+      data <- jlrdspkg::mrpt_md_rule_bw2_select(conn = conn,FYear = FYear,FPeriod = FPeriod)
       # print(data)
       ncount <- nrow(data)
-      print('div')
+      #print('div')
       
       if (ncount >0){
         run_dataTable2(id = 'md_bw_businessRule_dataShow',data = data)
@@ -2214,6 +2218,7 @@
        var_mrpt_run_Period <-var_text('mrpt_run_Period')
        #var_mrpt_run_Period <- var_integer('mrpt_run_Period')
        observeEvent(input$mrpt_run,{
+         shinyjs::disable(id = 'mrpt_run')
          FYear = as.integer(var_mrpt_run_Year())
          FPeriod =as.integer(var_mrpt_run_Period())
          jlrdspkg::mrpt_run(conn = conn,FYear = FYear,FPeriod = FPeriod)
@@ -2225,6 +2230,10 @@
          jlrdspkg::hana_write_detail(conn = conn,FYear = FYear,FPeriod = FPeriod)
          
          pop_notice('管报运算成功并写入BW报表!')
+       })
+       
+       observeEvent(input$mrpt_run_activate,{
+         shinyjs::enable('mrpt_run')
        })
        
      
