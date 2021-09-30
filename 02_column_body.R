@@ -270,6 +270,36 @@ menu_column <- tabItem(tabName = "column",
                                          ))
                                          
                                        )),
+                                       
+                                       tabPanel('1.11集团中后台费用(手工上传)',tagList(
+                                         fluidRow(column(4,box(
+                                           title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
+                                           mdl_text(id = 'mpv_brand',label = '品牌',value = 'JALA集团'),
+                                           mdl_text(id = 'mpv_channel',label = '渠道',value = '全渠道'),
+                                           mdl_text(id = 'mpv_year',label = '年份',value = tsdo::left(as.character(Sys.Date()),4))),
+                                           #mdl_text(id = 'mpv_period',label = '月份'),
+                                           actionButton('mpv_query','查询中后台费用'),
+                                           mdl_download_button('mpv_dl','下载中后台'),
+                                           br(),
+                                           hr(),
+                                           
+                                           tags$a(href='中后台费用上传模板.xlsx','第一次使用，请下载中后台费用上传模板'),
+                                          
+                                           
+                                           mdl_file(id = 'mpv_file',label = '请选择中后台费用文件'),
+                                           
+                                           
+                                           actionButton('mpv_upload','上传中后台费用至服务器')
+                                           
+                                         ),
+                                         column(8, box(
+                                           title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",
+                                           div(style = 'overflow-x: scroll', mdl_dataTable('mpv_dataShow','对照表数据预览'))
+                                         )
+                                         ))
+                                         
+                                       )),
+                                       
                                        tabPanel('2.01A数据源-历史数据-上传[品牌渠道]',tagList(
                                          fluidRow(column(4,box(
                                            title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",

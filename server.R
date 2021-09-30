@@ -2273,8 +2273,34 @@
            pop_notice('已经提交服务器上传')
          }
        })
+       
+       #中后台费用上传----
+       var_mpv_brand <- var_text('mpv_brand')
+       var_mpv_channel <- var_text('mpv_channel')
+       var_mpv_year <- var_text('mpv_year')
+       
+       observeEvent(input$mpv_query,{
+         FBrand = var_mpv_brand()
+         FChannel = var_mpv_channel()
+         FYear = as.integer(var_mpv_year())
+         data <- jlrdspkg::mpv_query(conn = conn,FBrand = FBrand ,FChannel = FChannel ,FYear = FYear)
+         run_dataTable2(id = 'mpv_dataShow',data = data)
+         var_fileName =  paste0('中台后费用下载',FYear,'.xlsx')
+         run_download_xlsx(id = 'mpv_dl',data = data,filename =var_fileName )
+       })
 
-    
+      #上传手工中后费用
+       var_mpv_file <- var_file('mpv_file')
+       observeEvent(input$mpv_upload,{
+         file_name = var_mpv_file()
+         if(is.null(file_name)){
+           pop_notice('请选择中后台费用文件')
+         }else{
+           jlrdspkg::mpv_upload(file_name = file_name,conn = conn)
+           pop_notice('中后台费用上传成功！')
+         }
+         
+       })
     
     
   
