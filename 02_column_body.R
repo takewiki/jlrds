@@ -614,13 +614,20 @@ menu_column <- tabItem(tabName = "column",
                                        # )),
                          
                                        tabPanel('3.01结果表-品牌',tagList(
-                                         fluidRow(column(4,box(
+                                         fluidRow(column(3,box(
                                            title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
-                                           'sheet3'
+                                           mdl_text2(id = 'mrpt_res_year',label = '年份',value = tsdo::left(as.character(Sys.Date()),4)),
+                                           mdl_text2(id = 'mrpt_res_period',label = '月份'),
+                                           mdl_text2(id = 'mrpt_res_brand',label = '品牌'),
+                                           mdl_text2(id = 'mrpt_res_channel',label = '渠道'),
+                                           actionBttn(inputId = 'mrpt_res_query_btn',label = '查询管报结果表'),
+                                           mdl_download_button(id = 'mrpt_res_dl',label = '下载管理结果表')
+                                           
+                                                     
                                          )),
-                                         column(8, box(
+                                         column(9, box(
                                            title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",
-                                           'rpt3'
+                                           div(style = 'overflow-x: scroll', mdl_dataTable('mrpt_res_dataShow','管报结果预览'))
                                          )
                                          ))
                                          

@@ -2301,7 +2301,84 @@
          }
          
        })
-    
+    #添加分析图开sankey------
+       observeEvent(input$rbu_brandChannel_graph_btn,{
+         
+         data_graph = readxl::read_excel("data/jala_graph.xlsx", 
+                                                          sheet = "graph")
+         output$rbu_brandChannel_graph <- echarts4r::renderEcharts4r({
+           
+           data_graph %>% 
+             e_charts() %>% 
+             e_sankey(source, target, value)
+           
+         })
+         
+         data_calc = readxl::read_excel("data/jala_graph.xlsx", 
+                                         sheet = "calc")
+         output$rbu_brandChannel_calc <- echarts4r::renderEcharts4r({
+           
+           data_calc %>% 
+             e_charts() %>% 
+             e_sankey(source, target, value)
+           
+         })
+         data_rollup1 = readxl::read_excel("data/jala_graph.xlsx", 
+                                        sheet = "rollup1")
+         output$rbu_brandChannel_rollup1 <- echarts4r::renderEcharts4r({
+           
+           data_rollup1 %>% 
+             e_charts() %>% 
+             e_sankey(source, target, value)
+           
+         })
+         
+         
+         data_rollup2 = readxl::read_excel("data/jala_graph.xlsx", 
+                                           sheet = "rollup2")
+         output$rbu_brandChannel_rollup2 <- echarts4r::renderEcharts4r({
+           
+           data_rollup2 %>% 
+             e_charts() %>% 
+             e_sankey(source, target, value)
+           
+         })
+         
+
+        
+       
+         
+         
+         
+         
+         
+         
+         
+       })
+       #3.01添加管报结果表查询
+       var_mrpt_res_year <- var_text('mrpt_res_year')
+       var_mrpt_res_period <- var_text('mrpt_res_period')
+       var_mrpt_res_brand <- var_text('mrpt_res_brand')
+       var_mrpt_res_channel <- var_text('mrpt_res_channel')
+       observeEvent(input$mrpt_res_query_btn,{
+         FYear = as.integer(var_mrpt_res_year())
+         FPeriod = as.integer(var_mrpt_res_period())
+         FBrand = var_mrpt_res_brand()
+         FChannel = var_mrpt_res_channel()
+         
+         data = jlrdspkg::mrpt_res_query(conn=conn,FYear = FYear,FPeriod =FPeriod ,FBrand = FBrand,FChannel = FChannel
+                                            )
+         run_dataTable2('mrpt_res_dataShow',data = data)
+         run_download_xlsx(id = 'mrpt_res_dl',data = data,filename = '管报结果表下载.xlsx')
+         
+       })
+       #添加管报的重复性检验
+       observeEvent(input$mrpt_res_duplicate_btn,{
+         data = jlrdspkg::mrpt_res_checkDuplicate(conn=conn)
+         run_dataTable2('mrpt_res_duplicate_dataShow',data)
+         
+       })
+       
     
   
 })
