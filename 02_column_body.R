@@ -77,7 +77,9 @@ menu_column <- tabItem(tabName = "column",
                                           tags$a(href='成本中心划分及渠道费用分配表模板.xlsx','第一次使用，请下载成本中心划分及渠道费用分配表模板'),
                                           tags$h4('注意选择上述的年份与月份，将作为新上传的年月生效信息。'),
                                           mdl_file('md_costCenter_file','请选择一个成本中心文件'),
-                                          actionButton('md_costCenter_upload','上传成本中心')
+                                          actionButton('md_costCenter_upload','上传成本中心'),
+                                          actionButton('md_costCenter_syncLastOne','同步上月成本中心至当前月'),
+                                          
                                           
                                            
                                          )),
@@ -104,7 +106,9 @@ menu_column <- tabItem(tabName = "column",
                                            tags$a(href='成本要素模板.xlsx','第一次使用，请下载成本要素模板'),
                                            tags$h4('注意选择上述的年份与月份，将作为新上传的年月生效信息。'),
                                            mdl_file('itemMap_file','请选择一个成本要素文件'),
-                                           actionButton('itemMap_upload','上传成本要素')
+                                           actionButton('itemMap_upload','上传成本要素'),
+                                           actionButton('itemMap_syncLastOne','同步上月成本要素至当前月')
+                                           
                                          )),
                                          column(8, box(
                                            title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",
@@ -197,6 +201,8 @@ menu_column <- tabItem(tabName = "column",
                                            tags$a(href='BW报表业务规则模板.xlsx','第一次使用，请下载BW报表业务规则模板'),
                                            mdl_file('md_bw_businessRule_file','请选择一下BW报表业务规则文件'),
                                            actionButton('md_bw_businessRule_upload',label = '上传BW报表业务规则'),
+                                           br(),
+                                           actionButton(inputId = 'md_sync_bw_rule_fromLastOne',label = '同步上月BW规则'),
                                            actionButton('md_bw_businessRule_activate',label = 'BW报表业务规则更新生效')
                                            
                                          )),
@@ -237,7 +243,8 @@ menu_column <- tabItem(tabName = "column",
                                            
                                            
                                            actionButton('md_chando_eCom_acctRpt_mapping_upload','上传对照表'),
-                                           actionButton('md_chando_eCom_acctRpt_mapping_query','查看对照表')
+                                           actionButton('md_chando_eCom_acctRpt_mapping_query','查看对照表'),
+                                           mdl_download_button(id = 'md_chando_eCom_acctRpt_mapping_dl',label = '下载对照表')
                                          )),
                                          column(8, box(
                                            title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",

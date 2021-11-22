@@ -485,6 +485,36 @@
       
     })
     
+    #同步上月成本中心至本月------
+    observeEvent(input$md_costCenter_syncLastOne,{
+      FYear = as.integer(var_md_costCenter_FYear())
+      
+      if(is.na(FYear)){
+        pop_notice('请输入年份')
+      }
+      
+      FPeriod = as.integer(var_md_costCenter_FPeriod())
+      if ( is.na(FPeriod)){
+        pop_notice('请输入月份')
+      }
+
+      
+      if((!is.na(FYear)) & (!is.na(FPeriod))  ){
+        
+        jlrdspkg::mrpt_md_ui_costCenter_syncLastOne(conn = conn,FYear = FYear,FPeriod = FPeriod)
+        #
+        pop_notice('上月成本中心同步至当前月份成功!')
+        
+      }
+      
+      
+      
+      
+      
+      
+    })
+    
+    
     #定义品牌及事业部定义文件-----
     var_md_division_preview_file <- var_file('md_division_preview_file')
     
@@ -629,6 +659,40 @@
        
      })
     
+     
+     #同步上月成本要素至当前月-----
+     observeEvent(input$itemMap_syncLastOne,{
+     
+       FYear = as.integer(var_itemMap_FYear())
+       
+       if(is.na(FYear)){
+         pop_notice('请输入年份')
+       }
+       
+       FPeriod = as.integer(var_itemMap_FPeriod())
+       if ( is.na(FPeriod)){
+         pop_notice('请输入月份')
+       }
+       
+   
+       if((!is.na(FYear)) & (!is.na(FPeriod)) ){
+         
+         jlrdspkg::mrpt_md_ui_costItem_syncLastOne(conn = conn,FYear = FYear,FPeriod = FPeriod)
+         pop_notice('同步成本要素成功！')
+         
+         
+       }
+       
+       
+       
+       
+       
+       
+     })
+     
+     
+     
+     
     
     
     #2.5报表项目----------
@@ -744,16 +808,36 @@
       #上传BW报表业务规则----
       var_md_bw_businessRule_file <- var_file('md_bw_businessRule_file')
       observeEvent(input$md_bw_businessRule_upload,{
+        FYear = as.integer(var_md_bwRule_FYear())
+        FPeriod = as.integer(var_md_bwRule_FPeriod())
         file_name = var_md_bw_businessRule_file()
         if(is.null(file_name)){
           pop_notice('请选择一个文件')
         }else{
-          jlrdspkg::mrpt_md_rule_bw2_read(conn = conn,file_name = file_name)
+          jlrdspkg::mrpt_md_rule_bw2_read(conn = conn,file_name = file_name,FYear = FYear,FPeriod = FPeriod)
           pop_notice('上传BW报表业务规则成功')
         }
         
         
       })
+      
+      #同步上月BW规则至当前月---
+      observeEvent(input$md_sync_bw_rule_fromLastOne,{
+        
+        FYear = as.integer(var_md_bwRule_FYear())
+        FPeriod = as.integer(var_md_bwRule_FPeriod())
+       
+ 
+          jlrdspkg::mrpt_md_rule_bw2_syncLastOne(conn = conn,FYear = FYear,FPeriod = FPeriod)
+          pop_notice('同步BW报表业务规则成功')
+     
+        
+        
+        
+        
+        
+      })
+      
       
     #重分类--------
       observeEvent(input$md_reClassifyAcct_mapping_query,{
@@ -1320,6 +1404,8 @@
     observeEvent(input$md_chando_eCom_acctRpt_mapping_query,{
       data <- jlrdspkg::mrpt_md_chando_acctRpt_select(conn = conn)
       run_dataTable2('md_chando_eCom_acctRpt_mapping_dataShow',data = data)
+      #下载对照表
+      run_download_xlsx(id = 'md_chando_eCom_acctRpt_mapping_dl',data = data,filename = '自然堂电商科目与报表项目对照表.xlsx')
     })
     
   #4.报表分析-----
@@ -2208,8 +2294,10 @@
        })
        #管报业务规则生效
        observeEvent(input$md_bw_businessRule_activate,{
+         FYear = as.integer(var_md_bwRule_FYear())
+         FPeriod = as.integer(var_md_bwRule_FPeriod())
          
-         try(mrpt_md_rule_bw2_dim_allocAll(conn = conn))
+         try(jlrdspkg::mrpt_md_rule_bw2_dim_allocAll(conn = conn,FYear = FYear,FPeriod = FPeriod))
          tsui::pop_notice('业务规则表生效')
          
        })

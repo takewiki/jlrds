@@ -1,6 +1,6 @@
 # 设置app标题-----
 
- app_title <-'JALA财务分析平台V5.16';
+ app_title <-'JALA财务分析平台V5.19';
 #app_title <-'棱星RDS-资金日报数据处理系统V1.0';
  
  
