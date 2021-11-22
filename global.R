@@ -21,7 +21,7 @@ library(shinyjs);
 library(mrptpkg)
 library(esquisse)
 library(hana)
-library(echarts4r)
+#library(echarts4r)
 
 
 source('00_data.R',encoding = 'utf-8');
