@@ -2305,23 +2305,80 @@
        var_mrpt_run_Year <-var_text('mrpt_run_Year')
        var_mrpt_run_Period <-var_text('mrpt_run_Period')
        #var_mrpt_run_Period <- var_integer('mrpt_run_Period')
+       result_val <- reactiveVal()
        observeEvent(input$mrpt_run,{
          shinyjs::disable(id = 'mrpt_run')
          FYear = as.integer(var_mrpt_run_Year())
          FPeriod =as.integer(var_mrpt_run_Period())
-         jlrdspkg::mrpt_run(conn = conn,FYear = FYear,FPeriod = FPeriod)
-         conn_hana = hana::hana_conn()
+         #设置进度条
+         progress <- Progress$new(session, min=1, max=10)
+         on.exit(progress$close())
+         progress$set(message = '步骤1,当前进度10%',
+                      detail = '计算BW分配规则',value=1)
+         mrpt_md_rule_bw2_dim_allocAll(conn = conn,FYear = FYear,FPeriod = FPeriod)
+         progress$set(message = '步骤2,当前进度20%',
+                      detail = ':写入SAP数据',value=2)
+         mrpt_write_sap(conn = conn,FYear = FYear,FPeriod = FPeriod )
+         progress$set(message = '步骤3，当前进度30%',
+                      detail = '写入BW数据',value=3)
+         bw2_sync_data(conn = conn,FYear = FYear,FPeriod = FPeriod)
+
+           progress$set(message = '步骤4,当前进度40%',
+                        detail = '计算BW报表结果,此步骤用时较长...',value=4)
+           bw2_deal_list(conn = conn,FYear = FYear,FPeriod = FPeriod)
+
+         progress$set(message = '步骤5,当前进度50%',
+                      detail = 'BW处理结果写入表',value=5)
+         mrpt_write_bw2(conn = conn,FYear = FYear,FPeriod = FPeriod)
+         progress$set(message = '步骤6,当前进度60%',
+                      detail = '写入管报分配明细结果',value=6)
+         mrpt_res_allocated(conn = conn,FYear = FYear,FPeriod = FPeriod)
+         progress$set(message = '步骤7,当前进度70%',
+                      detail = '明细渠道计算结果当期数据...',value=7)
+         mrpt_res_current(conn = conn,FYear = FYear,FPeriod = FPeriod,simple = FALSE)
+         progress$set(message = '步骤8:当前进度80%',
+                      detail = '明细渠道计算本年累计数据...',value=8)
+         mrpt_res_ytdCumsum(conn = conn,FYear = FYear,FPeriod = FPeriod)
+         progress$set(message = '步骤9,当前进度90%',
+                      detail = '计算上级事业部当期数据...',value=9)
+         graph_rpa_period(conn = conn,FYear = FYear,FPeriod = FPeriod)
+         
+         progress$set(message = '步骤10:当前进度100%',
+                      detail = '计算上级事业部本年累计数据...',value=10)
+         mrpt_calc_cumSum_Period_res(conn = conn,FYear = FYear,FPeriod = FPeriod)
+      
+
+         
+         #jlrdspkg::mrpt_run(conn = conn,FYear = FYear,FPeriod = FPeriod)
+         # conn_hana = hana::hana_conn()
          
          #写入管报结果表
-         jlrdspkg::hana_write_res(conn = conn,FYear = FYear,FPeriod = FPeriod)
+         #jlrdspkg::hana_write_res(conn = conn,FYear = FYear,FPeriod = FPeriod)
          #写入管报过程表
-         jlrdspkg::hana_write_detail(conn = conn,FYear = FYear,FPeriod = FPeriod)
-         
-         pop_notice('管报运算成功并写入BW报表!')
+         #jlrdspkg::hana_write_detail(conn = conn,FYear = FYear,FPeriod = FPeriod)
+         pop_notice('管报运算成功!')
+         #pop_notice('管报运算成功并写入BW报表!')
        })
        
        observeEvent(input$mrpt_run_activate,{
          shinyjs::enable('mrpt_run')
+       })
+       
+       #写入BW报表
+       #要求在JALA的环境下进行使用
+       observeEvent(input$mrpt_to_bw,{
+         
+         
+         FYear = as.integer(var_mrpt_run_Year())
+         FPeriod =as.integer(var_mrpt_run_Period())
+
+         #写入管报结果表
+         jlrdspkg::hana_write_res(conn = conn,FYear = FYear,FPeriod = FPeriod)
+         #写入管报过程表
+         jlrdspkg::hana_write_detail(conn = conn,FYear = FYear,FPeriod = FPeriod)
+         pop_notice('管报写入成功!')
+         
+         
        })
        
      
@@ -2464,6 +2521,25 @@
        observeEvent(input$mrpt_res_duplicate_btn,{
          data = jlrdspkg::mrpt_res_checkDuplicate(conn=conn)
          run_dataTable2('mrpt_res_duplicate_dataShow',data)
+         
+       })
+       #管报级次
+       var_check_bu_FYear <- var_text('check_bu_FYear')
+       var_check_bu_FPeriod <- var_text('check_bu_FPeriod')
+       var_check_bu_FBrand <- var_text('check_bu_FBrand')
+       var_check_bu_FChannel <- var_text('check_bu_FChannel')
+       
+       observeEvent(input$check_bu_btn,{
+         FYear = as.integer(var_check_bu_FYear())
+         FPeriod =as.integer(var_check_bu_FPeriod())
+         FBrand = var_check_bu_FBrand()
+         FChannel = var_check_bu_FChannel()
+         data = jlrdspkg::check_rptBrandChannel(conn = conn,FYear = FYear,FPeriod = FPeriod,FBrand = FBrand,FChannel = FChannel)
+         print(data)
+         
+         run_dataTable2('check_bu_dataShow',data=data)
+         run_download_xlsx(id = 'check_bu_dl',data = data,filename = '管报所有级次.xlsx')
+         
          
        })
        

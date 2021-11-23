@@ -14,10 +14,10 @@ menu_column <- tabItem(tabName = "column",
                                            # mdl_integer(id = 'mrpt_run_Period',label = '月份',min = 1,max = 12,
                                            #             value = as.integer(strsplit(as.character(Sys.Date()),'-')[[1]][2]),step = 1),
                                            
-                                           actionButton('mrpt_run',label = '管报运算并写入BW报表'),
-                                           actionButton('mrpt_run_activate',label = '激活再次运算')
+                                           actionButton('mrpt_run',label = '管报运算'),
+                                           actionButton('mrpt_run_activate',label = '激活再次运算'),
                                            #为了方便RPA进行运算，进行相关的调整
-                                           #actionButton('mrpt_to_bw',label = '管报写入BW报表')
+                                           actionButton('mrpt_to_bw',label = '管报写入BW报表')
                                            
                                            
                                            
@@ -478,39 +478,40 @@ menu_column <- tabItem(tabName = "column",
                                          ))
                                          
                                        )),
-                                       tabPanel('2.05B数据源-执行预算-上传[子渠道]',tagList(
-                                         fluidRow(column(4,box(
-                                           title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
-                                           selectInput( 'budget_FChannel_upload_sub',label = '请选择至少一个渠道',
-                                                       choices  = jlrdspkg::mrpt_md_channel2()),
-                                           mdl_ListChooseN(id = 'budget_FChannel_upload_sub2',label = '请选择至少一个子渠道',
-                                                           choiceNames = jlrdspkg::mrpt_md_subChannel(),
-                                                           choiceValues = jlrdspkg::mrpt_md_subChannel()
-                                           ),
-                                           
-                                           selectInput('budget_FBrand_upload_sub',label = '适用品牌',
-                                                       choices  = jlrdspkg::mrpt_md_brand()),
-                                           
-                                           
-                                          
-                                           mdl_text(id='budget_FYear_upload_sub',label = '年'),
-                                           mdl_text(id='budget_FPeriod_upload_sub',label = '月'),
-                                           mdl_ListChoose1(id = 'budget_upload_type_sub',label = '月份类型',choiceNames = list('当月数','1月至当前月'),choiceValues = (list(TRUE,FALSE))),
-                                           br(),
-                                           tags$a(href='执行预算模板 - 子渠道.xlsx','第一次使用，请下载子渠道执行预算模板'),
-                                           tags$h4('注意上传的执行预算数据的页签必须与上述选择的子渠道名称保持一致，否则上传失败'),
-                                           mdl_file(id = 'budget_upload_file_sub',label = '请选择执行预算'),
-                                           
-                                     
-                                           actionButton('budget_upload_done_sub','上传执行预算')
-                                         )),
-                                         column(8, box(
-                                           title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",
-                                           div(style = 'overflow-x: scroll', mdl_dataTable('budget_upload_sub_dataShow','执行预算数据预览'))
-                                         )
-                                         ))
-                                         
-                                       )),
+                                       #功能取消了由于取消了子渠道的应用
+                                       # tabPanel('2.05B数据源-执行预算-上传[子渠道]',tagList(
+                                       #   fluidRow(column(4,box(
+                                       #     title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
+                                       #     selectInput( 'budget_FChannel_upload_sub',label = '请选择至少一个渠道',
+                                       #                 choices  = jlrdspkg::mrpt_md_channel2()),
+                                       #     mdl_ListChooseN(id = 'budget_FChannel_upload_sub2',label = '请选择至少一个子渠道',
+                                       #                     choiceNames = jlrdspkg::mrpt_md_subChannel(),
+                                       #                     choiceValues = jlrdspkg::mrpt_md_subChannel()
+                                       #     ),
+                                       #     
+                                       #     selectInput('budget_FBrand_upload_sub',label = '适用品牌',
+                                       #                 choices  = jlrdspkg::mrpt_md_brand()),
+                                       #     
+                                       #     
+                                       #    
+                                       #     mdl_text(id='budget_FYear_upload_sub',label = '年'),
+                                       #     mdl_text(id='budget_FPeriod_upload_sub',label = '月'),
+                                       #     mdl_ListChoose1(id = 'budget_upload_type_sub',label = '月份类型',choiceNames = list('当月数','1月至当前月'),choiceValues = (list(TRUE,FALSE))),
+                                       #     br(),
+                                       #     tags$a(href='执行预算模板 - 子渠道.xlsx','第一次使用，请下载子渠道执行预算模板'),
+                                       #     tags$h4('注意上传的执行预算数据的页签必须与上述选择的子渠道名称保持一致，否则上传失败'),
+                                       #     mdl_file(id = 'budget_upload_file_sub',label = '请选择执行预算'),
+                                       #     
+                                       # 
+                                       #     actionButton('budget_upload_done_sub','上传执行预算')
+                                       #   )),
+                                       #   column(8, box(
+                                       #     title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",
+                                       #     div(style = 'overflow-x: scroll', mdl_dataTable('budget_upload_sub_dataShow','执行预算数据预览'))
+                                       #   )
+                                       #   ))
+                                       #   
+                                       # )),
                                        tabPanel('2.05C数据源-执行预算-查询',tagList(
                                          fluidRow(column(4,box(
                                            title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
@@ -771,14 +772,19 @@ menu_column <- tabItem(tabName = "column",
                                          ))
                                          
                                        )),
-                                       tabPanel('5.02反查表-事业部',tagList(
+                                       tabPanel('5.02管理结果-所有级次写入HANA前',tagList(
                                          fluidRow(column(4,box(
                                            title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
-                                           'sheet4'
+                                           mdl_text(id = 'check_bu_FYear',label = '年份'),
+                                           mdl_text(id = 'check_bu_FPeriod',label = '月份'),
+                                           mdl_text(id='check_bu_FBrand',label = '品牌'),
+                                           mdl_text(id='check_bu_FChannel',label = '渠道'),
+                                           actionButton(inputId = 'check_bu_btn',label = '查询对比数'),
+                                           mdl_download_button(id = 'check_bu_dl',label = '下载对比数')
                                          )),
                                          column(8, box(
                                            title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",
-                                           'rpt4'
+                                           div(style = 'overflow-x: scroll', mdl_dataTable('check_bu_dataShow',' 管理结果表数据预览'))
                                          )
                                          ))
                                          
