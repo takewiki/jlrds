@@ -1,9 +1,9 @@
 menu_series<- tabItem(tabName = "series",
                       fluidRow(
                         column(width = 12,
-                               tabBox(title ="series工作台",width = 12,
+                               tabBox(title ="管报分析工作台",width = 12,
                                       id='tabSet_series',height = '300px',
-                                      tabPanel('主数据分析-品牌渠道',tagList(
+                                      tabPanel('6.01主数据分析-品牌渠道',tagList(
                                         fluidRow(column(4,box(
                                           title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
                                           dataTableOutput("mrpt_analysis_md_division_summary")
@@ -17,7 +17,7 @@ menu_series<- tabItem(tabName = "series",
                                         ))
                                         
                                       )),
-                                      tabPanel('主数据分析-成本中心',tagList(
+                                      tabPanel('6.02主数据分析-成本中心',tagList(
                                         fluidRow(column(4,box(
                                           title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
                                           mdl_text('mrpt_audit_md_costCenter_Year',label = '年份',value =tsdo::left(as.character(Sys.Date()),4)),
@@ -45,7 +45,7 @@ menu_series<- tabItem(tabName = "series",
                                         
                                       ))),
                                       
-                                      tabPanel('主数据分析-成本要素',tagList(
+                                      tabPanel('6.03主数据分析-成本要素',tagList(
                                         fluidRow(column(4,box(
                                           title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
                                           mdl_text('mrpt_audit_md_costItem_Year',label = '年份',value =tsdo::left(as.character(Sys.Date()),4)),
@@ -64,7 +64,7 @@ menu_series<- tabItem(tabName = "series",
                                         ))
                                         
                                       )),
-                                      tabPanel('凭证分析-重分类前',tagList(
+                                      tabPanel('6.04凭证分析-重分类前',tagList(
                                         fluidRow(column(5,box(
                                           title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
                                          
@@ -88,7 +88,7 @@ menu_series<- tabItem(tabName = "series",
                                           ))
                                         
                                       ))),
-                                      tabPanel('凭证分析-重分类后',tagList(
+                                      tabPanel('6.05凭证分析-重分类后',tagList(
                                         fluidRow(column(5,box(
                                           title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
                                           
@@ -112,7 +112,7 @@ menu_series<- tabItem(tabName = "series",
                                         ))
                                         
                                         ))),
-                                      tabPanel('凭证分析-仅重分类凭证',tagList(
+                                      tabPanel('6.06凭证分析-仅重分类凭证',tagList(
                                         fluidRow(column(5,box(
                                           title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
                                           
@@ -137,7 +137,7 @@ menu_series<- tabItem(tabName = "series",
                                         
                                         ))),
                                       
-                                      tabPanel('报表分析-管报反查表',tagList(
+                                      tabPanel('6.07报表分析-管报反查表',tagList(
                                         fluidRow(column(5,box(
                                           title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
                                           fluidRow(column(6,mdl_text('audit_FI_RPA_Year',label = '年份',value =tsdo::left(as.character(Sys.Date()),4))),
