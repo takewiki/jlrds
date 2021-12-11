@@ -2542,6 +2542,30 @@
          
          
        })
+       #针对相关内容进行片
+       var_div_FYear <- var_text('div_FYear')
+       var_div_FPeriod <-var_text('div_FPeriod')
+       var_div_rptItemName <- var_ListChoose1('div_rptItemName')
+       var_div_digit <- var_integer('div_digit')
+       var_div_calcType <- var_ListChoose1('div_calcType')
+       
+       observeEvent(input$div_btn,{
+         FYear = as.integer(var_div_FYear())
+         FPeriod =as.integer(var_div_FPeriod())
+         FRptItemName = var_div_rptItemName()
+         print(FRptItemName)
+         digit = as.integer(var_div_digit())
+         #增加计算类型
+         FCalcType = var_div_calcType()
+         data = jlrdspkg::div_diff_analysis(conn = conn,FYear = FYear,FPeriod = FPeriod,FRptItemName =FRptItemName,digit = digit,FCalcType = FCalcType)
+         run_dataTable2('div_dataShow',data = data)
+         run_download_xlsx(id = 'div_dl',data = data,filename = '事业部差异下载.xlsx')
+         
+         
+         
+         
+         
+       })
        
     
   

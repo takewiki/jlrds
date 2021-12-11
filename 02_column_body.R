@@ -570,6 +570,7 @@ menu_column <- tabItem(tabName = "column",
                                            #tags$h4('第一次使用，请下载手工管报模板'),
                                            br(),
                                            tags$a(href='上传模板_手工管报.xlsx','第一次使用，请下载手工管报上传模板'),
+                                           tags$h4('默认读取第一个页签，页签名称建议为:手工管报'),
                                            br(),
                                            br(),
                                            mdl_file(id ='mrpt_manual_file',label = '请选择需要上传的管报文件'),
@@ -785,6 +786,28 @@ menu_column <- tabItem(tabName = "column",
                                          column(8, box(
                                            title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",
                                            div(style = 'overflow-x: scroll', mdl_dataTable('check_bu_dataShow',' 管理结果表数据预览'))
+                                         )
+                                         ))
+                                         
+                                       )),
+                                       tabPanel('5.03管理结果-事业部级差异表',tagList(
+                                         fluidRow(column(4,box(
+                                           title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
+                                           mdl_text(id = 'div_FYear',label = '年份',value = '2021'),
+                                           mdl_text(id = 'div_FPeriod',label = '月份',value = '5'),
+                                           mdl_ListChoose1(id = 'div_calcType',label = '计算类型',choiceNames = list('当期数','累计数'),choiceValues = list('当期数','累计数'),selected = '当期数'),
+                                           mdl_ListChoose1(id = 'div_rptItemName',label = '报表项目选择',
+                                                           choiceNames = jlrdspkg::div_diff_getUniqueRptName(conn = conn,FYear =2021,FPeriod = 5 ),
+                                                           choiceValues = jlrdspkg::div_diff_getUniqueRptName(conn = conn,FYear =2021,FPeriod =5 ),selected = '四、营业收入'
+                                           ),
+                                           mdl_integer(id = 'div_digit',label = '金额小数位',min = 0,max = 2,value = 0,step = 1,round =0L ),
+                                          
+                                           actionButton(inputId = 'div_btn',label = '查询'),
+                                           mdl_download_button(id = 'div_dl',label = '下载')
+                                         )),
+                                         column(8, box(
+                                           title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",
+                                           div(style = 'overflow-x: scroll', mdl_dataTable('div_dataShow',' 管理结果表数据预览'))
                                          )
                                          ))
                                          
