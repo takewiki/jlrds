@@ -185,6 +185,12 @@ menu_series<- tabItem(tabName = "series",
                                                                      div(style = 'overflow-x: scroll',dataTableOutput("audit_FI_RPA_detail_BW")),
                                                                      mdl_download_button(id = 'audit_FI_RPA_detail_BW_dl',label = '下载BW报表数据源')
                                                                    )),
+                                                 tabPanel('管报过程表-BW规则表',tagList(
+                                                   div(style = 'overflow-x: scroll',dataTableOutput("audit_rule_BW")),
+                                                   actionBttn(inputId = "audit_rule_bw_update",label = '修改BW规则表'),
+                                                   mdl_download_button(id = 'audit_rule_BW_dl',label = '下载BW规则表')
+                                                   
+                                                 )),
                                                                    tabPanel('管报过程表-手调凭证',tagList(
                                                                      div(style = 'overflow-x: scroll',dataTableOutput("audit_FI_RPA_detail_ADJ")),
                                                                      mdl_download_button(id = 'audit_FI_RPA_detail_ADJ_dl',label = '下载手调凭证数据源')

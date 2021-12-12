@@ -2106,6 +2106,180 @@
      #显示筛选的选择
      
      output$audit_FI_RPA_detail_BW <- DT::renderDataTable(drilldata_detail_BW(),selection = 'single')
+     #报表过程表-BW规则表反查------
+     
+     drilldata_rule_BW <- reactive({
+       FYear =  as.integer(var_audit_FI_RPA_Year())
+       FPeriod =  as.integer( var_audit_FI_RPA_Period())
+       shiny::validate(
+         need(length(input$audit_FI_RPA_detail_rows_selected) > 0, "请选中任意一行")
+       )    
+       data_detail <- drilldata_audit_FI_RPA_detail()
+       FBrand  <- data_detail[as.integer(input$audit_FI_RPA_detail_rows_selected), '品牌']
+       FChannel <- data_detail[as.integer(input$audit_FI_RPA_detail_rows_selected), '渠道']
+       FRptItemNumber <-data_detail[as.integer(input$audit_FI_RPA_detail_rows_selected), '报表项目代码']
+       print('back-trace')
+       print(FYear)
+       print(FPeriod)
+       print(FBrand)
+       print(FChannel)
+       print(FRptItemNumber)
+       data_detail3 <- mrptpkg::audit_rule_bw(conn = conn,FYear = FYear,FPeriod = FPeriod,FBrand = FBrand,FChannel = FChannel,FRptItemNumber = FRptItemNumber)
+
+       
+       print(data_detail3)    
+       return(data_detail3)
+       
+     })
+     output$audit_rule_BW <- DT::renderDataTable(drilldata_rule_BW(),selection = 'single')
+     #显示修改界面------
+     observeEvent(input$audit_rule_bw_update,{
+       #获取数据处理选择
+       data =drilldata_rule_BW()
+       #选中一行数据
+       shiny::validate(
+         need(length(input$audit_rule_BW_rows_selected) > 0, "请选中任意一行")
+       ) 
+       row_selected = as.integer(input$audit_rule_BW_rows_selected)
+       
+       showModal(modalDialog(title = paste0("修改BW规则表"),
+                             tagList(
+                               
+                               fluidRow(column(width = 6,mdl_text(id = 'bwu_FSolutionNumber',label = '方案号',value = data[row_selected,'方案号'])),
+                                        column(width = 6,mdl_text(id = 'bwu_FSubNumber',label = '方案序号',value = as.character(data[row_selected,'方案序号'])))),
+                              
+                               fluidRow(column(width = 6,mdl_text(id = 'bwu_F13_ItemGroupName_in',label = '13物料组(物料主数据)-名称-包含',value = tsdo::na_replace(data[row_selected,'13物料组(物料主数据)-名称-包含'],''))),
+                                        column(width = 6,mdl_text(id = 'bwu_F13_ItemGroupName_Notin',label = '13物料组(物料主数据)-名称-排除',value = tsdo::na_replace(data[row_selected,'13物料组(物料主数据)-名称-排除'],'')))),
+                               # 
+                               fluidRow(column(width = 6,mdl_text(id = 'bwu_F14_brandName_in',label = '14品牌(物料主数据)-名称-包含',value = tsdo::na_replace(data[row_selected,'14品牌(物料主数据)-名称-包含'],''))),
+                                        column(width = 6,mdl_text(id = 'bwu_F14_brandName_Notin',label = '14品牌(物料主数据)-名称-排除',value = tsdo::na_replace(data[row_selected,'14品牌(物料主数据)-名称-排除'],'')))),
+                               # 
+                               fluidRow(column(width = 6,textAreaInput(inputId = 'bwu_F30_customerNumber_in',label = '30客户-代码-包含',value = na_replace(data[row_selected,'30客户-代码-包含'],''))),
+                                        column(width = 6,textAreaInput(inputId = 'bwu_F30_customerNumber_Notin',label = '30客户-代码-排除',value = na_replace(data[row_selected,'30客户-代码-排除'],'')))),
+                               # 
+                               fluidRow(column(width = 6,mdl_text(id = 'bwu_F33_subChannelName_in',label = '33子渠道（SAP客户组）(客户主数据)-名称-包含',value = na_replace(data[row_selected,'33子渠道（SAP客户组）(客户主数据)-名称-包含'],''))),
+                                        column(width = 6,mdl_text(id = 'bwu_F33_subChannelName_Notin',label = '33子渠道（SAP客户组）(客户主数据)-名称-排除',value = na_replace(data[row_selected,'33子渠道（SAP客户组）(客户主数据)-名称-排除'],'')))),
+                               # 
+                               fluidRow(column(width = 6,mdl_text(id = 'bwu_F37_disctrictSaleDeptName_in',label = '37地区销售部(客户主数据)-名称-包含',value = na_replace(data[row_selected,'37地区销售部(客户主数据)-名称-包含'],''))),
+                                        column(width = 6,mdl_text(id = 'bwu_F37_disctrictSaleDeptName_Notin',label = '37地区销售部(客户主数据)-名称-排除',value = na_value(data[row_selected,'37地区销售部(客户主数据)-名称-排除'],'')))),
+                               # 
+                               fluidRow(column(width = 6,mdl_text(id = 'bwu_F41_channelName_in',label = '41渠道(分析用)-名称-包含',value = na_replace(data[row_selected,'41渠道(分析用)-名称-包含'],''))),
+                                        column(width = 6,mdl_text(id = 'bwu_F41_channelName_Notin',label = '41渠道(分析用)-名称-排除',value = na_replace(data[row_selected,'41渠道(分析用)-名称-排除'],'')))),
+                               # 
+                               fluidRow(column(width = 6,mdl_text(id = 'bwu_F61_costCenterControlNumber_in',label = '61成本中心(控制)-代码-包含',value = na_replace(data[row_selected,'61成本中心(控制)-代码-包含'],''))),
+                                        column(width = 6,mdl_text(id = 'bwu_F61_costCenterControlNumber_Notin',label = '61成本中心(控制)-代码-排除',value = na_replace(data[row_selected,'61成本中心(控制)-代码-排除'],'')))),
+                               # 
+                               fluidRow(column(width = 6,mdl_text(id = 'bwu_FValueType',label = '指标名称',value = na_replace(data[row_selected,'指标名称'],''))),
+                                        column(width = 6,mdl_text(id = 'bwu_FRate',label = '分配比例',value = na_replace(as.character(data[row_selected,'分配比例']),'')))),
+                    
+                               fluidRow(column(width = 6,mdl_text(id = 'bwu_FSolutionName',label = '方案名称',value = na_replace(data[row_selected,'方案名称'],''))),
+                                        column(width = 6,mdl_text(id = 'bwu_FDescription',label = '方案描述',value = na_replace(data[row_selected,'方案描述'],''))))
+                               
+                             ),
+                             
+                             
+                             
+                             footer = column(shiny::modalButton('取消'),
+                                             shiny::actionButton('bw_update_save', '保存'),
+                                             width=12),
+                             size = 'l'
+       ))
+       
+     })
+     
+     # 保存BW规则修改内容-------
+     var_bwu_F13_ItemGroupName_in <- var_text('bwu_F13_ItemGroupName_in')
+     var_bwu_F13_ItemGroupName_Notin <- var_text('bwu_F13_ItemGroupName_Notin')
+     var_bwu_F14_brandName_in <- var_text('bwu_F14_brandName_in')
+     var_bwu_F14_brandName_Notin <- var_text('bwu_F14_brandName_Notin')
+     var_bwu_F33_subChannelName_in <- var_text('bwu_F33_subChannelName_in')
+     var_bwu_F33_subChannelName_Notin <- var_text('bwu_F33_subChannelName_Notin')
+     var_bwu_F37_disctrictSaleDeptName_in =var_text('bwu_F37_disctrictSaleDeptName_in')
+     var_bwu_F37_disctrictSaleDeptName_Notin = var_text('bwu_F37_disctrictSaleDeptName_Notin')
+     var_bwu_F41_channelName_in = var_text('bwu_F41_channelName_in')
+     var_bwu_F41_channelName_Notin = var_text('bwu_F41_channelName_Notin')
+     var_bwu_F61_costCenterControlNumber_in = var_text('bwu_F61_costCenterControlNumber_in')
+     var_bwu_F61_costCenterControlNumber_Notin = var_text('bwu_F61_costCenterControlNumber_Notin')
+     var_bwu_FValueType = var_text('bwu_FValueType')
+     var_bwu_FRate = var_text('bwu_FRate')
+     var_bwu_FSolutionName = var_text('bwu_FSolutionName')
+     var_bwu_FDescription = var_text('bwu_FDescription')
+     
+     
+     
+     observeEvent(input$bw_update_save,{
+       data =drilldata_rule_BW()
+       #选中一行数据
+       shiny::validate(
+         need(length(input$audit_rule_BW_rows_selected) > 0, "请选中任意一行")
+       ) 
+       row_selected = as.integer(input$audit_rule_BW_rows_selected)
+       FYear = data[row_selected,'年份']
+       FPeriod =data[row_selected,'月份']
+       FSolutionNumber = data[row_selected,'方案号']
+       FSubNumber = as.integer(data[row_selected,'方案序号'])
+       F13_ItemGroupName_in = tsdo::sql_str2(var_bwu_F13_ItemGroupName_in())
+       #print(F13_ItemGroupName_in)
+       F13_ItemGroupName_Notin = tsdo::sql_str2(var_bwu_F13_ItemGroupName_Notin())
+       #print(F13_ItemGroupName_Notin)
+       F14_brandName_in = tsdo::sql_str2(var_bwu_F14_brandName_in())
+       F14_brandName_Notin =tsdo::sql_str2(var_bwu_F14_brandName_Notin())
+       F30_customerNumber_in = tsdo::sql_str2(input$bwu_F30_customerNumber_in)
+       print(F30_customerNumber_in)
+       F30_customerNumber_Notin = tsdo::sql_str2(input$bwu_F30_customerNumber_Notin)
+       print(F30_customerNumber_Notin)
+       F33_subChannelName_in = tsdo::sql_str2(var_bwu_F33_subChannelName_in())
+       F33_subChannelName_Notin =tsdo::sql_str2(var_bwu_F33_subChannelName_Notin())
+       F37_disctrictSaleDeptName_in = tsdo::sql_str2(var_bwu_F37_disctrictSaleDeptName_in())
+       F37_disctrictSaleDeptName_Notin = tsdo::sql_str2(var_bwu_F37_disctrictSaleDeptName_Notin())
+       F41_channelName_in = tsdo::sql_str2(var_bwu_F41_channelName_in())
+       F41_channelName_Notin = tsdo::sql_str2(var_bwu_F41_channelName_Notin())
+       F61_costCenterControlNumber_in = tsdo::sql_str2(var_bwu_F61_costCenterControlNumber_in())
+       F61_costCenterControlNumber_Notin =tsdo::sql_str2(var_bwu_F61_costCenterControlNumber_Notin())
+       FValueType = tsdo::sql_str2(var_bwu_FValueType())
+       FRate = as.numeric(var_bwu_FRate())
+       FSolutionName = tsdo::sql_str2(var_bwu_FSolutionName())
+       FDescription = tsdo::sql_str2(var_bwu_FDescription())
+       sql <- paste0("update a   set 
+a.F13_ItemGroupName_in =  ",F13_ItemGroupName_in,",
+a.F13_ItemGroupName_Notin =  ",F13_ItemGroupName_Notin," ,
+a.F14_brandName_in =  ",F14_brandName_in,",
+a.F14_brandName_Notin =  ",F14_brandName_Notin,",
+a.F30_customerNumber_in = ",F30_customerNumber_in,",
+a.F30_customerNumber_Notin =  ",F30_customerNumber_Notin,",
+a.F33_subChannelName_in =  ",F33_subChannelName_in,",
+a.F33_subChannelName_Notin =  ",F33_subChannelName_Notin,",
+a.F37_disctrictSaleDeptName_in = ",F37_disctrictSaleDeptName_in,",
+a.F37_disctrictSaleDeptName_Notin = ",F37_disctrictSaleDeptName_Notin,",
+a.F41_channelName_in =  ",F41_channelName_in,",
+a.F41_channelName_Notin = ",F41_channelName_Notin,",
+a.F61_costCenterControlNumber_in = ",F61_costCenterControlNumber_in,",
+a.F61_costCenterControlNumber_Notin = ",F61_costCenterControlNumber_Notin,",
+a.FValueType =  ",FValueType,",
+a.FRate =  ",FRate,",
+a.FSolutionName =  ",FSolutionName,",
+a.FDescription = ",FDescription,"
+from  t_mrpt_rule_bw2 a
+ where FYear = ",FYear," and FPeriod = ",FPeriod," 
+and FSolutionNumber ='",FSolutionNumber,"' and FSubNumber = ",FSubNumber,"")
+       #print(sql)
+       #cat(sql)
+  
+    tsda::sql_update(conn,sql)
+    #取消窗口
+    shiny::removeModal()
+       
+       
+       
+       
+       
+       
+       
+     })
+     
+     
+     
+     
      # 更新数据选择
      observeEvent(input$audit_FI_RPA_detail_rows_selected,{
        data <- drilldata_detail_BW()
@@ -2119,6 +2293,7 @@
          FRptItemNumber =data[1,'报表项目代码']
          file_name_xlsx = paste0('管报过程表_',FBrand,FChannel,'_',FYearPeriod,'_',FRptItemNumber,'_BW报表数据源.xlsx')
          run_download_xlsx(id = 'audit_FI_RPA_detail_BW_dl',data = drilldata_detail_BW(),filename = file_name_xlsx)
+         
          
          #启用SAP 凭证分析功能
          output$col_selection_holder_bw <- renderUI({
@@ -2190,6 +2365,23 @@
        }else{
          # pop_notice('不存在BW报表数据源')
        }
+       
+       #针对BW处理规则----
+       data_rule_bw <- drilldata_rule_BW()
+       ncount2 <- nrow(data_rule_bw)
+       if(ncount2 >0){
+         
+         FYear = as.integer(data[1,'年份'])
+         FPeriod = as.integer(data[1,'月份'])
+         FYearPeriod = as.character(FYear*100+FPeriod)
+         FBrand = data[1,'品牌']
+         FChannel = data[1,'渠道']
+         FRptItemNumber =data[1,'报表项目代码']
+         file_name_xlsx2 = paste0('管报反查_BW规则表_',FBrand,FChannel,'_',FYearPeriod,'_',FRptItemNumber,'.xlsx')
+         run_download_xlsx(id = 'audit_rule_BW_dl',data = data_rule_bw,filename = file_name_xlsx2)
+         
+       }
+       
        
        
      })
