@@ -2753,11 +2753,60 @@ and FSolutionNumber ='",FSolutionNumber,"' and FSubNumber = ",FSubNumber,"")
          run_dataTable2('div_dataShow',data = data)
          run_download_xlsx(id = 'div_dl',data = data,filename = '事业部差异下载.xlsx')
          
+       })
+       
+       # 经营快报-公司零售额--------
+       var_qr_retail_year <- var_text('qr_retail_year')
+       var_qr_retail_period <- var_text('qr_retail_period')
+       observeEvent(input$qr_retail_query_btn,{
+         FYear = as.integer(var_qr_retail_year())
+         FPeriod = as.integer(var_qr_retail_period())
+         data = jlrdspkg::quickRpt_query(conn = conn,
+                                         table_name = 'rds_t_mrpt_res_I02_RetailSales',
+                                         FYear = FYear,
+                                         FPeriod = FPeriod)
+         run_dataTable2('qr_retail_dataView',data = data)
          
          
          
          
        })
+       
+       var_qr_retail_file <- var_file('qr_retail_file')
+       observeEvent(input$qr_retail_upload,{
+         file_name = var_qr_retail_file()
+         jlrdspkg::quickRpt_upload(file_name = file_name,conn = conn,table_name = 'rds_t_mrpt_res_I02_RetailSales')
+         pop_notice('经营快报_公司零售额上传成功！')
+         
+         
+       })
+       #经营快报-回款----------
+       var_qr_receive_year <- var_text('qr_receive_year')
+       var_qr_receive_period <- var_text('qr_receive_period')
+       observeEvent(input$qr_receive_query_btn,{
+         FYear = as.integer(var_qr_receive_year())
+         FPeriod = as.integer(var_qr_receive_period())
+         data = jlrdspkg::quickRpt_query(conn = conn,
+                                         table_name = 'rds_t_mrpt_res_I03_receive',
+                                         FYear = FYear,
+                                         FPeriod = FPeriod)
+         run_dataTable2('qr_receive_dataView',data = data)
+         
+         
+         
+         
+       })
+       
+       var_qr_receive_file <- var_file('qr_receive_file')
+       observeEvent(input$qr_receive_upload,{
+         file_name = var_qr_receive_file()
+         jlrdspkg::quickRpt_upload(file_name = file_name,conn = conn,table_name = 'rds_t_mrpt_res_I03_receive')
+         pop_notice('经营快报_回款上传成功！')
+         
+         
+       })
+       
+       
        
     
   

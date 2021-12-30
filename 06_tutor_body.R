@@ -474,10 +474,19 @@ mrpt2_vw_ds_all_biorrierYaoFang_RevenueMinus
                                       ))
                                
                                   ,
-                                      tabPanel('sheet9',tagList(
+                                      tabPanel('市场费用分配注意点',tagList(
                                         fluidRow(column(4,box(
                                           title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
-                                          'sheet4'
+                                          tags$pre("select * from vw_mrpt_res_cost
+where FPeriod in(8,9,10)
+and FBrand ='自然堂'
+
+
+select * from 
+mrpt2_vw_ds_all_unAllocated_market
+where FPeriod in(8,9,10)
+and FBrand ='自然堂'
+")
                                         )),
                                         column(8, box(
                                           title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",

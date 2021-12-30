@@ -546,14 +546,46 @@ menu_column <- tabItem(tabName = "column",
                                        #   ))
                                        #   
                                        # )),
-                                       tabPanel('2.07数据源-经营快报',tagList(
+                                       tabPanel('2.07A数据源-经营快报-公司零售额',tagList(
                                          fluidRow(column(4,box(
                                            title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
-                                           '每月3日左右提供'
+                                           mdl_text(id = 'qr_retail_year',label = '年份',value = tsdo::left(as.character(Sys.Date()),4)),
+                                           mdl_text(id = 'qr_retail_period',label = '月份'),
+                                           actionButton(inputId = 'qr_retail_query_btn',label = '查询'),
+                                           br(),
+                                           tags$h4('请注意所有的渠道请提供最详细的渠道，针对有子渠道的渠道，如大客户与货架，请提供至大客户KA，大客户特通,货架代理商等最明细数据'),
+                                           
+                                           tags$a(href='经营快报模板_公司零售额.xlsx','第一次使用，请下载经营快报模板_公司零售额模板'),
+                                           br(),
+                                           br(),
+                                           mdl_file(id ='qr_retail_file',label = '请选择需要上传的经营快报_公司零售额文件'),
+                                           actionButton(inputId = 'qr_retail_upload',label = '上传服务器')
                                          )),
                                          column(8, box(
                                            title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",
-                                           'rpt4'
+                                           div(style = 'overflow-x: scroll', mdl_dataTable('qr_retail_dataView','数据预览'))
+                                         )
+                                         ))
+                                         
+                                       )),
+                                       tabPanel('2.07B数据源-经营快报-回款',tagList(
+                                         fluidRow(column(4,box(
+                                           title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
+                                           mdl_text(id = 'qr_receive_year',label = '年份',value = tsdo::left(as.character(Sys.Date()),4)),
+                                           mdl_text(id = 'qr_receive_period',label = '月份'),
+                                           actionButton(inputId = 'qr_receive_query_btn',label = '查询'),
+                                           br(),
+                                           
+                                           tags$a(href='经营快报模板_回款.xlsx','第一次使用，请下载经营快报模板_回款模板'),
+                                           tags$h4('请注意所有的渠道请提供最详细的渠道，针对有子渠道的渠道，如大客户与货架，请提供至大客户KA，大客户特通,货架代理商等最明细数据'),
+                                           br(),
+                                           br(),
+                                           mdl_file(id ='qr_receive_file',label = '请选择需要上传的经营快报_回款文件'),
+                                           actionButton(inputId = 'qr_receive_upload',label = '上传服务器')
+                                         )),
+                                         column(8, box(
+                                           title = "报表区域", width = NULL, solidHeader = TRUE, status = "primary",
+                                           div(style = 'overflow-x: scroll', mdl_dataTable('qr_receive_dataView','数据预览'))
                                          )
                                          ))
                                          
@@ -585,6 +617,7 @@ menu_column <- tabItem(tabName = "column",
                                          ))
                                          
                                        )),
+                             
                                        # tabPanel('2.07数据源-回款数据',tagList(
                                        #   fluidRow(column(4,box(
                                        #     title = "操作区域", width = NULL, solidHeader = TRUE, status = "primary",
