@@ -2565,9 +2565,9 @@ and FSolutionNumber ='",FSolutionNumber,"' and FSubNumber = ",FSubNumber,"")
          FPeriod =as.integer(var_mrpt_run_Period())
 
          #写入管报结果表
-         jlrdspkg::hana_write_res(conn = conn,FYear = FYear,FPeriod = FPeriod)
+         jlrdspkg::hana_write_res(conn = conn,FYear = FYear,FPeriod = FPeriod,view_name = 'mrpt3_vw_FI_RPA')
          #写入管报过程表
-         jlrdspkg::hana_write_detail(conn = conn,FYear = FYear,FPeriod = FPeriod)
+         #jlrdspkg::hana_write_detail(conn = conn,FYear = FYear,FPeriod = FPeriod)
          pop_notice('管报写入成功!')
          
          
