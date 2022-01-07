@@ -2507,6 +2507,19 @@ and FSolutionNumber ='",FSolutionNumber,"' and FSubNumber = ",FSubNumber,"")
          on.exit(progress$close())
          progress$set(message = '步骤1,当前进度10%',
                       detail = '计算BW分配规则',value=1)
+         #同步上月成本中心至本月
+         if (jlrdspkg::mrpt_md_ui_costCenter_checkStatus(conn = conn,FYear = FYear,FPeriod = FPeriod)){
+           jlrdspkg::mrpt_md_ui_costCenter_syncLastOne(conn = conn,FYear = FYear,FPeriod = FPeriod)
+         }
+         #同步上月成本要素至本月
+         if(jlrdspkg::mrpt_md_ui_costItem_checkStatus(conn = conn,FYear = FYear,FPeriod = FPeriod)){
+           jlrdspkg::mrpt_md_ui_costItem_syncLastOne(conn = conn,FYear = FYear,FPeriod = FPeriod)
+         }
+         #同步上月BW规则至本月
+         if(jlrdspkg::mrpt_md_rule_bw2_checkStatus(conn = conn,FYear = FYear,FPeriod = FPeriod)){
+           jlrdspkg::mrpt_md_rule_bw2_syncLastOn(conn = conn,FYear = FYear,FPeriod = FPeriod)
+         }
+         #功能可以独立出来
          mrpt_md_rule_bw2_dim_allocAll(conn = conn,FYear = FYear,FPeriod = FPeriod)
          progress$set(message = '步骤2,当前进度20%',
                       detail = ':写入SAP数据',value=2)
@@ -2538,6 +2551,8 @@ and FSolutionNumber ='",FSolutionNumber,"' and FSubNumber = ",FSubNumber,"")
          progress$set(message = '步骤10:当前进度100%',
                       detail = '计算上级事业部本年累计数据...',value=10)
          mrpt_calc_cumSum_Period_res(conn = conn,FYear = FYear,FPeriod = FPeriod)
+         print('计算差异表')
+         mrpt_diff_calc(conn = conn,FYear = FYear,FPeriod = FPeriod)
       
 
          
@@ -2545,7 +2560,7 @@ and FSolutionNumber ='",FSolutionNumber,"' and FSubNumber = ",FSubNumber,"")
          # conn_hana = hana::hana_conn()
          
          #写入管报结果表
-         #jlrdspkg::hana_write_res(conn = conn,FYear = FYear,FPeriod = FPeriod)
+         jlrdspkg::hana_write_res(conn = conn,FYear = FYear,FPeriod = FPeriod)
          #写入管报过程表
          #jlrdspkg::hana_write_detail(conn = conn,FYear = FYear,FPeriod = FPeriod)
          pop_notice('管报运算成功!')
